@@ -94,7 +94,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                     
 
                 }
             });

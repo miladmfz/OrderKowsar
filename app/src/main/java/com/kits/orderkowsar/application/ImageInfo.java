@@ -38,7 +38,7 @@ public class ImageInfo {
             out.flush();
             out.close();
         } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -50,7 +50,7 @@ public class ImageInfo {
                 dir.mkdirs();
             }
         } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+            e.printStackTrace();
         }
         String fname = code + ".jpg";
         File file = new File(dir, fname);
@@ -61,7 +61,7 @@ public class ImageInfo {
             out.flush();
             out.close();
         } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+            e.printStackTrace();
 
         }
     }
@@ -78,7 +78,7 @@ public class ImageInfo {
             file.delete();
         } catch (Exception e) {
 
-            callMethod.ErrorLog(e.getMessage());
+            e.printStackTrace();
         }
     }
 

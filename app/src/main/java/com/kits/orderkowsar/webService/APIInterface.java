@@ -12,153 +12,85 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> GetImageFromKsr(
-            @Field("tag") String tag
-            , @Field("KsrImageCode") String KsrImageCode
+    Call<RetrofitResponse> GetImageFromKsr(@Field("tag") String tag,
+                                           @Field("KsrImageCode") String KsrImageCode
     );
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> GetImageCustom(
-            @Field("tag") String tag
-            , @Field("ClassName") String ClassName
-            , @Field("ObjectRef") String ObjectRef
-            , @Field("Scale") String Scale
-    );
-
-
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> Activation(
-            @Field("tag") String tag
-            , @Field("ActivationCode") String ActivationCode
+    Call<RetrofitResponse> GetImageCustom(@Field("tag") String tag,
+                                          @Field("ClassName") String ClassName,
+                                          @Field("ObjectRef") String ObjectRef,
+                                          @Field("Scale") String Scale
     );
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> Location(
-            @Field("tag") String tag
-            , @Field("Longitude") String Altitude
-            , @Field("Latitude") String Latitude
-    );
-
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> GetLocation(
-            @Field("tag") String tag
+    Call<RetrofitResponse> Activation(@Field("tag") String tag,
+                                      @Field("ActivationCode") String ActivationCode
     );
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> BrokerStack(
-            @Field("tag") String tag
-            , @Field("BrokerRef") String BrokerRef
+    Call<RetrofitResponse> GetBasketFromTable(@Field("tag") String tag,
+                                              @Field("AppBasketInfoCode") String AppBasketInfoCode
     );
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> MenuBroker(
-            @Field("tag") String tag
-    );
+    Call<RetrofitResponse> info(@Field("tag") String tag,
+                                @Field("Where") String Where);
+
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> info(
-            @Field("tag") String tag,
-            @Field("Where") String Where
-    );
-
+    Call<RetrofitResponse> Getgrp(@Field("tag") String tag,
+                                  @Field("GroupCode") String GroupCode);
 
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> MaxRepLogCode(
-            @Field("tag") String tag
-    );
+    Call<RetrofitResponse> VersionInfo(@Field("tag") String tag);
 
-
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> Notification(
-            @Field("tag") String tag,
-            @Field("Condition") String Condition
-    );
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> Kowsar_log(
-            @Field("tag") String tag
-            , @Field("Device_Id") String Device_Id
-            , @Field("Address_Ip") String Address_Ip
-            , @Field("Server_Name") String Server_Name
-            , @Field("Factor_Code") String Factor_Code
-            , @Field("StrDate") String StrDate
-            , @Field("Broker") String Broker
-            , @Field("Explain") String Explain
-    );
+    Call<RetrofitResponse> GetRstMiz(@Field("tag") String tag);
 
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> Errorlog(
-            @Field("tag") String tag
-            , @Field("ErrorLog") String ErrorLog
-            , @Field("Broker") String Broker
-            , @Field("DeviceId") String DeviceId
-            , @Field("ServerName") String ServerName
-            , @Field("StrDate") String StrDate
-            , @Field("VersionName") String VersionName
-    );
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> customer_insert(
-            @Field("tag") String tag
-            , @Field("BrokerRef") String BrokerRef
-            , @Field("CityCode") String CityCode
-            , @Field("KodeMelli") String KodeMelli
-            , @Field("FName") String FName
-            , @Field("LName") String LName
-            , @Field("Address") String Address
-            , @Field("Phone") String Phone
-            , @Field("Mobile") String Mobile
-            , @Field("EMail") String EMail
-            , @Field("PostCode") String PostCode
-            , @Field("ZipCode") String ZipCode
-    );
+    Call<RetrofitResponse> GetGoodFromGroup(@Field("tag") String tag,
+                                            @Field("GroupCode") String GroupCode);
+
+
+
+
+
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> GetGoodType(
-            @Field("tag") String tag
-    );
+    Call <RetrofitResponse> GetImage(@Field("tag") String tag,
+                                     @Field("ObjectRef") String ObjectRef,
+                                     @Field("ClassName") String ClassName,
+                                     @Field("IX") String IX,
+                                     @Field("Scale") String Scale);
 
 
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> GetColumnList(
-            @Field("tag") String tag
-            , @Field("Type") String Type
-            , @Field("AppType") String AppType
-            , @Field("IncludeZero") String IncludeZero
-    );
 
 
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> RetrofitReplicate(
-            @Field("tag") String tag
-            , @Field("code") String code
-            , @Field("table") String table
-            , @Field("Where") String Where
-            , @Field("reptype") String reptype
-            , @Field("Reprow") String Reprow
-    );
+
+
+
+
+
+
 
 
 }

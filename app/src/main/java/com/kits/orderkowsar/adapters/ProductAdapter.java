@@ -110,7 +110,7 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<CategoryViewHo
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                     
                 }
             });
 
@@ -167,7 +167,7 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<CategoryViewHo
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                     
                 }
             });
 

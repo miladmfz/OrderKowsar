@@ -5,25 +5,35 @@ import com.google.gson.annotations.SerializedName;
 public class GoodGroup {
 
     @SerializedName("GoodGroupCode")
-    private Integer GoodGroupCode;
+    private String GoodGroupCode;
     @SerializedName("GroupCode")
-    private Integer GroupCode;
+    private String GroupCode;
     @SerializedName("Name")
     private String Name;
     @SerializedName("L1")
-    private Integer L1;
+    private String L1;
     @SerializedName("L2")
-    private Integer L2;
+    private String L2;
     @SerializedName("L3")
-    private Integer L3;
+    private String L3;
     @SerializedName("L4")
-    private Integer L4;
+    private String L4;
     @SerializedName("L5")
-    private Integer L5;
+    private String L5;
 
     @SerializedName("ChildNo")
-    private Integer ChildNo;
+    private String ChildNo;
 
+    @SerializedName("GoodGroupImageName")
+    private String GoodGroupImageName;
+
+    public String getGoodGroupImageName() {
+        return GoodGroupImageName;
+    }
+
+    public void setGoodGroupImageName(String goodGroupImageName) {
+        GoodGroupImageName = goodGroupImageName;
+    }
 
     public String getGoodGroupFieldValue(String AKey) {
 
@@ -42,6 +52,10 @@ public class GoodGroup {
             case "name":
                 if (Name == null) Res = "";
                 else Res = Name;
+                break;
+            case "goodgroupimagename":
+                if (GoodGroupImageName == null) Res = "";
+                else Res = GoodGroupImageName.toString();
                 break;
             case "l1":
                 if (L1 == null) Res = "";
@@ -73,40 +87,9 @@ public class GoodGroup {
 
     }
 
-    public void setGoodGroupCode(Integer goodGroupCode) {
-        GoodGroupCode = goodGroupCode;
-    }
-
-    public void setGroupCode(Integer groupCode) {
-        GroupCode = groupCode;
-    }
-
     public void setName(String name) {
         Name = name;
     }
 
-    public void setL1(Integer l1) {
-        L1 = l1;
-    }
 
-    public void setL2(Integer l2) {
-        L2 = l2;
-    }
-
-    public void setL3(Integer l3) {
-        L3 = l3;
-    }
-
-    public void setL4(Integer l4) {
-        L4 = l4;
-    }
-
-    public void setL5(Integer l5) {
-        L5 = l5;
-    }
-
-
-    public void setChildNo(Integer childNo) {
-        ChildNo = childNo;
-    }
 }

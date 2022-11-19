@@ -138,7 +138,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.GoodViewHolde
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                     
                 }
             });
 

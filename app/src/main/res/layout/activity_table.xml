@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.SearchActivity"
+    tools:context=".activity.TableActivity"
     android:layoutDirection="rtl">
 
 
@@ -16,19 +16,19 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/SearchActivity_appbar"
+            android:id="@+id/tableactivity_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             >
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/SearchActivity_toolbar"
+                android:id="@+id/tableactivity_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
-                app:title="جستجوی کالا"
+                app:title="لیست میز"
                 app:titleTextColor="@color/white">
 
 
@@ -37,24 +37,12 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/testbtn"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tableactivity_recy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <FrameLayout
-                android:id="@+id/searchactivity_framelayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.75"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            android:layout_marginTop="5dp"
+            android:visibility="visible" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

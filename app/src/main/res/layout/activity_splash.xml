@@ -18,4 +18,14 @@
         app:lottie_rawRes="@raw/waiter"
         app:lottie_autoPlay="true"
         app:lottie_loop="true" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/splash_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="تلاش مجدد"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:background="@color/white"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

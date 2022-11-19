@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.activity.ConfigActivity;
 import com.kits.orderkowsar.activity.PrefactorActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.App;
@@ -89,26 +88,7 @@ public class CustomerViewHolder extends RecyclerView.ViewHolder {
 
 
         fac_rltv.setOnClickListener(v -> {
-            if (edit.equals("0")) {
 
-                UserInfo auser = dbh.LoadPersonalInfo();
-                if (Integer.parseInt(auser.getBrokerCode()) > 0) {
-                    action.addfactordialog(customer.getCustomerFieldValue("CustomerCode"));
-                } else {
-                    Intent intent = new Intent(mContext, ConfigActivity.class);
-                    callMethod.showToast("کد بازاریاب را وارد کنید");
-
-                    mContext.startActivity(intent);
-                }
-
-            } else {
-                dbh.UpdatePreFactorHeader_Customer(factor_target, customer.getCustomerFieldValue("CustomerCode"));
-                Intent intent = new Intent(mContext, PrefactorActivity.class);
-                ((Activity) mContext).finish();
-                ((Activity) mContext).overridePendingTransition(0, 0);
-                mContext.startActivity(intent);
-                ((Activity) mContext).overridePendingTransition(0, 0);
-            }
         });
 
 

@@ -7,43 +7,40 @@ import java.util.ArrayList;
 
 public class RetrofitResponse {
 
-    @SerializedName("Goods")
-    private ArrayList<Good> Goods;
-    @SerializedName("Customers")
-    private ArrayList<Customer> Customers;
-    @SerializedName("Columns")
-    private ArrayList<Column> Columns;
-    @SerializedName("PreFactors")
-    private ArrayList<PreFactor> PreFactors;
-    @SerializedName("Activations")
-    private ArrayList<Activation> Activations;
-    @SerializedName("Locations")
-    private ArrayList<Location> Locations;
-
-
     @SerializedName("Good")
     private Good good;
-    @SerializedName("Customer")
-    private Customer customer;
-    @SerializedName("Column")
-    private Column column;
     @SerializedName("PreFactor")
     private PreFactor preFactor;
     @SerializedName("Activation")
     private Activation activation;
-    @SerializedName("Location")
-    private Good Location;
+    @SerializedName("RstMiz")
+    private RstMiz rstMiz;
+    @SerializedName("Group")
+    private GoodGroup group;
 
-    @SerializedName("value")
-    private String value;
+    @SerializedName("Goods")
+    private ArrayList<Good> Goods;
+    @SerializedName("PreFactors")
+    private ArrayList<PreFactor> PreFactors;
+    @SerializedName("Activations")
+    private ArrayList<Activation> Activations;
+    @SerializedName("RstMizs")
+    private ArrayList<RstMiz> RstMizs;
+
+
+
+    @SerializedName("Groups")
+    private ArrayList<GoodGroup> Groups;
+
+
     @SerializedName("Text")
     private String Text;
-
-
     @SerializedName("ErrCode")
     private String ErrCode;
     @SerializedName("ErrDesc")
     private String ErrDesc;
+
+
 
 
     public ArrayList<Good> getGoods() {
@@ -54,28 +51,28 @@ public class RetrofitResponse {
         Goods = goods;
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return Customers;
-    }
-
-    public void setCustomers(ArrayList<Customer> customers) {
-        Customers = customers;
-    }
-
-    public ArrayList<Column> getColumns() {
-        return Columns;
-    }
-
-    public void setColumns(ArrayList<Column> columns) {
-        Columns = columns;
-    }
-
     public ArrayList<PreFactor> getPreFactors() {
         return PreFactors;
     }
 
     public void setPreFactors(ArrayList<PreFactor> preFactors) {
         PreFactors = preFactors;
+    }
+
+    public ArrayList<Activation> getActivations() {
+        return Activations;
+    }
+
+    public void setActivations(ArrayList<Activation> activations) {
+        Activations = activations;
+    }
+
+    public ArrayList<RstMiz> getRstMizs() {
+        return RstMizs;
+    }
+
+    public void setRstMizs(ArrayList<RstMiz> rstMizs) {
+        RstMizs = rstMizs;
     }
 
     public Good getGood() {
@@ -86,22 +83,6 @@ public class RetrofitResponse {
         this.good = good;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Column getColumn() {
-        return column;
-    }
-
-    public void setColumn(Column column) {
-        this.column = column;
-    }
-
     public PreFactor getPreFactor() {
         return preFactor;
     }
@@ -110,12 +91,20 @@ public class RetrofitResponse {
         this.preFactor = preFactor;
     }
 
-    public String getValue() {
-        return value;
+    public Activation getActivation() {
+        return activation;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setActivation(Activation activation) {
+        this.activation = activation;
+    }
+
+    public RstMiz getRstMiz() {
+        return rstMiz;
+    }
+
+    public void setRstMiz(RstMiz rstMiz) {
+        this.rstMiz = rstMiz;
     }
 
     public String getText() {
@@ -142,35 +131,19 @@ public class RetrofitResponse {
         ErrDesc = errDesc;
     }
 
-    public Activation getActivation() {
-        return activation;
+    public GoodGroup getGroup() {
+        return group;
     }
 
-    public void setActivation(Activation activation) {
-        this.activation = activation;
+    public void setGroup(GoodGroup group) {
+        this.group = group;
     }
 
-    public ArrayList<Activation> getActivations() {
-        return Activations;
+    public ArrayList<GoodGroup> getGroups() {
+        return Groups;
     }
 
-    public void setActivations(ArrayList<Activation> activations) {
-        Activations = activations;
-    }
-
-    public ArrayList<com.kits.orderkowsar.model.Location> getLocations() {
-        return Locations;
-    }
-
-    public void setLocations(ArrayList<com.kits.orderkowsar.model.Location> locations) {
-        Locations = locations;
-    }
-
-    public Good getLocation() {
-        return Location;
-    }
-
-    public void setLocation(Good location) {
-        Location = location;
+    public void setGroups(ArrayList<GoodGroup> groups) {
+        Groups = groups;
     }
 }

@@ -3,10 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        />
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,8 +17,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.App"
@@ -34,23 +30,15 @@
         android:theme="@style/GrayDefault"
         tools:ignore="AllowBackup"
         tools:targetApi="n">
-        <activity
-            android:name=".activity.AllViewActivity"
-            android:exported="false" />
+
         <activity android:name=".activity.ChoiceDatabaseActivity" />
+        <activity android:name=".activity.TableActivity" />
         <activity android:name=".activity.AboutUsActivity" />
         <activity android:name=".activity.BasketActivity" />
-        <activity android:name=".activity.BasketHistoryActivity" />
-        <activity android:name=".activity.ConfigActivity" />
-        <activity android:name=".activity.CustomerActivity" />
-        <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.NavActivity" />
         <activity android:name=".activity.PrefactorActivity" />
-        <activity android:name=".activity.PrefactoropenActivity" />
         <activity android:name=".activity.PrinterActivity" />
         <activity android:name=".activity.RegistrationActivity" />
-        <activity android:name=".activity.ScanCodeActivity" />
-        <activity android:name=".activity.SearchByDateActivity" />
         <activity android:name=".activity.SearchActivity" />
         <activity
             android:name=".activity.SplashActivity"

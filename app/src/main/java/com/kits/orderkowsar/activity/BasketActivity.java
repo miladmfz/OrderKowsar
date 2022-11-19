@@ -1,151 +1,169 @@
 package com.kits.orderkowsar.activity;
 
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodBasketAdapter;
+import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.application.Action;
+import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityBuyBinding;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
+import com.kits.orderkowsar.model.RetrofitResponse;
+import com.kits.orderkowsar.webService.APIClient;
+import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BasketActivity extends AppCompatActivity {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-
-    private Action action;
-    private String PreFac = "0";
-    private DatabaseHelper dbh;
-    ArrayList<Good> goods;
-    GoodBasketAdapter adapter;
-    GridLayoutManager gridLayoutManager;
+    RecyclerView re;
+    ArrayList<Good> Goods;
+    APIInterface apiInterface ;
     CallMethod callMethod;
+    TextView Buy_row,Buy_price,Buy_amount;
+    LottieAnimationView prog;
+    GridLayoutManager gridLayoutManager;
+    int id=0;
+    Intent intent;
+    ArrayList<Good> Goods_sum;
+    public ArrayList<String> Goods_shortage=new ArrayList<>();
+    GoodBasketAdapter adapter;
 
-    ActivityBuyBinding binding;
-
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_buy);
 
 
-        binding = ActivityBuyBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-
-        intent();
-        Config();
-
-        try {
-            Handler handler = new Handler();
-            handler.postDelayed(this::init, 100);
-        } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+        InternetConnection ic =new  InternetConnection(this);
+        if(ic.has()){
+            try {
+                init();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else{
+            intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
         }
 
 
     }
 
-    //*****************************************************************
+//***********************************************************************
 
-
-    public void Config() {
-        action = new Action(this);
-        callMethod = new CallMethod(this);
-        dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
-
-
-        setSupportActionBar(binding.BuyActivityToolbar);
-
-    }
 
     public void init() {
 
 
-        goods = dbh.getAllPreFactorRows("", PreFac);
-        adapter = new GoodBasketAdapter(goods, this);
-        if (adapter.getItemCount() == 0) {
-            callMethod.showToast("سبد خرید خالی می باشد");
-        }
-        gridLayoutManager = new GridLayoutManager(this, 1);
-        binding.BuyActivityR1.setLayoutManager(gridLayoutManager);
-        binding.BuyActivityR1.setAdapter(adapter);
-        binding.BuyActivityR1.setItemAnimator(new DefaultItemAnimator());
-        binding.BuyActivityR1.setVisibility(View.VISIBLE);
+        callMethod = new CallMethod(App.getContext());
+        apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
-        try {
-            binding.BuyActivityR1.scrollToPosition(Integer.parseInt(callMethod.ReadString("BasketItemView")) - 1);
-        } catch (Exception e) {
-            binding.BuyActivityR1.scrollToPosition(0);
-            callMethod.EditString("BasketItemView", "0");
+        Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
+        Buy_price = findViewById(R.id.BuyActivity_total_price_buy);
+        Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
+        Button total_delete = findViewById(R.id.BuyActivity_total_delete);
+        Button final_buy_test = findViewById(R.id.BuyActivity_test);
+        re = findViewById(R.id.BuyActivity_R1);
+        prog = findViewById(R.id.BuyActivity_prog);
 
-        }
+        Toolbar toolbar = findViewById(R.id.BuyActivity_toolbar);
+        setSupportActionBar(toolbar);
 
 
-        binding.BuyActivityR1.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        Call<RetrofitResponse> call = apiInterface.GetBasketFromTable(
+                "BasketGet",
+                "AppBasketInfoCode"
+        );
+
+        call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    callMethod.EditString("BasketItemView", String.valueOf(gridLayoutManager.findFirstVisibleItemPosition()));
+            public void onResponse(@NotNull Call<RetrofitResponse> call,@NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+
+                    //todo
                 }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
             }
         });
 
 
-        binding.BuyActivityTotalPriceBuy.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(dbh.getFactorSum(PreFac)))));
-        binding.BuyActivityTotalAmountBuy.setText(NumberFunctions.PerisanNumber(dbh.getFactorSumAmount(PreFac)));
-        binding.BuyActivityTotalCustomerBuy.setText(NumberFunctions.PerisanNumber(dbh.getFactorCustomer(PreFac)));
-        binding.BuyActivityTotalRowBuy.setText(NumberFunctions.PerisanNumber(String.valueOf(goods.size())));
 
 
-        binding.BuyActivityTotalDelete.setOnClickListener(view ->
-                new AlertDialog.Builder(this)
-                        .setTitle("توجه")
-                        .setMessage("آیا مایل به خالی کردن سبد خرید می باشید؟")
-                        .setPositiveButton("بله", (dialogInterface, i) -> {
-                            dbh.DeletePreFactorRow(PreFac, "0");
-                            finish();
-                            callMethod.showToast("سبد خرید با موفقیت حذف گردید!");
-                        })
-                        .setNegativeButton("خیر", (dialogInterface, i) -> {
-                        })
-                        .show()
-        );
+
+        final_buy_test.setOnClickListener(view -> {
+            //todo insert to shopfactor
+        });
 
 
-        binding.BuyActivityTest.setOnClickListener(view ->
-                new android.app.AlertDialog.Builder(this)
-                        .setTitle("توجه")
-                        .setMessage("آیا فاکتور ارسال گردد؟")
-                        .setPositiveButton("بله", (dialogInterface, i) -> action.sendfactor(PreFac))
-                        .setNegativeButton("خیر", (dialogInterface, i) -> {
-                        })
-                        .show()
-        );
+        total_delete.setOnClickListener(view -> new AlertDialog.Builder(this)
+                .setTitle("توجه")
+                .setMessage("آیا مایل به خالی کردن سبد خرید می باشید؟")
+                .setPositiveButton("بله", (dialogInterface, i) -> {
+//
+//                    Call<RetrofitResponse> call1 = apiInterface.Basketdeleteall(
+//                            "Basketdeleteall",
+//                            GetShared.ReadString("mobile")
+//                    );
+//                    call1.enqueue(new Callback<RetrofitResponse>() {
+//                        @Override
+//                        public void onResponse(@NotNull  Call<RetrofitResponse> call1, @NotNull  Response<RetrofitResponse> response) {
+//                            if (response.isSuccessful()) {
+//                                assert response.body() != null;
+//                                if (response.body().getText().equals("done")) {
+//                                    App.showToast("سبد خرید حذف گردید");
+//                                    finish();
+//                                }
+//                            }
+//                        }
+//                        @Override
+//                        public void onFailure(@NotNull Call<RetrofitResponse> call1,@NotNull  Throwable t) {
+//                        }
+//                    });
+//
+
+                })
+                .setNegativeButton("خیر", (dialogInterface, i) -> {
+                })
+                .show());
 
 
     }
-
-
-    public void intent() {
-        Bundle data = getIntent().getExtras();
-        assert data != null;
-        PreFac = data.getString("PreFac");
-    }
-
 
 }

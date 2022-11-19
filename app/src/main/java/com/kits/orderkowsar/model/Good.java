@@ -59,6 +59,8 @@ public class Good implements Serializable {
     private Integer DefaultUnitValue;
     @SerializedName("Isbn")
     private String Isbn;
+    @SerializedName("GoodImageName")
+    private String GoodImageName;
 
     @SerializedName("Extera1")
     private String Extera1;
@@ -233,6 +235,13 @@ public class Good implements Serializable {
     @SerializedName("Check")
     private boolean Check;
 
+    public String getGoodImageName() {
+        return GoodImageName;
+    }
+
+    public void setGoodImageName(String goodImageName) {
+        GoodImageName = goodImageName;
+    }
 
     public boolean isCheck() {
         return Check;
@@ -269,6 +278,10 @@ public class Good implements Serializable {
             case "goodmaincode":
                 if (GoodMainCode == null) Res = "";
                 else Res = GoodMainCode.toString();
+                break;
+            case "goodimagename":
+                if (GoodImageName == null) Res = "";
+                else Res = GoodImageName.toString();
                 break;
             case "goodsubcode":
                 if (GoodSubCode == null) Res = "";

@@ -2,6 +2,7 @@ package com.kits.orderkowsar.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +12,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.work.WorkManager;
 
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.DatabaseHelper;
@@ -36,19 +41,44 @@ public class SplashActivity extends AppCompatActivity {
     final int PERMISSION_CODE = 1;
     DatabaseHelper dbh, dbhbase;
     final int PERMISSION_REQUEST_CODE = 1;
-    int i = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Config();
-        try {
-//            init();
 
-        } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+
+       @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button splash_refresh= findViewById(R.id.splash_refresh);
+        InternetConnection ic = new  InternetConnection(this);
+        if(ic.has()){
+
+            try {
+                init();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else{
+
+            final Dialog dialog1 ;
+            dialog1 = new Dialog(this);
+            dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog1.setContentView(R.layout.connection_fail);
+            dialog1.show();
+            Button to_setting = dialog1.findViewById(R.id.to_setting);
+            to_setting.setOnClickListener(view -> startActivity(new Intent(Settings.ACTION_SETTINGS)));
+            splash_refresh.setVisibility(View.VISIBLE);
+
+            callMethod.showToast("عدم اتصال به اینترنت");
         }
+
+        splash_refresh.setOnClickListener(view -> {
+            finish();
+            startActivity(getIntent());
+        });
 
     }
 
@@ -77,9 +107,13 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditString("TitleSize", "18");
             callMethod.EditString("BodySize", "18");
             callMethod.EditString("Theme", "Green");
+
+            callMethod.EditString("AppBasketInfoCode", "0");
+
             callMethod.EditBoolan("RealAmount", false);
             callMethod.EditBoolan("ActiveStack", false);
             callMethod.EditBoolan("GoodAmount", false);
+
 
             callMethod.EditString("ServerURLUse", "");
             callMethod.EditString("SQLiteURLUse", "");
@@ -91,7 +125,7 @@ public class SplashActivity extends AppCompatActivity {
 
         }
 
-        callMethod.EditString("Filter", "0");
+        callMethod.EditString("AppBasketInfoCode", "0");
         callMethod.EditString("PreFactorCode", "0");
         callMethod.EditString("PreFactorGood", "0");
         callMethod.EditString("BasketItemView", "0");
@@ -116,8 +150,6 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     handler = new Handler();
                     handler.postDelayed(() -> {
-
-
                         intent = new Intent(this, NavActivity.class);
                         startActivity(intent);
                         finish();

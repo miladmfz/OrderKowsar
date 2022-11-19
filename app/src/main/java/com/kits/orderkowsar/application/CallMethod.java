@@ -34,6 +34,7 @@ public class CallMethod extends Application {
     Context context;
 
     Toast toast;
+
     public CallMethod(Context mContext) {
         this.context = mContext;
         this.shPref = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
@@ -89,50 +90,7 @@ public class CallMethod extends Application {
 
     public void Create() {
         sEdit.putBoolean("FirstStart", false);
-        EditString("ItemsShow", "3");
         sEdit.apply();
-    }
-
-    public void ErrorLog(String ErrorStr) {
-
-        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(context
-                .getContentResolver(), Settings.Secure.ANDROID_ID);
-
-        Log.e("ErrorLog", ErrorStr);
-
-        PersianCalendar calendar1 = new PersianCalendar();
-        String version = BuildConfig.VERSION_NAME;
-
-        DatabaseHelper dbh = new DatabaseHelper(context, ReadString("DatabaseName"));
-        UserInfo auser = new UserInfo();
-        try {
-            auser = dbh.LoadPersonalInfo();
-        } catch (Exception e) {
-            auser.setBrokerCode("0");
-        }
-
-
-        APIInterface apiInterface = APIClient_kowsar.getCleint_log().create(APIInterface.class);
-        Call<RetrofitResponse> cl = apiInterface.Errorlog("Errorlog"
-                , ErrorStr
-                , auser.getBrokerCode()
-                , android_id
-                , ReadString("PersianCompanyNameUse")
-                , calendar1.getPersianShortDateTime()
-                , version);
-        cl.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull retrofit2.Response<RetrofitResponse> response) {
-                assert response.body() != null;
-            }
-
-
-            @Override
-            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
-                //ErrorLog(t.getMessage());
-            }
-        });
-
     }
 
 }

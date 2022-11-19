@@ -68,7 +68,7 @@ public class PrefactorActivity extends AppCompatActivity {
             handler.postDelayed(this::init, 100);
             handler.postDelayed(dialog1::dismiss, 1000);
         } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+            e.printStackTrace();
         }
 
 
@@ -121,69 +121,14 @@ public class PrefactorActivity extends AppCompatActivity {
                     }
                 });
 
-        binding.PrefactorActivityAddfactor.setOnClickListener(view -> {
-            intent = new Intent(this, CustomerActivity.class);
-            intent.putExtra("edit", "0");
-            intent.putExtra("factor_code", "0");
-            intent.putExtra("id", "0");
-            startActivity(intent);
-
-        });
-
 
     }
 
 
     public void callfactor() {
-        preFactors = dbh.getAllPrefactorHeader(search_target);
-        adapter = new PreFactorHeaderAdapter(preFactors, this);
-        gridLayoutManager = new GridLayoutManager(this, 1);
-        binding.PrefactorActivityRecyclerView.setLayoutManager(gridLayoutManager);
-        binding.PrefactorActivityRecyclerView.setAdapter(adapter);
-        binding.PrefactorActivityRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        BadgeCounter.hide(menu.findItem(R.id.bag_shop));
-        return true;
-    }
-
-    @Override
-    protected void onRestart() {
-        finish();
-        startActivity(getIntent());
-        super.onRestart();
-    }
-
-    @Override
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.bag_shop) {
-            if (Integer.parseInt(callMethod.ReadString("PreFactorCode")) != 0) {
-                intent = new Intent(this, BasketActivity.class);
-                intent.putExtra("PreFac", callMethod.ReadString("PreFactorCode"));
-                intent.putExtra("showflag", "2");
-            } else {
-                if (pfcode != 0) {
-                    intent = new Intent(this, SearchActivity.class);
-                    intent.putExtra("scan", "");
-                    intent.putExtra("id", "0");
-                    intent.putExtra("title", "جستجوی کالا");
-
-                } else {
-                    callMethod.showToast("سبد خرید خالی می باشد");
-                    intent = new Intent(this, PrefactoropenActivity.class);
-                }
-            }
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
 }

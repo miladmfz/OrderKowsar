@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -33,25 +32,28 @@ import java.util.ArrayList;
 
 
 
-public class GoodItemViewHolder extends RecyclerView.ViewHolder {
+public class RstMizViewHolder extends RecyclerView.ViewHolder {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
 
-    public ImageView img;
-    public LinearLayout rltv;
-
+    public MaterialCardView rltv;
     public TextView tv_name;
-    public TextView tv_price;
+    public TextView tv_explain;
 
 
-    boolean multi_select1;
-
-    public GoodItemViewHolder(View itemView) {
+    public RstMizViewHolder(View itemView) {
         super(itemView);
-        img = itemView.findViewById(R.id.good_item_img);
-        tv_name = itemView.findViewById(R.id.good_item_name);
-        tv_price = itemView.findViewById(R.id.good_item_price);
-        rltv = itemView.findViewById(R.id.good_item);
+
+        rltv = itemView.findViewById(R.id.table_item);
+        tv_name = itemView.findViewById(R.id.table_item_name);
+        tv_explain = itemView.findViewById(R.id.table_item_explain);
     }
+
+
+    public void bind(ArrayList<Column> Columns, Good good, Context mContext, CallMethod callMethod) {
+
+
+    }
+
 
 
 }

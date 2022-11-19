@@ -125,15 +125,6 @@ public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
                         .setMessage("آیا کالا از لیست حذف گردد؟")
                         .setPositiveButton("بله", (dialogInterface, i) -> {
 
-                            dbh.DeletePreFactorRow(callMethod.ReadString("PreFactorCode"), good.getGoodFieldValue("PreFactorRowCode"));
-                            callMethod.showToast("از سبد خرید حذف گردید");
-                            Intent intent = new Intent(mContext, BasketActivity.class);
-                            intent.putExtra("PreFac", callMethod.ReadString("PreFactorCode"));
-                            intent.putExtra("showflag", "2");
-                            ((Activity) mContext).finish();
-                            ((Activity) mContext).overridePendingTransition(0, 0);
-                            mContext.startActivity(intent);
-                            ((Activity) mContext).overridePendingTransition(0, 0);
                         })
                         .setNegativeButton("خیر", (dialogInterface, i) -> {
 
@@ -142,10 +133,7 @@ public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
 
 
         amount.setOnClickListener(view ->
-                action.buydialog(
-                        good.getGoodFieldValue("GoodCode"),
-                        good.getGoodFieldValue("PrefactorRowCode")
-                )
+                {}
         );
 
 

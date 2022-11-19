@@ -50,7 +50,6 @@ public class PreFactorHeaderAdapter extends RecyclerView.Adapter<PreFactorHeader
 
 
         holder.bind(PreFactors.get(position));
-        holder.Action(PreFactors.get(position), mContext, dbh, callMethod, action);
 
 
     }

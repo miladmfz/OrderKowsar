@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +14,23 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.activity.DetailActivity;
-import com.kits.orderkowsar.activity.PrefactoropenActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
-import com.kits.orderkowsar.activity.SearchByDateActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
 import com.kits.orderkowsar.model.Column;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -37,6 +39,8 @@ import retrofit2.Response;
 
 
 public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
+    DecimalFormat decimalFormat = new DecimalFormat("0,000");
+
     private final Context mContext;
     CallMethod callMethod;
     private final ArrayList<Good> goods;
@@ -57,7 +61,6 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
         this.image_info = new ImageInfo(mContext);
         this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
         this.action = new Action(mContext);
-        this.Columns = dbh.GetColumns("id", "", "1");
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
     }
@@ -66,10 +69,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     @Override
     public GoodItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.good_item_cardview, parent, false);
-//        GoodItemCardviewBinding binding = GoodItemCardviewBinding.inflate(
-//                LayoutInflater.from(parent.getContext())
-//        );
-//        return new GoodItemViewHolder(binding);
+
         return new GoodItemViewHolder(view);
     }
 
@@ -78,137 +78,73 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final GoodItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        String imagecode = dbh.GetLastksrImageCode(goods.get(position).getGoodFieldValue("GoodCode"));
+        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodFieldValue("GoodName")));
+        holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getGoodFieldValue("MaxSellPrice")))));
+        Log.e("test_=",goods.get(position).getGoodFieldValue("GoodImageName"));
+        if (!goods.get(position).getGoodFieldValue("GoodImageName").equals("")) {
+            Log.e("test=",position+"=exist");
+            Glide.with(holder.img)
+                    .asBitmap()
+                    .load(R.drawable.white)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .into(holder.img);
+            holder.img.setVisibility(View.VISIBLE);
 
-        holder.bind(Columns, goods.get(position), mContext, callMethod);
-
-        holder.Action(goods.get(position)
-                , mContext
-                , dbh
-                , callMethod
-                , action
-                , image_info
-                , multi_select, imagecode
-        );
+            Glide.with(holder.img)
+                    .asBitmap()
+                    .load(Base64.decode(goods.get(position).getGoodFieldValue("GoodImageName"), Base64.DEFAULT))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .into(holder.img);
 
 
-        if (!image_info.Image_exist(imagecode)) {
+        } else
+        {
+            Log.e("test=",goods.get(position).getGoodFieldValue("GoodCode"));
 
-            call2 = apiInterface.GetImageFromKsr("GetImageFromKsr", goods.get(position).getGoodFieldValue("KsrImageCode"));
+
+            Glide.with(holder.img)
+                    .asBitmap()
+                    .load(R.drawable.white)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .into(holder.img);
+            holder.img.setVisibility(View.VISIBLE);
+            call2 = apiInterface.GetImage(
+                    "getImage",
+                    goods.get(position).getGoodFieldValue("GoodCode"),
+                    "TGood",
+                    "0",
+                    "200"
+            );
             call2.enqueue(new Callback<RetrofitResponse>() {
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onResponse(@NonNull Call<RetrofitResponse> call2, @NonNull Response<RetrofitResponse> response) {
-
                     if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        if (!response.body().getText().equals("no_photo")) {
-                            image_info.SaveImage(
-                                    BitmapFactory.decodeByteArray(
-                                            Base64.decode(response.body().getText(), Base64.DEFAULT),
-                                            0,
-                                            Base64.decode(response.body().getText(), Base64.DEFAULT).length
-                                    ),
-                                    imagecode
-                            );
 
-                            notifyItemChanged(position);
+                        assert response.body() != null;
+                        Log.e("test=",position+"=retrofit");
+                        if (!response.body().getText().equals("no_photo")) {
+                            Log.e("test=",position+"=result");
+                            goods.get(position).setGoodImageName(response.body().getText());
+                        } else {
+                            Log.e("test=",position+"=no_photo");
+                            goods.get(position).setGoodImageName(String.valueOf(R.string.no_photo));
+
                         }
+                        notifyItemChanged(position);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                    Log.e("test=",position+"=onFailure");
 
                 }
             });
         }
-
-
-        holder.rltv.setOnClickListener(v -> {
-
-            if (multi_select) {
-                if (goods.get(position).getGoodFieldValue("ActiveStack").equals("1")) {
-                    holder.rltv.setChecked(!holder.rltv.isChecked());
-                    goods.get(position).setCheck(!goods.get(position).isCheck());
-                    if (goods.get(position).isCheck()) {
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.SearchActivity")) {
-                            SearchActivity activity = (SearchActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.Search_date_detailActivity")) {
-                            SearchByDateActivity activity = (SearchByDateActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                    } else {
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.SearchActivity")) {
-                            SearchActivity activity = (SearchActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.Search_date_detailActivity")) {
-                            SearchByDateActivity activity = (SearchByDateActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                    }
-                }else{
-                    callMethod.showToast("این کالا غیر فعال می باشد");
-                }
-            } else {
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("id", goods.get(position).getGoodFieldValue("GoodCode"));
-                intent.putExtra("ws", goods.get(position).getGoodFieldValue("Shortage"));
-                mContext.startActivity(intent);
-            }
-
-        });
-
-
-        holder.rltv.setChecked(goods.get(position).isCheck());
-
-        holder.rltv.setOnLongClickListener(view ->
-        {
-            if (goods.get(position).getGoodFieldValue("ActiveStack").equals("1")) {
-                if (Integer.parseInt(callMethod.ReadString("PreFactorCode")) != 0) {
-                    multi_select = true;
-                    holder.rltv.setChecked(!holder.rltv.isChecked());
-                    goods.get(position).setCheck(!goods.get(position).isCheck());
-
-                    if (goods.get(position).isCheck()) {
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.SearchActivity")) {
-                            SearchActivity activity = (SearchActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.Search_date_detailActivity")) {
-                            SearchByDateActivity activity = (SearchByDateActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-
-                    } else {
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.SearchActivity")) {
-                            SearchActivity activity = (SearchActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-                        if (mContext.getClass().getName().equals("com.kits.orderkowsar.activity.Search_date_detailActivity")) {
-                            SearchByDateActivity activity = (SearchByDateActivity) mContext;
-                            activity.good_select_function(goods.get(position));
-                        }
-
-
-                    }
-                } else {
-
-                    Intent intent = new Intent(mContext, PrefactoropenActivity.class);
-                    intent.putExtra("fac", "0");
-                    mContext.startActivity(intent);
-
-                }
-            }else{
-                callMethod.showToast("این کالا غیر فعال می باشد");
-            }
-
-            return true;
-        });
-
 
     }
 

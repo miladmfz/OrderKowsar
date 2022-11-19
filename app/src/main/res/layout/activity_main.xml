@@ -35,66 +35,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:background="@drawable/bg_round_selected"
-            android:layout_margin="2dp">
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/customerfactorheader"
-                    android:textSize="14sp"
-                    android:layout_weight="0.7"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/MainActivity_customer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="18sp"
-                    android:layout_weight="0.3"
-                    android:gravity="center" />
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/MainActivity_ll_sum_factor"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/totalfactorheader"
-                    android:textSize="14sp"
-                    android:layout_weight="0.7"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/MainActivity_sum_factor"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:textSize="18sp"
-                    android:gravity="center" />
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -136,92 +76,99 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-
-                    <ListView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/listView" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mainactivity_test_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_margin="10dp"
-                        android:text="تستی نرم افزار"
-                        android:textColor="#ffffff"
-                        app:rippleColor="@color/deep_purple_300"
-                        app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp"
-                        app:backgroundTint="@color/red_900"
-                        android:textSize="42sp"
-                        android:onClick="test_fun"
-                        android:visibility="gone" />
-                    <TextView
-                        android:id="@+id/mainactivity_test_tv"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textColor="@color/grey_1000"
-                        android:visibility="gone"
-                        android:text="tv_test"
-                        />
+                        android:layout_margin="20dp"
+                        android:background="@drawable/bg_round_selected"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:backgroundTint="@color/green_500"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5sp"
+                            android:background="@drawable/emptytable" />
+
+                        <TextView
+                            android:id="@+id/mainactivity_btn1"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="ثبت و سفارش"
+                            android:textColor="@color/white"
+                            android:textSize="42sp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mainactivity_create_factor"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_margin="10dp"
-                        android:text="@string/insert_prefactor"
-                        android:textColor="#ffffff"
-                        app:rippleColor="@color/deep_purple_300"
-                        app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp"
-                        app:backgroundTint="@color/green_600"
-                        android:textSize="42sp" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:weightSum="1"
+                        android:backgroundTint="@color/white"
+                        android:background="@drawable/bg_round_selected"
+                        >
 
-                    <com.google.android.material.button.MaterialButton
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5sp"
+                            android:background="@drawable/fulltable" />
 
-                        android:id="@+id/mainactivity_good_search"
+                        <TextView
+                            android:id="@+id/mainactivity_btn2"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="سفارش های فعال"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="30sp"
+                            app:rippleColor="@color/deep_purple_300"
+                            app:strokeColor="@color/grey_1000"
+                            app:strokeWidth="1dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_margin="10dp"
-                        android:text="@string/good_search"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="42sp"
-                        app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp"
-                        app:backgroundTint="@color/green_100"
-                        app:rippleColor="@color/deep_purple_300" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:weightSum="1"
+                        >
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mainactivity_open_factor"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_margin="10dp"
-                        android:clickable="true"
-                        app:backgroundTint="@color/white"
-                        app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp"
-                        android:focusable="true"
-                        android:textColor="@color/grey_1000"
-                        app:rippleColor="@color/deep_purple_300"
+                        <TextView
+                            android:id="@+id/mainactivity_btn3"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="تمامی سفارشات"
+                            android:background="@color/red_600"
+                            android:textSize="42sp"
+                            android:textColor="@color/white"
+                            app:rippleColor="@color/deep_purple_300"
+                            app:strokeColor="@color/grey_1000"
+                            app:strokeWidth="1dp" />
 
-                        android:text="@string/open_prefactor"
-                        android:textSize="42sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mainactivity_all_factor"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_margin="10dp"
-                        android:textColor="@color/grey_1000"
-                        app:rippleColor="@color/deep_purple_300"
-                        app:backgroundTint="@color/red_100"
-                        app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp"
-                        android:text="@string/all_prefactor"
-                        android:textSize="42sp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

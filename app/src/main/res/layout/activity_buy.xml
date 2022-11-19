@@ -24,15 +24,14 @@
             >
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/BuyActivity_toolbar"
+                android:id="@+id/DetailActivity_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
 
-
                 android:background="?attr/colorPrimary"
-                app:titleTextColor="@color/white"
-                app:title="@string/buy_tollbarname">
+
+                >
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -53,72 +52,37 @@
                 android:orientation="horizontal">
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/BuyActivity_total_delete"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
-                    android:layout_weight="0.33"
+                    android:layout_weight="0.3"
                     android:text="@string/buy_deletall"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:backgroundTint="@color/red_800"
                     app:strokeColor="@color/grey_1000"
-
                     app:strokeWidth="1dp" />
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.33"
+                    android:layout_weight="0.3"
                     android:orientation="vertical">
 
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:gravity="center"
-                        android:text="@string/buy_totalamount"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
-
-
-                    <TextView
-                        android:id="@+id/BuyActivity_total_amount_buy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000" />
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.33"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
 
                         android:gravity="center"
 
                         android:text="@string/buy_rows"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-
-                        android:textColor="@color/grey_1000"/>
+                        android:textStyle="bold" />
 
 
                     <TextView
@@ -127,11 +91,12 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -141,29 +106,27 @@
 
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:gravity="center"
-                        android:text="@string/buy_factorname"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
-
-
-                    <TextView
-                        android:id="@+id/BuyActivity_total_customer_buy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:layout_gravity="center"
-                        android:text="@string/buy_factorname"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
+                        android:text="@string/buy_totalamount"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/BuyActivity_total_amount_buy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -175,23 +138,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:gravity="center"
                         android:text="@string/buy_total"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
+                        android:textStyle="bold" />
 
 
                     <TextView
                         android:id="@+id/BuyActivity_total_price_buy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.5"
                         android:gravity="center"
-                        android:text="@string/buy_total"
                         android:textStyle="bold"
-                        android:textColor="@color/grey_1000"/>
+                        android:textSize="16sp"/>
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -200,6 +161,14 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+
+            <ListView
+                android:id="@+id/BuyActivity_Listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/BuyActivity_R1"
                 android:layout_width="match_parent"
@@ -209,11 +178,44 @@
 
                 />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/BuyActivity_prog"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                app:lottie_rawRes="@raw/loading"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_gravity="center"
+                />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/BuyActivity_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/BuyActivity_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="@color/white"
+
+            app:title="@string/buy_tollbarname">
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -224,7 +226,7 @@
         >
 
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/BuyActivity_test"
             android:layout_width="match_parent"
             android:text="@string/buy_sendfactor"
@@ -238,7 +240,7 @@
             app:backgroundTint="@color/green_700"
             app:strokeColor="@color/grey_1000"
             app:strokeWidth="1dp"
-            style="?attr/materialButtonOutlinedStyle" />
+            />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

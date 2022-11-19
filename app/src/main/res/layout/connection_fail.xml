@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_round_dark"
+    android:padding="2dp"
+    android:id="@+id/cd_fail"
+    android:layoutDirection="rtl">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/cd_fail"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="عدم اتصال به اینترنت"
+            android:textColor="@color/overlay_dark_90"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="اتصال شما به اینترنت برقرار نمی باشد."
+            android:textColor="@color/overlay_dark_60"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:paddingTop="5dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="برای استفاده از نرم افزار به اینترنت متصل شوید."
+            android:textColor="@color/overlay_dark_60"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="تنظیمات اینترنت"
+            android:textSize="16dp"
+            android:padding="3dp"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
+            app:backgroundTint="@color/green_400"
+              />
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

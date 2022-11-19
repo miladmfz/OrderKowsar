@@ -67,8 +67,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
         try {
             init();
-        } catch (Exception e) {
-            callMethod.ErrorLog(e.getMessage());
+        } catch (Exception ignored) {
         }
 
     }
@@ -117,7 +116,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
                 }
             });
 
@@ -320,7 +318,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
-                    callMethod.ErrorLog(t.getMessage());
+                     
                 }
             });
         });
