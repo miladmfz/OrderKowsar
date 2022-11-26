@@ -32,11 +32,15 @@ import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +74,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
     Button btn_test;
     TextView tv_test;
 
-
+    PersianCalendar persianCalendar = new PersianCalendar();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +160,23 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date currentTime = Calendar.getInstance().getTime();
+
+                Calendar calendar = Calendar.getInstance();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm" +
+                        "");
+                String strDate = sdf.format(calendar.getTime());
+                String strDate1 = sdf1.format(calendar.getTime());
+
+                Log.e("test__","0");
+                Log.e("test__",persianCalendar.getPersianShortDateTime());
+                Log.e("test__",persianCalendar.getTime().getTime()+"");
+                Log.e("test__",currentTime.getTime()+"");
+                Log.e("test__",strDate);
+                Log.e("test__",strDate1);
+
+
 
             }
         });

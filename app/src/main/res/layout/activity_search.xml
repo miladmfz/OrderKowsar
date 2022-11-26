@@ -37,11 +37,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/testbtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"

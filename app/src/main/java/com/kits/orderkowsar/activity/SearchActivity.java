@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -31,7 +30,6 @@ import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivitySearchBinding;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.GoodGroup;
-import com.kits.orderkowsar.model.GroupLayerOne;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -53,8 +51,6 @@ public class SearchActivity extends AppCompatActivity {
     String groupCode = "";
     int counter=0;
     Intent intent;
-    GroupLayerOne cm ;
-    ArrayList<GroupLayerOne> companies=new ArrayList<>();
 
     FragmentManager fragmentManager ;
     FragmentTransaction fragmentTransaction;
@@ -144,13 +140,6 @@ public class SearchActivity extends AppCompatActivity {
         Config();
         GetFirstData();
 
-        Button testbtn= findViewById(R.id.testbtn);
-
-        testbtn.setOnClickListener(v -> {
-            Log.e("test__0",fragmentManager.getBackStackEntryCount()+"");
-            Log.e("test__1",fragmentManager.getFragments().size()+"");
-
-        });
 
     }
 

@@ -6,19 +6,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.github.juanlabrador.badgecounter.BadgeCounter;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.adapters.PreFactorHeaderAdapter;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityPrefactorBinding;
 import com.kits.orderkowsar.model.DatabaseHelper;
@@ -37,7 +32,6 @@ public class PrefactorActivity extends AppCompatActivity {
 
     private ArrayList<PreFactor> preFactors = new ArrayList<>();
     private DatabaseHelper dbh;
-    PreFactorHeaderAdapter adapter;
     GridLayoutManager gridLayoutManager;
     CallMethod callMethod;
 

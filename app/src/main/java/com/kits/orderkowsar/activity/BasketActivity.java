@@ -55,9 +55,7 @@ public class BasketActivity extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
     int id=0;
     Intent intent;
-    ArrayList<Good> Goods_sum;
-    public ArrayList<String> Goods_shortage=new ArrayList<>();
-    GoodBasketAdapter adapter;
+
 
     @SuppressLint("SetTextI18n")
     @Override

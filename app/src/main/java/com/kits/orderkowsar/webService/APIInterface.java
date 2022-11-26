@@ -50,17 +50,14 @@ public interface APIInterface {
                                   @Field("GroupCode") String GroupCode);
 
 
-
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> VersionInfo(@Field("tag") String tag);
 
 
-
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> GetRstMiz(@Field("tag") String tag);
-
 
 
     @POST("index.php")
@@ -69,18 +66,45 @@ public interface APIInterface {
                                             @Field("GroupCode") String GroupCode);
 
 
-
-
-
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> GetImage(@Field("tag") String tag,
+                                    @Field("ObjectRef") String ObjectRef,
+                                    @Field("ClassName") String ClassName,
+                                    @Field("IX") String IX,
+                                    @Field("Scale") String Scale);
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call <RetrofitResponse> GetImage(@Field("tag") String tag,
-                                     @Field("ObjectRef") String ObjectRef,
-                                     @Field("ClassName") String ClassName,
-                                     @Field("IX") String IX,
-                                     @Field("Scale") String Scale);
+    Call<RetrofitResponse> OrderInfoInsert(@Field("tag") String tag,
+                                           @Field("Broker") String Broker,
+                                           @Field("Miz") String Miz,
+                                           @Field("PersonName") String PersonName,
+                                           @Field("Mobile") String Mobile,
+                                           @Field("InfoExplain") String InfoExplain,
+                                           @Field("Prepayed") String Prepayed,
+                                           @Field("ReserveStartTime") String ReserveStartTime,
+                                           @Field("ReserveEndTime") String ReserveEndTime,
+                                           @Field("Date") String Date,
+                                           @Field("State") String State,
+                                           @Field("InfoCode") String InfoCode
+    );
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderReserveList(@Field("tag") String tag,
+                                           @Field("MizRef") String Broker
+    );
+
+
+  
+
+
+
+
+
 
 
 

@@ -1,0 +1,53 @@
+package com.kits.orderkowsar.viewholder;
+
+import android.content.Context;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.application.CallMethod;
+import com.kits.orderkowsar.model.Column;
+import com.kits.orderkowsar.model.Good;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+
+public class ReserveViewHolder extends RecyclerView.ViewHolder {
+    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
+
+    public MaterialCardView rltv;
+    public TextView tv_reservestart;
+    public TextView tv_reserveend;
+    public TextView tv_reservebrokername;
+    public TextView tv_reservepersonname;
+    public TextView tv_reservemobileno;
+
+    public LinearLayout ll_table_reserve;
+
+
+    public ReserveViewHolder(View itemView) {
+        super(itemView);
+
+        rltv = itemView.findViewById(R.id.reserve_item);
+
+        tv_reservestart = itemView.findViewById(R.id.reserve_item_reservestart);
+        tv_reserveend = itemView.findViewById(R.id.reserve_item_reserveend);
+        tv_reservebrokername = itemView.findViewById(R.id.reserve_item_reservebrokername);
+        tv_reservepersonname = itemView.findViewById(R.id.reserve_item_reservepersonname);
+        tv_reservemobileno = itemView.findViewById(R.id.reserve_item_reservemobileno);
+
+    }
+
+
+    public void bind(ArrayList<Column> Columns, Good good, Context mContext, CallMethod callMethod) {
+
+
+    }
+
+
+}

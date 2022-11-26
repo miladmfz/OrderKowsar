@@ -17,6 +17,8 @@ public class RetrofitResponse {
     private RstMiz rstMiz;
     @SerializedName("Group")
     private GoodGroup group;
+    @SerializedName("BasketInfo")
+    private BasketInfo basketInfo;
 
     @SerializedName("Goods")
     private ArrayList<Good> Goods;
@@ -26,6 +28,8 @@ public class RetrofitResponse {
     private ArrayList<Activation> Activations;
     @SerializedName("RstMizs")
     private ArrayList<RstMiz> RstMizs;
+    @SerializedName("BasketInfos")
+    private ArrayList<BasketInfo> BasketInfos;
 
 
 
@@ -42,6 +46,22 @@ public class RetrofitResponse {
 
 
 
+
+    public ArrayList<BasketInfo> getBasketInfos() {
+        return BasketInfos;
+    }
+
+    public void setBasketInfos(ArrayList<BasketInfo> basketInfos) {
+        BasketInfos = basketInfos;
+    }
+
+    public BasketInfo getBasketInfo() {
+        return basketInfo;
+    }
+
+    public void setBasketInfo(BasketInfo basketInfo) {
+        this.basketInfo = basketInfo;
+    }
 
     public ArrayList<Good> getGoods() {
         return Goods;
