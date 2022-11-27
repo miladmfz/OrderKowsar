@@ -9,8 +9,6 @@ public class RetrofitResponse {
 
     @SerializedName("Good")
     private Good good;
-    @SerializedName("PreFactor")
-    private PreFactor preFactor;
     @SerializedName("Activation")
     private Activation activation;
     @SerializedName("RstMiz")
@@ -19,11 +17,11 @@ public class RetrofitResponse {
     private GoodGroup group;
     @SerializedName("BasketInfo")
     private BasketInfo basketInfo;
+    @SerializedName("ObjectType")
+    private ObjectType objectType;
 
     @SerializedName("Goods")
     private ArrayList<Good> Goods;
-    @SerializedName("PreFactors")
-    private ArrayList<PreFactor> PreFactors;
     @SerializedName("Activations")
     private ArrayList<Activation> Activations;
     @SerializedName("RstMizs")
@@ -35,6 +33,9 @@ public class RetrofitResponse {
 
     @SerializedName("Groups")
     private ArrayList<GoodGroup> Groups;
+
+    @SerializedName("ObjectTypes")
+    private ArrayList<ObjectType> ObjectTypes;
 
 
     @SerializedName("Text")
@@ -70,15 +71,6 @@ public class RetrofitResponse {
     public void setGoods(ArrayList<Good> goods) {
         Goods = goods;
     }
-
-    public ArrayList<PreFactor> getPreFactors() {
-        return PreFactors;
-    }
-
-    public void setPreFactors(ArrayList<PreFactor> preFactors) {
-        PreFactors = preFactors;
-    }
-
     public ArrayList<Activation> getActivations() {
         return Activations;
     }
@@ -101,14 +93,6 @@ public class RetrofitResponse {
 
     public void setGood(Good good) {
         this.good = good;
-    }
-
-    public PreFactor getPreFactor() {
-        return preFactor;
-    }
-
-    public void setPreFactor(PreFactor preFactor) {
-        this.preFactor = preFactor;
     }
 
     public Activation getActivation() {
@@ -165,5 +149,21 @@ public class RetrofitResponse {
 
     public void setGroups(ArrayList<GoodGroup> groups) {
         Groups = groups;
+    }
+
+    public ObjectType getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(ObjectType objectType) {
+        this.objectType = objectType;
+    }
+
+    public ArrayList<ObjectType> getObjectTypes() {
+        return ObjectTypes;
+    }
+
+    public void setObjectTypes(ArrayList<ObjectType> objectTypes) {
+        ObjectTypes = objectTypes;
     }
 }

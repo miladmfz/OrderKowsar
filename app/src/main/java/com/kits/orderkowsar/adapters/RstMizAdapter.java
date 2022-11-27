@@ -4,9 +4,6 @@ package com.kits.orderkowsar.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.activity.NavActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
 import com.kits.orderkowsar.model.BasketInfo;
-import com.kits.orderkowsar.model.Column;
 import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
-import com.kits.orderkowsar.model.RstMiz;
-import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.viewholder.RstMizViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -46,8 +38,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     ArrayList<BasketInfo> basketInfos;
     APIInterface apiInterface;
     Intent intent;
+    DatabaseHelper dbh;
+    String date;
 
-    private final ImageInfo image_info;
     Call<RetrofitResponse> call;
     Action action;
 
@@ -56,9 +49,21 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         this.mContext = context;
         this.basketInfos = BasketInfos;
         this.callMethod = new CallMethod(mContext);
-        this.image_info = new ImageInfo(mContext);
         this.action = new Action(mContext);
+        this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
+        call = apiInterface.GetTodeyFromServer("GetTodeyFromServer");
+
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                assert response.body() != null;
+                date=response.body().getText();
+            }
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            }
+        });
 
     }
 
@@ -112,21 +117,16 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 holder.btn_cleartable.setVisibility(View.GONE);
                 if (basketInfos.get(position).getIsReserved().equals("1")) {
                     holder.btn_cleartable.setVisibility(View.VISIBLE);
-                    // basketInfos.get(position).getReserve_AppBasketInfoCode();
-                } else {
-                    //new info
                 }
+
                 break;
             case "1":
             case "2":
                 holder.btn_cleartable.setVisibility(View.VISIBLE);
                 holder.ll_table_timebroker.setVisibility(View.VISIBLE);
-
                 holder.tv_time.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getTimeStart()));
                 holder.tv_brokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getBrokerName()));
 
-
-                // basketInfos.get(position).getAppBasketInfoCode();
                 break;
 
 
@@ -135,41 +135,149 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         }
 
 
-        holder.btn_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.btn_select.setOnClickListener(v -> {
+            if(basketInfos.get(position).getInfoState().equals("0")||basketInfos.get(position).getInfoState().equals("3")){
 
-            }
-        });
-
-        holder.btn_cleartable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (basketInfos.get(position).getIsReserved().equals("1")) {
-                    // clear basketInfos.get(position).getReserve_AppBasketInfoCode();
-                } else {
-                    // clear basketInfos.get(position).getAppBasketInfoCode();
+                if(basketInfos.get(position).getIsReserved().equals("1")){
+                    call = apiInterface.OrderInfoInsert(
+                            "OrderInfoInsert",
+                            dbh.ReadConfig("BrokerCode"),
+                            basketInfos.get(position).getRstmizCode(),
+                            basketInfos.get(position).getPersonName(),
+                            basketInfos.get(position).getMobileNo(),
+                            basketInfos.get(position).getExplain(),
+                            "0",
+                            basketInfos.get(position).getReserveStart(),
+                            basketInfos.get(position).getReserveEnd(),
+                            date,
+                            "1",
+                            basketInfos.get(position).getReserve_AppBasketInfoCode()
+                    );
+                    call.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                            assert response.body() != null;
+                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
+                                callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                            }else{
+                                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+                                intent = new Intent(mContext, SearchActivity.class);
+                                mContext.startActivity(intent);
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                        }
+                    });
+                }else
+                {
+                    Log.e("test",date);
+                    call = apiInterface.OrderInfoInsert(
+                            "OrderInfoInsert",
+                            dbh.ReadConfig("BrokerCode"),
+                            basketInfos.get(position).getRstmizCode(),
+                            "",
+                            "",
+                            "",
+                            "0",
+                            "",
+                            "",
+                            date,
+                            "1",
+                            "0"
+                    );
+                    call.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                            assert response.body() != null;
+                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
+                                callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                            }else{
+                                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+                                intent = new Intent(mContext, SearchActivity.class);
+                                mContext.startActivity(intent);
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                        }
+                    });
                 }
-            }
-        });
-        holder.btn_reserve.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                action.reserve_box_dialog(basketInfos.get(position));
+
+            }else{
+                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+                intent = new Intent(mContext, SearchActivity.class);
+                mContext.startActivity(intent);
             }
+
+
+
+
+
+
         });
 
-        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.btn_cleartable.setOnClickListener(v -> {
 
+            if (basketInfos.get(position).getIsReserved().equals("1")) {
+                call = apiInterface.OrderInfoInsert(
+                        "OrderInfoInsert",
+                        dbh.ReadConfig("BrokerCode"),
+                        basketInfos.get(position).getRstmizCode(),
+                        basketInfos.get(position).getPersonName(),
+                        basketInfos.get(position).getMobileNo(),
+                        basketInfos.get(position).getExplain(),
+                        "0",
+                        basketInfos.get(position).getReserveStart(),
+                        basketInfos.get(position).getReserveEnd(),
+                        date,
+                        "3",
+                        basketInfos.get(position).getReserve_AppBasketInfoCode()
+                );
+            } else {
+                call = apiInterface.OrderInfoInsert(
+                        "OrderInfoInsert",
+                        dbh.ReadConfig("BrokerCode"),
+                        basketInfos.get(position).getRstmizCode(),
+                        basketInfos.get(position).getPersonName(),
+                        basketInfos.get(position).getMobileNo(),
+                        basketInfos.get(position).getExplain(),
+                        "0",
+                        basketInfos.get(position).getReserveStart(),
+                        basketInfos.get(position).getReserveEnd(),
+                        date,
+                        "3",
+                        basketInfos.get(position).getAppBasketInfoCode()
+                );
             }
+
+            call.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                    assert response.body() != null;
+                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
+                        callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                    }else{
+                        callMethod.showToast("ثبت گردید");
+                    }
+                }
+                @Override
+                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                }
+            });
+
+            callMethod.showToast("btn_cleartable");
+
         });
+
+        holder.btn_reserve.setOnClickListener(v -> action.reserve_box_dialog(basketInfos.get(position)));
+
 
         holder.btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                callMethod.showToast("btn_print");
 
             }
         });
@@ -177,6 +285,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         holder.btn_changemiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                callMethod.showToast("btn_changemiz");
 
             }
         });
@@ -184,15 +293,11 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         holder.btn_explainedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callMethod.showToast("btn_explainedit");
             }
         });
 
 
-        holder.rltv.setOnClickListener(v -> {
-            intent = new Intent(mContext, SearchActivity.class);
-            mContext.startActivity(intent);
-        });
     }
 
     @Override

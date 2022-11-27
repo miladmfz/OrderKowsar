@@ -57,7 +57,7 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> GetRstMiz(@Field("tag") String tag);
+    Call<RetrofitResponse> GetRstMiz(@Field("tag") String tag, @Field("InfoState") String InfoState);
 
 
     @POST("index.php")
@@ -99,7 +99,32 @@ public interface APIInterface {
     );
 
 
-  
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> GetTodeyFromServer(@Field("tag") String tag
+    );
+
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> GetObjectTypeFromDbSetup(@Field("tag") String tag,
+                                                    @Field("ObjectType") String ObjectType
+    );
+
+
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderMizList(@Field("tag") String tag,
+                                                    @Field("InfoState") String InfoState,
+                                                    @Field("MizType") String MizType
+    );
+
+
+
 
 
 

@@ -2,7 +2,6 @@ package com.kits.orderkowsar.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,22 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.Fragment.GrpFragment;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.application.ImageInfo;
-import com.kits.orderkowsar.model.Column;
-import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;

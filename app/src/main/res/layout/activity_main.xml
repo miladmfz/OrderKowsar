@@ -76,10 +76,26 @@
                     android:orientation="vertical"
                     android:visibility="visible">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <TextView
+                        android:id="@+id/mainactivity_btn0"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="تمامی میز ها"
+                        android:background="@color/red_600"
+                        android:textSize="42sp"
+                        android:textColor="@color/white"
+                        app:rippleColor="@color/deep_purple_300"
+                        app:strokeColor="@color/grey_1000"
+                        app:strokeWidth="1dp" />
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
+                        android:layout_margin="5dp"
                         android:background="@drawable/bg_round_selected"
                         android:orientation="horizontal"
                         android:visibility="visible"
@@ -87,40 +103,70 @@
                         android:weightSum="1">
 
                         <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
                             android:background="@drawable/emptytable" />
 
                         <TextView
-                            android:id="@+id/mainactivity_btn1"
+                            android:id="@+id/mainactivity_btn3"
                             android:layout_width="match_parent"
-                            android:layout_height="120dp"
+                            android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="ثبت و سفارش"
+                            android:text="میزهای خالی"
                             android:textColor="@color/white"
                             android:textSize="42sp" />
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/bg_round_selected"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:weightSum="1"
-                        android:backgroundTint="@color/white"
-                        android:background="@drawable/bg_round_selected"
-                        >
+                        android:backgroundTint="@color/green_500"
+                        android:weightSum="1">
 
                         <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5sp"
+                            android:background="@drawable/inordertable" />
+
+                        <TextView
+                            android:id="@+id/mainactivity_btn1"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="در حال سفارش"
+                            android:textColor="@color/white"
+                            android:textSize="42sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/bg_round_selected"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:backgroundTint="@color/green_500"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
                             android:background="@drawable/fulltable" />
@@ -128,46 +174,48 @@
                         <TextView
                             android:id="@+id/mainactivity_btn2"
                             android:layout_width="match_parent"
-                            android:layout_height="120dp"
+                            android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="سفارش های فعال"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="30sp"
-                            app:rippleColor="@color/deep_purple_300"
-                            app:strokeColor="@color/grey_1000"
-                            app:strokeWidth="1dp" />
+                            android:text="چاپ شده"
+                            android:textColor="@color/white"
+                            android:textSize="42sp" />
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/bg_round_selected"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:weightSum="1"
-                        >
+                        android:backgroundTint="@color/green_500"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5sp"
+                            android:background="@drawable/reservetable" />
 
                         <TextView
-                            android:id="@+id/mainactivity_btn3"
+                            android:id="@+id/mainactivity_btn4"
                             android:layout_width="match_parent"
-                            android:layout_height="120dp"
+                            android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="تمامی سفارشات"
-                            android:background="@color/red_600"
-                            android:textSize="42sp"
+                            android:text="رزرو شده"
                             android:textColor="@color/white"
-                            app:rippleColor="@color/deep_purple_300"
-                            app:strokeColor="@color/grey_1000"
-                            app:strokeWidth="1dp" />
+                            android:textSize="42sp" />
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
+
+
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

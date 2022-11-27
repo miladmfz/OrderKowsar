@@ -1,33 +1,18 @@
 package com.kits.orderkowsar.viewholder;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.util.Base64;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.application.ImageInfo;
-import com.kits.orderkowsar.model.Column;
-import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.NumberFunctions;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -51,7 +36,6 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
 
     public Button btn_select;
     public Button btn_reserve;
-    public Button btn_edit;
     public Button btn_print;
     public Button btn_changemiz;
     public Button btn_explainedit;
@@ -81,7 +65,6 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
         tv_reservemobileno = itemView.findViewById(R.id.table_item_reservemobileno);
         btn_select = itemView.findViewById(R.id.table_item_select);
         btn_reserve = itemView.findViewById(R.id.table_item_reserve);
-        btn_edit = itemView.findViewById(R.id.table_item_edit);
         btn_print = itemView.findViewById(R.id.table_item_print);
         btn_changemiz = itemView.findViewById(R.id.table_item_changemiz);
         btn_explainedit = itemView.findViewById(R.id.table_item_explainedit);
@@ -92,11 +75,6 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
         ll_table_reserve = itemView.findViewById(R.id.table_item_ll_reserve);
     }
 
-
-    public void bind(ArrayList<Column> Columns, Good good, Context mContext, CallMethod callMethod) {
-
-
-    }
 
 
 }

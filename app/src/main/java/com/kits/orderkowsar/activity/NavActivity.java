@@ -67,9 +67,11 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
     TextView customer;
     TextView sumfac;
 
-    TextView btn1;
-    TextView btn2;
-    TextView btn3;
+    TextView Getmizlist_btn0;
+    TextView Getmizlist_btn1;
+    TextView Getmizlist_btn2;
+    TextView Getmizlist_btn3;
+    TextView Getmizlist_btn4;
 
     Button btn_test;
     TextView tv_test;
@@ -110,13 +112,14 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         tv_dbname = hView.findViewById(R.id.header_dbname);
         tv_brokercode = hView.findViewById(R.id.header_brokercode);
         btn_changedb = hView.findViewById(R.id.header_changedb);
-        btn_changedb = hView.findViewById(R.id.header_changedb);
 
 
 
-        btn1 = findViewById(R.id.mainactivity_btn1);
-        btn2 = findViewById(R.id.mainactivity_btn2);
-        btn3 = findViewById(R.id.mainactivity_btn3);
+         Getmizlist_btn0 = findViewById(R.id.mainactivity_btn0);
+         Getmizlist_btn1 = findViewById(R.id.mainactivity_btn1);
+         Getmizlist_btn2 = findViewById(R.id.mainactivity_btn2);
+         Getmizlist_btn3 = findViewById(R.id.mainactivity_btn3);
+         Getmizlist_btn4 = findViewById(R.id.mainactivity_btn4);
 
 
 
@@ -134,52 +137,46 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
 
 
-        btn1.setOnClickListener(v -> {
+        Getmizlist_btn0.setOnClickListener(v -> {
+
             intent = new Intent(NavActivity.this, TableActivity.class);
+            intent.putExtra("State", "0");
             startActivity(intent);
         });
 
-        btn2.setOnClickListener(v -> {
 
-            Call<RetrofitResponse> call7 = apiInterface.VersionInfo("VersionInfo");
-            call7.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
+        Getmizlist_btn1.setOnClickListener(v -> {
 
-                        Log.e("test","111");
-                    }
-                }
-                @Override
-                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
-                }
-            });
+            intent = new Intent(NavActivity.this, TableActivity.class);
+            intent.putExtra("State", "1");
+            startActivity(intent);
         });
 
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date currentTime = Calendar.getInstance().getTime();
 
-                Calendar calendar = Calendar.getInstance();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm" +
-                        "");
-                String strDate = sdf.format(calendar.getTime());
-                String strDate1 = sdf1.format(calendar.getTime());
+        Getmizlist_btn2.setOnClickListener(v -> {
 
-                Log.e("test__","0");
-                Log.e("test__",persianCalendar.getPersianShortDateTime());
-                Log.e("test__",persianCalendar.getTime().getTime()+"");
-                Log.e("test__",currentTime.getTime()+"");
-                Log.e("test__",strDate);
-                Log.e("test__",strDate1);
-
-
-
-            }
+            intent = new Intent(NavActivity.this, TableActivity.class);
+            intent.putExtra("State", "2");
+            startActivity(intent);
         });
+
+
+        Getmizlist_btn3.setOnClickListener(v -> {
+
+            intent = new Intent(NavActivity.this, TableActivity.class);
+            intent.putExtra("State", "3");
+            startActivity(intent);
+        });
+
+
+        Getmizlist_btn4.setOnClickListener(v -> {
+
+            intent = new Intent(NavActivity.this, TableActivity.class);
+            intent.putExtra("State", "4");
+            startActivity(intent);
+        });
+
+
 
 
         btn_changedb.setOnClickListener(v -> {

@@ -4,10 +4,6 @@ package com.kits.orderkowsar.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.activity.NavActivity;
-import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
 import com.kits.orderkowsar.model.BasketInfo;
-import com.kits.orderkowsar.model.Column;
-import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
-import com.kits.orderkowsar.model.RstMiz;
-import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.viewholder.ReserveViewHolder;
-import com.kits.orderkowsar.viewholder.RstMizViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
@@ -82,6 +68,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
             holder.tv_reservebrokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRes_BrokerName()));
             holder.tv_reservepersonname.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPersonName()));
             holder.tv_reservemobileno.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getMobileNo()));
+            holder.tv_reservedate.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getAppBasketInfoDate()));
 
     }
 

@@ -12,24 +12,22 @@ import com.kits.orderkowsar.R;
 import java.text.DecimalFormat;
 
 
-public class GoodItemViewHolder extends RecyclerView.ViewHolder {
+public class ObjectTypeViewHolder extends RecyclerView.ViewHolder {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
 
-    public ImageView img;
+
     public LinearLayout rltv;
 
     public TextView tv_name;
-    public TextView tv_price;
+
 
 
     boolean multi_select1;
 
-    public GoodItemViewHolder(View itemView) {
+    public ObjectTypeViewHolder(View itemView) {
         super(itemView);
-        img = itemView.findViewById(R.id.good_item_img);
-        tv_name = itemView.findViewById(R.id.good_item_name);
-        tv_price = itemView.findViewById(R.id.good_item_price);
-        rltv = itemView.findViewById(R.id.good_item);
+        tv_name = itemView.findViewById(R.id.objecttype_item_itype);
+        rltv = itemView.findViewById(R.id.objecttype_item);
     }
 
 

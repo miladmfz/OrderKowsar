@@ -27,7 +27,7 @@ public class BasketInfo {
     private String InfoState;
     @SerializedName("BrokerName")
     private String BrokerName;
-    @SerializedName("Reserve_AppBasketInfoCode")
+    @SerializedName("Res_AppBasketInfoCode")
     private String Reserve_AppBasketInfoCode;
     @SerializedName("ReserveStart")
     private String ReserveStart;
@@ -47,6 +47,14 @@ public class BasketInfo {
     private String BrokerRef;
     @SerializedName("RstMizRef")
     private String RstMizRef;
+    @SerializedName("AppBasketInfoDate")
+    private String AppBasketInfoDate;
+
+    @SerializedName("ErrCode")
+    private String ErrCode;
+
+    @SerializedName("ErrDesc")
+    private String ErrDesc;
 
     public String getRstmizCode() {
         if (RstmizCode == null) RstmizCode = "";
@@ -253,5 +261,30 @@ public class BasketInfo {
 
     public void setRstMizRef(String rstMizRef) {
         RstMizRef = rstMizRef;
+    }
+
+    public String getAppBasketInfoDate() {
+        if (AppBasketInfoDate == null) AppBasketInfoDate = "";
+        return AppBasketInfoDate;
+    }
+
+    public void setAppBasketInfoDate(String appBasketInfoDate) {
+        AppBasketInfoDate = appBasketInfoDate;
+    }
+
+    public String getErrCode() {
+        return ErrCode;
+    }
+
+    public void setErrCode(String errCode) {
+        ErrCode = errCode;
+    }
+
+    public String getErrDesc() {
+        return ErrDesc;
+    }
+
+    public void setErrDesc(String errDesc) {
+        ErrDesc = errDesc;
     }
 }

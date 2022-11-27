@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.model.Column;
 import com.kits.orderkowsar.model.Good;
 
 import java.text.DecimalFormat;
@@ -26,6 +25,7 @@ public class ReserveViewHolder extends RecyclerView.ViewHolder {
     public TextView tv_reservebrokername;
     public TextView tv_reservepersonname;
     public TextView tv_reservemobileno;
+    public TextView tv_reservedate;
 
     public LinearLayout ll_table_reserve;
 
@@ -40,14 +40,10 @@ public class ReserveViewHolder extends RecyclerView.ViewHolder {
         tv_reservebrokername = itemView.findViewById(R.id.reserve_item_reservebrokername);
         tv_reservepersonname = itemView.findViewById(R.id.reserve_item_reservepersonname);
         tv_reservemobileno = itemView.findViewById(R.id.reserve_item_reservemobileno);
+        tv_reservedate = itemView.findViewById(R.id.reserve_item_reservedate);
 
     }
 
-
-    public void bind(ArrayList<Column> Columns, Good good, Context mContext, CallMethod callMethod) {
-
-
-    }
 
 
 }

@@ -3,8 +3,6 @@ package com.kits.orderkowsar.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
-import com.kits.orderkowsar.model.Column;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
@@ -49,9 +45,8 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     APIInterface apiInterface;
     private final ImageInfo image_info;
     Call<RetrofitResponse> call2;
-    public boolean multi_select;
     Action action;
-    ArrayList<Column> Columns;
+
 
 
     public GoodAdapter(ArrayList<Good> goods, Context context) {

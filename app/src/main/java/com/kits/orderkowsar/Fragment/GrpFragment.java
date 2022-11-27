@@ -45,7 +45,7 @@ public class GrpFragment extends Fragment {
     String groupCode;
     FragmentManager fragmentManager ;
     FragmentTransaction fragmentTransaction;
-
+    Call<RetrofitResponse> call;
     public String getGroupCode() {
         return groupCode;
     }
@@ -124,7 +124,7 @@ public class GrpFragment extends Fragment {
 
     void allgood() {
 
-        Call<RetrofitResponse> call = apiInterface.GetGoodFromGroup(
+        call = apiInterface.GetGoodFromGroup(
                 "goodinfo",
                 groupCode
         );
@@ -148,5 +148,9 @@ public class GrpFragment extends Fragment {
         });
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        call.cancel();
+    }
 }

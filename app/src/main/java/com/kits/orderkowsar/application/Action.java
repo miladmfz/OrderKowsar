@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -31,6 +32,7 @@ import com.kits.orderkowsar.adapters.ReserveAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -39,6 +41,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
@@ -47,11 +50,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Action extends Activity implements DatePickerDialog.OnDateSetListener {
+public class Action extends Activity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
     public APIInterface apiInterface;
 
-    Context mContext;
+    private final Context mContext;
     CallMethod callMethod;
     DatabaseHelper dbh;
     Intent intent;
@@ -61,6 +64,11 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog;
+
+    TimePickerDialog picker;
+    TextView tv_reservestart;
+    TextView tv_reserveend;
+    TextView tv_date;
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -73,12 +81,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
 
 
-        String tmonthOfYear, tdayOfMonth;
-        tmonthOfYear = "0" + (persianCalendar.getPersianMonth() + 1);
-        tdayOfMonth = "0" + persianCalendar.getPersianDay();
-        date = persianCalendar.getPersianYear() + "/"
-                + tmonthOfYear.substring(tmonthOfYear.length() - 2) + "/"
-                + tdayOfMonth.substring(tdayOfMonth.length() - 2);
+
     }
 
 
@@ -91,90 +94,146 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         EditText ed_personname = dialog.findViewById(R.id.reserve_box_personname);
         EditText ed_mobileno = dialog.findViewById(R.id.reserve_box_mobileno);
         EditText ed_explain = dialog.findViewById(R.id.reserve_box_explain);
-        TextView tv_reservestart = dialog.findViewById(R.id.reserve_box_reservestart);
-        TextView tv_reserveend = dialog.findViewById(R.id.reserve_box_reserveend);
-        TextView tv_date = dialog.findViewById(R.id.reserve_box_date);
+        tv_reservestart = dialog.findViewById(R.id.reserve_box_reservestart);
+        tv_reserveend = dialog.findViewById(R.id.reserve_box_reserveend);
+        tv_date = dialog.findViewById(R.id.reserve_box_date);
 
         TextView tv_showrecycler = dialog.findViewById(R.id.reserve_box_show_recycler);
-        RecyclerView  recycler = dialog.findViewById(R.id.reserve_box_recycler);
+        RecyclerView recycler = dialog.findViewById(R.id.reserve_box_recycler);
 
         Button btn_reserve = dialog.findViewById(R.id.reserve_box_btn_send);
-        DisplayMetrics metrics = new DisplayMetrics();
 
-
-        tv_reservestart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog();
-                timePickerDialog.show(((Activity) mContext).getFragmentManager(), "Datepickerdialog");
-                callMethod.showToast("ed_reservestart");
-            }
-        });
-
-        tv_reserveend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                callMethod.showToast("ed_reserveend");
-
-            }
-        });
-
-        btn_reserve.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               callMethod.showToast("btn_reserve");
-
-            }
-        });
-
-        tv_date.setOnClickListener(v -> {
-
-
-            PersianCalendar persianCalendar1 = new PersianCalendar();
-            DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
-                    null,
-                    persianCalendar1.getPersianYear(),
-                    persianCalendar1.getPersianMonth(),
-                    persianCalendar1.getPersianDay()
-            );
-
-
-            datePickerDialog.show(((Activity) mContext).getFragmentManager(), "Datepickerdialog");
-
-        });
         call = apiInterface.OrderReserveList("OrderReserveList", basketInfo.getRstmizCode());
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
 
                 assert response.body() != null;
                 ReserveAdapter adapter = new ReserveAdapter(response.body().getBasketInfos(), mContext);
-                recycler.setLayoutManager(new GridLayoutManager(mContext,1));
+                recycler.setLayoutManager(new GridLayoutManager(mContext, 1));
                 recycler.setAdapter(adapter);
                 recycler.setItemAnimator(new DefaultItemAnimator());
                 recycler.setAdapter(adapter);
 
             }
+
             @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
 
             }
+        });
+
+
+        call = apiInterface.GetTodeyFromServer("GetTodeyFromServer");
+
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                assert response.body() != null;
+                date=response.body().getText();
+                tv_date.setText(NumberFunctions.PerisanNumber(date));
+            }
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            }
+        });
+
+        tv_reservestart.setOnClickListener(v -> {
+
+            final Calendar cldr = Calendar.getInstance();
+            int hour = cldr.get(Calendar.HOUR_OF_DAY);
+            int minutes = cldr.get(Calendar.MINUTE);
+            new TimePickerDialog();
+            picker = TimePickerDialog.newInstance((view, hourOfDay, minute) -> {
+                String thourOfDay, tminute, Time = "";
+                thourOfDay = "0" + hourOfDay;
+                tminute = "0" + minute;
+                Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
+                        + tminute.substring(tminute.length() - 2);
+                tv_reservestart.setText(NumberFunctions.PerisanNumber(Time));
+            }, hour, minutes, true);
+            picker.show(((Activity) mContext).getFragmentManager(), "Timepickerdialog");
+
+
+        });
+
+        tv_reserveend.setOnClickListener(v -> {
+
+
+            final Calendar cldr = Calendar.getInstance();
+            int hour = cldr.get(Calendar.HOUR_OF_DAY);
+            int minutes = cldr.get(Calendar.MINUTE);
+            new TimePickerDialog();
+            picker = TimePickerDialog.newInstance((view, hourOfDay, minute) -> {
+                String thourOfDay, tminute, Time = "";
+                thourOfDay = "0" + hourOfDay;
+                tminute = "0" + minute;
+                Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
+                        + tminute.substring(tminute.length() - 2);
+                tv_reserveend.setText(NumberFunctions.PerisanNumber(Time));
+            }, hour, minutes, true);
+            picker.show(((Activity) mContext).getFragmentManager(), "Timepickerdialog");
+
+
+        });
+
+        tv_date.setOnClickListener(v -> {
+
+            PersianCalendar persianCalendar1 = new PersianCalendar();
+            DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                    this,
+                    persianCalendar1.getPersianYear(),
+                    persianCalendar1.getPersianMonth(),
+                    persianCalendar1.getPersianDay()
+            );
+            datePickerDialog.show(((Activity) mContext).getFragmentManager(), "Datepickerdialog");
+
         });
 
         tv_showrecycler.setOnClickListener(v -> {
 
-            if(recycler.getVisibility()==View.GONE){
+            if (recycler.getVisibility() == View.GONE) {
                 recycler.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 recycler.setVisibility(View.GONE);
             }
         });
 
+
+        btn_reserve.setOnClickListener(v -> {
+
+            call = apiInterface.OrderInfoInsert(
+                    "OrderInfoInsert",
+                    dbh.ReadConfig("BrokerCode"),
+                    basketInfo.getRstmizCode(),
+                    NumberFunctions.EnglishNumber(ed_personname.getText().toString()),
+                    NumberFunctions.EnglishNumber(ed_mobileno.getText().toString()),
+                    NumberFunctions.EnglishNumber(ed_explain.getText().toString()),
+                    "0",
+                    NumberFunctions.EnglishNumber(tv_reservestart.getText().toString()),
+                    NumberFunctions.EnglishNumber(tv_reserveend.getText().toString()),
+                    NumberFunctions.EnglishNumber(tv_date.getText().toString()),
+                    "4",
+                    "0"
+            );
+
+            call.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                    assert response.body() != null;
+                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
+                        callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                    }else{
+                        dialog.dismiss();
+                        callMethod.showToast("ثبت گردید");
+                    }
+                }
+                @Override
+                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                }
+            });
+
+        });
 
         dialog.show();
 
@@ -345,6 +404,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
         String tmonthOfYear, tdayOfMonth;
         tmonthOfYear = "0" + (monthOfYear + 1);
         tdayOfMonth = "0" + dayOfMonth;
@@ -352,7 +412,19 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         date = year + "/"
                 + tmonthOfYear.substring(tmonthOfYear.length() - 2) + "/"
                 + tdayOfMonth.substring(tdayOfMonth.length() - 2);
+
+        tv_date.setText(NumberFunctions.PerisanNumber(date));
     }
 
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+    }
 }

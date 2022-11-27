@@ -126,9 +126,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         callMethod.EditString("AppBasketInfoCode", "0");
-        callMethod.EditString("PreFactorCode", "0");
-        callMethod.EditString("PreFactorGood", "0");
-        callMethod.EditString("BasketItemView", "0");
         requestPermission();
 
 
