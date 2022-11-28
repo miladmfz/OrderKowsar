@@ -158,7 +158,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void GetFirstData() {
 
-        Call<RetrofitResponse> call1 = apiInterface.info("kowsar_info", "AppOrder_DefaultGroupCode");
+        Call<RetrofitResponse> call1 = apiInterface.kowsar_info("kowsar_info", "AppOrder_DefaultGroupCode");
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {

@@ -40,7 +40,7 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> info(@Field("tag") String tag,
+    Call<RetrofitResponse> kowsar_info(@Field("tag") String tag,
                                 @Field("Where") String Where);
 
 
@@ -96,6 +96,16 @@ public interface APIInterface {
     @FormUrlEncoded
     Call<RetrofitResponse> OrderReserveList(@Field("tag") String tag,
                                            @Field("MizRef") String Broker
+    );
+
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> GetDistinctValues(@Field("tag") String tag,
+                                           @Field("TableName") String TableName,
+                                           @Field("FieldNames") String FieldNames,
+                                           @Field("WhereClause") String WhereClause
     );
 
 

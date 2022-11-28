@@ -23,8 +23,9 @@
             android:id="@+id/objecttype_item_itype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:textSize="26sp"
             android:textStyle="bold"
+            android:gravity="center"
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

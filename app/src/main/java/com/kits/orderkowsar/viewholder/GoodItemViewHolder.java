@@ -5,8 +5,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
 
 import java.text.DecimalFormat;
@@ -16,7 +18,7 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
 
     public ImageView img;
-    public LinearLayout rltv;
+    public MaterialCardView rltv;
 
     public TextView tv_name;
     public TextView tv_price;

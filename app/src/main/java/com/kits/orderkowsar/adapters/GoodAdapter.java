@@ -75,9 +75,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
 
         holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodFieldValue("GoodName")));
         holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getGoodFieldValue("MaxSellPrice")))));
-        Log.e("test_=",goods.get(position).getGoodFieldValue("GoodImageName"));
         if (!goods.get(position).getGoodFieldValue("GoodImageName").equals("")) {
-            Log.e("test=",position+"=exist");
             Glide.with(holder.img)
                     .asBitmap()
                     .load(R.drawable.white)
@@ -94,9 +92,8 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
                     .into(holder.img);
 
 
-        } else
-        {
-            Log.e("test=",goods.get(position).getGoodFieldValue("GoodCode"));
+        } 
+        else {
 
 
             Glide.with(holder.img)
@@ -120,12 +117,9 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
                     if (response.isSuccessful()) {
 
                         assert response.body() != null;
-                        Log.e("test=",position+"=retrofit");
                         if (!response.body().getText().equals("no_photo")) {
-                            Log.e("test=",position+"=result");
                             goods.get(position).setGoodImageName(response.body().getText());
                         } else {
-                            Log.e("test=",position+"=no_photo");
                             goods.get(position).setGoodImageName(String.valueOf(R.string.no_photo));
 
                         }
@@ -135,12 +129,19 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                    Log.e("test=",position+"=onFailure");
 
                 }
             });
         }
 
+        holder.rltv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                action.ReserveBoxDialog(goods.get(position));
+            }
+        });
+        
     }
 
     @Override

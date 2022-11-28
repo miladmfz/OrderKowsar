@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,16 +64,12 @@ public class TableActivity extends AppCompatActivity {
         Config();
 
         InternetConnection ic = new InternetConnection(this);
-        if (ic.has()) {
-            try {
-                init();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
+        if (!ic.has()) {
             intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
             finish();
+        }else {
+            init();
         }
     }
 
@@ -104,13 +101,14 @@ public class TableActivity extends AppCompatActivity {
     }
 
 
-    public void CallTable(int position) {
+    public void CallTable() {
+
         basketInfos.clear();
         progressBar.setVisibility(View.VISIBLE);
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("GetRstMiz", String.valueOf(position),mizType);
+        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State,mizType);
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
@@ -124,6 +122,7 @@ public class TableActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
                 progressBar.setVisibility(View.GONE);
                 callrecycler();
             }
@@ -131,7 +130,6 @@ public class TableActivity extends AppCompatActivity {
     }
 
     public void CallSpinner() {
-
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, InfoState_array);
@@ -142,7 +140,8 @@ public class TableActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CallTable(position);
+                State=String.valueOf(position);
+                CallTable();
 
             }
 
@@ -158,14 +157,14 @@ public class TableActivity extends AppCompatActivity {
     public void init() {
 
 
-
-        Call<RetrofitResponse> call1 = apiInterface.GetRstMiz("GetObjectTypeFromDbSetup", "RstMiz_MizType");
+        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "RstMiz_MizType");
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     objectTypes = response.body().getObjectTypes();
+                    Log.e("test",objectTypes.size()+"-1");
                     for (ObjectType objectType : objectTypes){
                         if(objectType.getIsDefault().equals("1")){
                             mizType=objectType.getaType();
@@ -185,8 +184,9 @@ public class TableActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                Log.e("test",t.getMessage());
                 progressBar.setVisibility(View.GONE);
-                callrecycler();
+
             }
         });
 
@@ -200,6 +200,7 @@ public class TableActivity extends AppCompatActivity {
 
 
     private void callrecycler() {
+        Log.e("test","6-");
         adapter = new RstMizAdapter(basketInfos, TableActivity.this);
 
         if (adapter.getItemCount() == 0) {
@@ -217,7 +218,7 @@ public class TableActivity extends AppCompatActivity {
     }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        init();
+        CallSpinner();
         super.onWindowFocusChanged(hasFocus);
     }
 

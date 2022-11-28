@@ -151,6 +151,9 @@ public class GrpFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        call.cancel();
+        if (call.isExecuted()){
+            call.cancel();
+        }
+
     }
 }

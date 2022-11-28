@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
@@ -16,13 +17,9 @@ public class ObjectTypeViewHolder extends RecyclerView.ViewHolder {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
 
 
-    public LinearLayout rltv;
-
+    public CardView rltv;
     public TextView tv_name;
 
-
-
-    boolean multi_select1;
 
     public ObjectTypeViewHolder(View itemView) {
         super(itemView);

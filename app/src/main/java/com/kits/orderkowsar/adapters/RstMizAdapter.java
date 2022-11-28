@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.SearchActivity;
+import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
@@ -101,9 +102,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         if (basketInfos.get(position).getRes_BrokerName().length() > 0) {
             holder.ll_table_reserve.setVisibility(View.VISIBLE);
             holder.tv_reservestart.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveStart()));
-            holder.tv_reserveend.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveEnd()));
             holder.tv_reservebrokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRes_BrokerName()));
-            holder.tv_reservepersonname.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPersonName()));
             holder.tv_reservemobileno.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getMobileNo()));
         } else {
             holder.ll_table_reserve.setVisibility(View.GONE);
@@ -149,7 +148,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                             "0",
                             basketInfos.get(position).getReserveStart(),
                             basketInfos.get(position).getReserveEnd(),
-                            date,
+                            basketInfos.get(position).getToday(),
                             "1",
                             basketInfos.get(position).getReserve_AppBasketInfoCode()
                     );
@@ -164,6 +163,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                 intent = new Intent(mContext, SearchActivity.class);
                                 mContext.startActivity(intent);
                             }
+                             
                         }
                         @Override
                         public void onFailure(Call<RetrofitResponse> call, Throwable t) {
@@ -171,7 +171,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     });
                 }else
                 {
-                    Log.e("test",date);
                     call = apiInterface.OrderInfoInsert(
                             "OrderInfoInsert",
                             dbh.ReadConfig("BrokerCode"),
@@ -182,7 +181,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                             "0",
                             "",
                             "",
-                            date,
+                            basketInfos.get(position).getToday(),
                             "1",
                             "0"
                     );
@@ -193,10 +192,13 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
                                 callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                             }else{
+
                                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                                 intent = new Intent(mContext, SearchActivity.class);
                                 mContext.startActivity(intent);
                             }
+                            
+                             
                         }
                         @Override
                         public void onFailure(Call<RetrofitResponse> call, Throwable t) {
@@ -259,8 +261,11 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                     }else{
+                        TableActivity activity = (TableActivity) mContext;
+                        activity.CallSpinner();
                         callMethod.showToast("ثبت گردید");
                     }
+                     
                 }
                 @Override
                 public void onFailure(Call<RetrofitResponse> call, Throwable t) {
@@ -271,7 +276,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
         });
 
-        holder.btn_reserve.setOnClickListener(v -> action.reserve_box_dialog(basketInfos.get(position)));
+        holder.btn_reserve.setOnClickListener(v -> action.ReserveBoxDialog(basketInfos.get(position)));
 
 
         holder.btn_print.setOnClickListener(new View.OnClickListener() {

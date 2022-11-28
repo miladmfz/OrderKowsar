@@ -10,11 +10,11 @@ public class Good implements Serializable {
 
 
     @SerializedName("GoodCode")
-    private Integer GoodCode;
+    private String GoodCode;
     @SerializedName("GoodMainCode")
-    private Integer GoodMainCode;
+    private String GoodMainCode;
     @SerializedName("GoodSubCode")
-    private Integer GoodSubCode;
+    private String GoodSubCode;
     @SerializedName("GoodName")
     private String GoodName;
     @SerializedName("ActiveStack")
@@ -32,11 +32,11 @@ public class Good implements Serializable {
     @SerializedName("GoodExplain6")
     private String GoodExplain6;
     @SerializedName("SellPriceType")
-    private Integer SellPriceType;
+    private String SellPriceType;
     @SerializedName("MaxSellPrice")
-    private Integer MaxSellPrice;
+    private String MaxSellPrice;
     @SerializedName("MinSellPrice")
-    private Integer MinSellPrice;
+    private String MinSellPrice;
     @SerializedName("SellPrice")
     private String SellPrice;
     @SerializedName("SellPrice1")
@@ -54,9 +54,9 @@ public class Good implements Serializable {
     @SerializedName("FirstBarCode")
     private String FirstBarCode;
     @SerializedName("GoodUnitRef")
-    private Integer GoodUnitRef;
+    private String GoodUnitRef;
     @SerializedName("DefaultUnitValue")
-    private Integer DefaultUnitValue;
+    private String DefaultUnitValue;
     @SerializedName("Isbn")
     private String Isbn;
     @SerializedName("GoodImageName")
@@ -125,25 +125,25 @@ public class Good implements Serializable {
     @SerializedName("Nvarchar20")
     private String Nvarchar20;
     @SerializedName("Int1")
-    private Integer Int1;
+    private String Int1;
     @SerializedName("Int2")
-    private Integer Int2;
+    private String Int2;
     @SerializedName("Int3")
-    private Integer Int3;
+    private String Int3;
     @SerializedName("Int4")
-    private Integer Int4;
+    private String Int4;
     @SerializedName("Int5")
-    private Integer Int5;
+    private String Int5;
     @SerializedName("Int6")
-    private Integer Int6;
+    private String Int6;
     @SerializedName("Int7")
-    private Integer Int7;
+    private String Int7;
     @SerializedName("Int8")
-    private Integer Int8;
+    private String Int8;
     @SerializedName("Int9")
-    private Integer Int9;
+    private String Int9;
     @SerializedName("Int10")
-    private Integer Int10;
+    private String Int10;
     @SerializedName("Float1")
     private Float Float1;
     @SerializedName("Float2")
@@ -199,27 +199,27 @@ public class Good implements Serializable {
     @SerializedName("Text5")
     private String Text5;
     @SerializedName("state")
-    private Integer state;
+    private String state;
     @SerializedName("StackAmount")
-    private Integer StackAmount;
+    private String StackAmount;
     @SerializedName("StackAmount1")
-    private Integer StackAmount1;
+    private String StackAmount1;
     @SerializedName("StackAmount2")
-    private Integer StackAmount2;
+    private String StackAmount2;
     @SerializedName("ReservedAmount")
-    private Integer ReservedAmount;
+    private String ReservedAmount;
     @SerializedName("FactorAmount")
-    private Integer FactorAmount;
+    private String FactorAmount;
     @SerializedName("Shortage")
-    private Integer Shortage;
+    private String Shortage;
     @SerializedName("Price")
-    private Integer Price;
+    private String Price;
     @SerializedName("ImageName")
     private String ImageName;
     @SerializedName("UnitName")
     private String UnitName;
     @SerializedName("PreFactorRowCode")
-    private Integer PreFactorRowCode;
+    private String PreFactorRowCode;
     @SerializedName("GoodType")
     private String GoodType;
     @SerializedName("Itam_Show")
@@ -228,7 +228,7 @@ public class Good implements Serializable {
     private String GroupsWhitoutCode;
 
     @SerializedName("KsrImageCode")
-    private Integer KsrImageCode;
+    private String KsrImageCode;
     @SerializedName("IsDefaultImage")
     private boolean IsDefaultImage;
 
@@ -321,7 +321,7 @@ public class Good implements Serializable {
                 break;
             case "maxsellprice":
                 if (MaxSellPrice == null) Res = "";
-                else Res = MaxSellPrice.toString();
+                else Res = MaxSellPrice.substring(0,MaxSellPrice.indexOf("."));
                 break;
             case "minsellprice":
                 if (MinSellPrice == null) Res = "";
@@ -733,16 +733,16 @@ public class Good implements Serializable {
                 GoodName = Res;
                 break;
             case "goodcode":
-                GoodCode = Integer.parseInt(Res);
+                GoodCode = Res;
                 break;
             case "ksrimagecode":
-                KsrImageCode = Integer.parseInt(Res);
+                KsrImageCode = Res;
                 break;
             case "goodmaincode":
-                GoodMainCode = Integer.parseInt(Res);
+                GoodMainCode = Res;
                 break;
             case "goodsubcode":
-                GoodSubCode = Integer.parseInt(Res);
+                GoodSubCode = Res;
                 break;
             case "activestack":
                 ActiveStack = Res;
@@ -766,13 +766,13 @@ public class Good implements Serializable {
                 GoodExplain6 = Res;
                 break;
             case "sellpricetype":
-                SellPriceType = Integer.parseInt(Res);
+                SellPriceType = Res;
                 break;
             case "maxsellprice":
-                MaxSellPrice = Integer.parseInt(Res);
+                MaxSellPrice = Res;
                 break;
             case "minsellprice":
-                MinSellPrice = Integer.parseInt(Res);
+                MinSellPrice = Res;
                 break;
             case "sellprice":
                 SellPrice = Res;
@@ -799,10 +799,10 @@ public class Good implements Serializable {
                 FirstBarCode = Res;
                 break;
             case "goodunitref":
-                GoodUnitRef = Integer.parseInt(Res);
+                GoodUnitRef = Res;
                 break;
             case "defaultunitvalue":
-                DefaultUnitValue = Integer.parseInt(Res);
+                DefaultUnitValue = Res;
                 break;
             case "isbn":
                 Isbn = Res;
@@ -898,34 +898,34 @@ public class Good implements Serializable {
                 Nvarchar20 = Res;
                 break;
             case "int1":
-                Int1 = Integer.parseInt(Res);
+                Int1 = Res;
                 break;
             case "int2":
-                Int2 = Integer.parseInt(Res);
+                Int2 = Res;
                 break;
             case "int3":
-                Int3 = Integer.parseInt(Res);
+                Int3 = Res;
                 break;
             case "int4":
-                Int4 = Integer.parseInt(Res);
+                Int4 = Res;
                 break;
             case "int5":
-                Int5 = Integer.parseInt(Res);
+                Int5 = Res;
                 break;
             case "int6":
-                Int6 = Integer.parseInt(Res);
+                Int6 = Res;
                 break;
             case "int7":
-                Int7 = Integer.parseInt(Res);
+                Int7 = Res;
                 break;
             case "int8":
-                Int8 = Integer.parseInt(Res);
+                Int8 = Res;
                 break;
             case "int9":
-                Int9 = Integer.parseInt(Res);
+                Int9 = Res;
                 break;
             case "int10":
-                Int10 = Integer.parseInt(Res);
+                Int10 = Res;
                 break;
             case "float1":
                 Float1 = Float.parseFloat(Res);
@@ -1009,28 +1009,28 @@ public class Good implements Serializable {
                 Text5 = Res;
                 break;
             case "state":
-                state = Integer.parseInt(Res);
+                state = Res;
                 break;
             case "stackamount":
-                StackAmount = Integer.parseInt(Res);
+                StackAmount = Res;
                 break;
             case "stackamount1":
-                StackAmount1 = Integer.parseInt(Res);
+                StackAmount1 = Res;
                 break;
             case "stackamount2":
-                StackAmount2 = Integer.parseInt(Res);
+                StackAmount2 = Res;
                 break;
             case "reservedamount":
-                ReservedAmount = Integer.parseInt(Res);
+                ReservedAmount = Res;
                 break;
             case "factoramount":
-                FactorAmount = Integer.parseInt(Res);
+                FactorAmount = Res;
                 break;
             case "shortage":
-                Shortage = Integer.parseInt(Res);
+                Shortage = Res;
                 break;
             case "price":
-                Price = Integer.parseInt(Res);
+                Price = Res;
                 break;
             case "imagename":
                 ImageName = Res;
@@ -1039,7 +1039,7 @@ public class Good implements Serializable {
                 UnitName = Res;
                 break;
             case "prefactorrowcode":
-                PreFactorRowCode = Integer.parseInt(Res);
+                PreFactorRowCode = Res;
                 break;
             case "goodtype":
                 GoodType = Res;

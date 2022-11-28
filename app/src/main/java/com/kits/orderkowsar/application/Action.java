@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,11 +31,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.NavActivity;
+import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.adapters.ReserveAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
+import com.kits.orderkowsar.model.DistinctValue;
+import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
+import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -43,6 +50,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import java.sql.Time;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import retrofit2.Call;
@@ -64,11 +72,15 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog;
-
+    Calendar cldr ;
     TimePickerDialog picker;
     TextView tv_reservestart;
     TextView tv_reserveend;
     TextView tv_date;
+    int ehour=0;
+    int eminutes=0;
+    ArrayList<DistinctValue> values= new ArrayList<>();
+    ArrayList<String> values_array = new ArrayList<>();
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -85,7 +97,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-    public void reserve_box_dialog(BasketInfo basketInfo) {
+    public void ReserveBoxDialog(BasketInfo basketInfo) {
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -140,7 +152,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
         tv_reservestart.setOnClickListener(v -> {
 
-            final Calendar cldr = Calendar.getInstance();
+            cldr = Calendar.getInstance();
             int hour = cldr.get(Calendar.HOUR_OF_DAY);
             int minutes = cldr.get(Calendar.MINUTE);
             new TimePickerDialog();
@@ -150,9 +162,52 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 tminute = "0" + minute;
                 Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
                         + tminute.substring(tminute.length() - 2);
+
                 tv_reservestart.setText(NumberFunctions.PerisanNumber(Time));
+                call = apiInterface.kowsar_info(
+                        "kowsar_info",
+                        "AppOrder_ValidReserveTime"
+                );
+                call.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                        String ehourOfDay = "", eminute= "", eTime = "";
+                        if(minute+Integer.parseInt(response.body().getText())>60){
+                            eminute=String.valueOf(minute+Integer.parseInt(response.body().getText())-60);
+                            if((hourOfDay+1)>23){
+                                ehourOfDay=String.valueOf(hourOfDay);
+                                eminute= "59";
+                            }else{
+                                ehourOfDay=String.valueOf(hourOfDay+1);
+                            }
+                        }else{
+                            eminute=String.valueOf(minute+Integer.parseInt(response.body().getText()));
+                        }
+
+                        ehour=Integer.parseInt(ehourOfDay);
+                        eminutes=Integer.parseInt(eminute);
+
+                        ehourOfDay = "0" + ehourOfDay;
+                        eminute = "0" + eminute;
+                        eTime = ehourOfDay.substring(ehourOfDay.length() - 2) + ":"
+                                + eminute.substring(eminute.length() - 2);
+
+                        tv_reserveend.setText(NumberFunctions.PerisanNumber(eTime));
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+
+                    }
+                });
+
+
+
             }, hour, minutes, true);
             picker.show(((Activity) mContext).getFragmentManager(), "Timepickerdialog");
+
 
 
         });
@@ -160,18 +215,18 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         tv_reserveend.setOnClickListener(v -> {
 
 
-            final Calendar cldr = Calendar.getInstance();
-            int hour = cldr.get(Calendar.HOUR_OF_DAY);
-            int minutes = cldr.get(Calendar.MINUTE);
             new TimePickerDialog();
-            picker = TimePickerDialog.newInstance((view, hourOfDay, minute) -> {
+            picker = TimePickerDialog.newInstance((view, ehour, eminutes) -> {
                 String thourOfDay, tminute, Time = "";
-                thourOfDay = "0" + hourOfDay;
-                tminute = "0" + minute;
+                thourOfDay = "0" + ehour;
+                tminute = "0" + eminutes;
                 Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
                         + tminute.substring(tminute.length() - 2);
                 tv_reserveend.setText(NumberFunctions.PerisanNumber(Time));
-            }, hour, minutes, true);
+
+
+
+            }, ehour, eminutes, true);
             picker.show(((Activity) mContext).getFragmentManager(), "Timepickerdialog");
 
 
@@ -225,6 +280,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                     }else{
                         dialog.dismiss();
+                        TableActivity activity = (TableActivity) mContext;
+                        activity.CallSpinner();
                         callMethod.showToast("ثبت گردید");
                     }
                 }
@@ -239,98 +296,78 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     }
 
-    public void OrderInfoInsertNew(BasketInfo basketInfo) {
 
-        call = apiInterface.OrderInfoInsert(
-                "Insertbasket",
-                dbh.ReadConfig("BrokerCode"),
-                basketInfo.getRstmizCode(),
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                date,
-                "0",
-                "0"
-        );
 
+    public void ReserveBoxDialog(Good good) {
+
+        dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.order_box_good_);
+
+        TextView ed_orderbox_goodname = dialog.findViewById(R.id.orderboxgood_goodname);
+        EditText ed_orderbox_amount = dialog.findViewById(R.id.orderboxgood_amount);
+        EditText ed_orderbox_explain = dialog.findViewById(R.id.orderboxgood_explain);
+        Spinner spinner_orderbox = dialog.findViewById(R.id.orderboxgood_spinnerexplain);
+
+
+        Button btn_orderbox = dialog.findViewById(R.id.orderboxgood_btn);
+
+        ed_orderbox_goodname.setText(good.getGoodFieldValue("GoodName"));
+
+        call = apiInterface.GetDistinctValues("GetDistinctValues","AppBasket" ,"Explain","");
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+
+                assert response.body() != null;
+                values_array.clear();
+                values=response.body().getValues();
+                for(DistinctValue value:values){
+                    Log.e("test",value.getValue());
+                    values_array.add(NumberFunctions.PerisanNumber(value.getValue()));
+                }
+
+                ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(mContext,
+                        android.R.layout.simple_spinner_item, values_array);
+                spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_orderbox.setAdapter(spinner_adapter);
+                spinner_orderbox.setSelection(0);
+
+                spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        ed_orderbox_explain.setText(values_array.get(position));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
 
             }
 
             @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
 
             }
         });
 
-    }
-
-
-    public void OrderInfoInsertFactor(BasketInfo basketInfo) {
-
-        call = apiInterface.OrderInfoInsert(
-                "Insertbasket",
-                dbh.ReadConfig("BrokerCode"),
-                basketInfo.getRstmizCode(),
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "1",
-                basketInfo.getAppBasketInfoCode()
-        );
-        call.enqueue(new Callback<RetrofitResponse>() {
+        btn_orderbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onClick(View v) {
 
-            }
-
-            @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
-
+                NumberFunctions.EnglishNumber(ed_orderbox_amount.getText().toString());
+                NumberFunctions.EnglishNumber(ed_orderbox_explain.getText().toString());
+                callMethod.showToast("btn_orderbox");
             }
         });
+
+        dialog.show();
+
+
     }
-
-
-    public void OrderInfoInsertReserve() {
-
-        call = apiInterface.OrderInfoInsert(
-                "Insertbasket",
-                dbh.ReadConfig("BrokerCode"),
-                "",
-                "PersonName",
-                "mobile",
-                "InfoExplain",
-                "PrePayed",
-                "rstime",
-                "retime",
-                "",
-                "2",
-                "0"
-        );
-        call.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
-
-            }
-        });
-    }
-
-
     public void lottiereceipt() {
 
         Dialog dialog1 = new Dialog(mContext);

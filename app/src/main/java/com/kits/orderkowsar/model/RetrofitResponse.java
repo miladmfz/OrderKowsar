@@ -29,6 +29,9 @@ public class RetrofitResponse {
     @SerializedName("BasketInfos")
     private ArrayList<BasketInfo> BasketInfos;
 
+    @SerializedName("Values")
+    private ArrayList<DistinctValue> Values;
+
 
 
     @SerializedName("Groups")
@@ -165,5 +168,13 @@ public class RetrofitResponse {
 
     public void setObjectTypes(ArrayList<ObjectType> objectTypes) {
         ObjectTypes = objectTypes;
+    }
+
+    public ArrayList<DistinctValue> getValues() {
+        return Values;
+    }
+
+    public void setValues(ArrayList<DistinctValue> values) {
+        Values = values;
     }
 }

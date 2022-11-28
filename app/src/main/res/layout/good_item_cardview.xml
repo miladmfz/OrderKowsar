@@ -11,11 +11,11 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:strokeColor="@color/grey_1000"
+    android:id="@+id/good_item"
     app:strokeWidth="1dp">
 
 
     <LinearLayout
-        android:id="@+id/good_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

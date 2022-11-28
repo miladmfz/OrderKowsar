@@ -29,9 +29,7 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
     public TextView tv_brokername;
 
     public TextView tv_reservestart;
-    public TextView tv_reserveend;
     public TextView tv_reservebrokername;
-    public TextView tv_reservepersonname;
     public TextView tv_reservemobileno;
 
     public Button btn_select;
@@ -59,9 +57,7 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
         tv_time = itemView.findViewById(R.id.table_item_time);
         tv_brokername = itemView.findViewById(R.id.table_item_brokername);
         tv_reservestart = itemView.findViewById(R.id.table_item_reservestart);
-        tv_reserveend = itemView.findViewById(R.id.table_item_reserveend);
         tv_reservebrokername = itemView.findViewById(R.id.table_item_reservebrokername);
-        tv_reservepersonname = itemView.findViewById(R.id.table_item_reservepersonname);
         tv_reservemobileno = itemView.findViewById(R.id.table_item_reservemobileno);
         btn_select = itemView.findViewById(R.id.table_item_select);
         btn_reserve = itemView.findViewById(R.id.table_item_reserve);

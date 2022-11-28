@@ -56,6 +56,9 @@ public class BasketInfo {
     @SerializedName("ErrDesc")
     private String ErrDesc;
 
+    @SerializedName("Today")
+    private String Today;
+
     public String getRstmizCode() {
         if (RstmizCode == null) RstmizCode = "";
         return RstmizCode;
@@ -286,5 +289,13 @@ public class BasketInfo {
 
     public void setErrDesc(String errDesc) {
         ErrDesc = errDesc;
+    }
+
+    public String getToday() {
+        return Today;
+    }
+
+    public void setToday(String today) {
+        Today = today;
     }
 }
