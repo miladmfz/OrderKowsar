@@ -64,42 +64,6 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     public void onBindViewHolder(@NonNull final GoodBasketViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-        holder.bind(goods.get(position));
-        holder.Action(goods.get(position), mContext, dbh, callMethod, action, image_info);
-
-
-        if (!image_info.Image_exist(goods.get(position).getGoodFieldValue("KsrImageCode"))) {
-            Call<RetrofitResponse> call2 = apiInterface.GetImageFromKsr(
-                    "GetImageFromKsr",
-                    goods.get(position).getGoodFieldValue("KsrImageCode")
-            );
-            call2.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<RetrofitResponse> call2, @NonNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        if (!response.body().getText().equals("no_photo")) {
-                            image_info.SaveImage(
-                                    BitmapFactory.decodeByteArray(
-                                            Base64.decode(response.body().getText(), Base64.DEFAULT),
-                                            0,
-                                            Base64.decode(response.body().getText(), Base64.DEFAULT).length
-                                    ),
-                                    goods.get(position).getGoodFieldValue("KsrImageCode")
-                            );
-                            notifyItemChanged(position);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-                     
-
-                }
-            });
-
-        }
 
 
     }

@@ -188,6 +188,25 @@
                 app:lottie_loop="true"
                 android:layout_gravity="center"
                 />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/BuyActivity_lottie"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:visibility="gone"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/notfind" />
+
+            <TextView
+                android:id="@+id/BuyActivity_tvstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#03a9f4"
+                android:textSize="40sp"/>
+
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

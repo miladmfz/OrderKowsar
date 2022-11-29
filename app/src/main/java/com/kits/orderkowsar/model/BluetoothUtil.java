@@ -17,8 +17,8 @@ public class BluetoothUtil {
             if (!bluetoothAdapter.isEnabled()) {
                 bluetoothAdapter.enable();
             }
-        }catch (Exception e){
-            Log.e("test_ ",e.getMessage());
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

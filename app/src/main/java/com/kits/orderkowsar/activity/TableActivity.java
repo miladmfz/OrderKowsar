@@ -5,9 +5,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -164,7 +167,6 @@ public class TableActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     objectTypes = response.body().getObjectTypes();
-                    Log.e("test",objectTypes.size()+"-1");
                     for (ObjectType objectType : objectTypes){
                         if(objectType.getIsDefault().equals("1")){
                             mizType=objectType.getaType();
@@ -184,7 +186,6 @@ public class TableActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                Log.e("test",t.getMessage());
                 progressBar.setVisibility(View.GONE);
 
             }
@@ -200,7 +201,6 @@ public class TableActivity extends AppCompatActivity {
 
 
     private void callrecycler() {
-        Log.e("test","6-");
         adapter = new RstMizAdapter(basketInfos, TableActivity.this);
 
         if (adapter.getItemCount() == 0) {
@@ -216,10 +216,12 @@ public class TableActivity extends AppCompatActivity {
         recyclerView_Table.setItemAnimator(new DefaultItemAnimator());
 
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         CallSpinner();
         super.onWindowFocusChanged(hasFocus);
     }
+
 
 }

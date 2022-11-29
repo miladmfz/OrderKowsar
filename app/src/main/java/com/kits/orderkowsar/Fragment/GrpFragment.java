@@ -125,7 +125,7 @@ public class GrpFragment extends Fragment {
     void allgood() {
 
         call = apiInterface.GetGoodFromGroup(
-                "goodinfo",
+                "GetOrderGoodList",
                 groupCode
         );
         call.enqueue(new Callback<RetrofitResponse>() {

@@ -73,9 +73,9 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final GoodItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodFieldValue("GoodName")));
-        holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getGoodFieldValue("MaxSellPrice")))));
-        if (!goods.get(position).getGoodFieldValue("GoodImageName").equals("")) {
+        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
+        holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
+        if (!goods.get(position).getGoodImageName().equals("")) {
             Glide.with(holder.img)
                     .asBitmap()
                     .load(R.drawable.white)
@@ -86,7 +86,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
 
             Glide.with(holder.img)
                     .asBitmap()
-                    .load(Base64.decode(goods.get(position).getGoodFieldValue("GoodImageName"), Base64.DEFAULT))
+                    .load(Base64.decode(goods.get(position).getGoodImageName(), Base64.DEFAULT))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(holder.img);
@@ -105,7 +105,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
             holder.img.setVisibility(View.VISIBLE);
             call2 = apiInterface.GetImage(
                     "getImage",
-                    goods.get(position).getGoodFieldValue("GoodCode"),
+                    goods.get(position).getGoodCode(),
                     "TGood",
                     "0",
                     "200"
@@ -134,13 +134,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
             });
         }
 
-        holder.rltv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                action.ReserveBoxDialog(goods.get(position));
-            }
-        });
+        holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position)));
         
     }
 

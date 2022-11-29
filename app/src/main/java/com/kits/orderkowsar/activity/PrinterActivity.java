@@ -386,7 +386,6 @@ public class PrinterActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         assert data != null;
         PreFac = data.getString("PreFac");
-        Log.e("test_PreFac", PreFac);
     }
 
     private void updateScreenStatus(View viewToShow) {

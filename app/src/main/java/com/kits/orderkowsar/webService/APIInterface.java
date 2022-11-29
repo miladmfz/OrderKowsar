@@ -41,7 +41,7 @@ public interface APIInterface {
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> kowsar_info(@Field("tag") String tag,
-                                @Field("Where") String Where);
+                                       @Field("Where") String Where);
 
 
     @POST("index.php")
@@ -95,26 +95,23 @@ public interface APIInterface {
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> OrderReserveList(@Field("tag") String tag,
-                                           @Field("MizRef") String Broker
+                                            @Field("MizRef") String Broker
     );
-
 
 
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> GetDistinctValues(@Field("tag") String tag,
-                                           @Field("TableName") String TableName,
-                                           @Field("FieldNames") String FieldNames,
-                                           @Field("WhereClause") String WhereClause
+                                             @Field("TableName") String TableName,
+                                             @Field("FieldNames") String FieldNames,
+                                             @Field("WhereClause") String WhereClause
     );
-
 
 
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> GetTodeyFromServer(@Field("tag") String tag
     );
-
 
 
     @POST("index.php")
@@ -124,30 +121,41 @@ public interface APIInterface {
     );
 
 
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderMizList(@Field("tag") String tag,
+                                        @Field("InfoState") String InfoState,
+                                        @Field("MizType") String MizType
+    );
 
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> OrderMizList(@Field("tag") String tag,
-                                                    @Field("InfoState") String InfoState,
-                                                    @Field("MizType") String MizType
+    Call<RetrofitResponse> OrderRowInsert(@Field("tag") String tag,
+                                          @Field("GoodRef") String GoodRef,
+                                          @Field("FacAmount") String FacAmount,
+                                          @Field("Price") String Price,
+                                          @Field("bUnitRef") String bUnitRef,
+                                          @Field("bRatio") String bRatio,
+                                          @Field("Explain") String Explain,
+                                          @Field("InfoRef") String InfoRef,
+                                          @Field("RowCode") String RowCode
     );
 
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> GetbasketSum(@Field("tag") String tag,
+                                        @Field("AppBasketInfoRef") String AppBasketInfoRef);
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderGet(@Field("tag") String tag,
+                                        @Field("AppBasketInfoRef") String AppBasketInfoRef,
+                                        @Field("AppType") String AppType
+                                        );
 
 
 

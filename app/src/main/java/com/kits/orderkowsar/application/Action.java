@@ -31,7 +31,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.NavActivity;
+import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
+import com.kits.orderkowsar.adapters.GoodAdapter;
+import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
 import com.kits.orderkowsar.adapters.ReserveAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.model.BasketInfo;
@@ -47,6 +50,8 @@ import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.time.RadialPickerLayout;
 import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Time;
 import java.text.DecimalFormat;
@@ -67,20 +72,21 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     DatabaseHelper dbh;
     Intent intent;
     Integer il;
-    String url;
     public Call<RetrofitResponse> call;
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog;
-    Calendar cldr ;
+    Calendar cldr;
     TimePickerDialog picker;
     TextView tv_reservestart;
     TextView tv_reserveend;
     TextView tv_date;
-    int ehour=0;
-    int eminutes=0;
-    ArrayList<DistinctValue> values= new ArrayList<>();
+    int ehour = 0;
+    int eminutes = 0;
+    ArrayList<DistinctValue> values = new ArrayList<>();
     ArrayList<String> values_array = new ArrayList<>();
+    ArrayList<Good> Goods;
+    ArrayList<Good> good_box_items = new ArrayList<>();
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -90,8 +96,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         this.persianCalendar = new PersianCalendar();
         this.dialog = new Dialog(mContext);
-
-
 
 
     }
@@ -142,9 +146,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             @Override
             public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
                 assert response.body() != null;
-                date=response.body().getText();
+                date = response.body().getText();
                 tv_date.setText(NumberFunctions.PerisanNumber(date));
             }
+
             @Override
             public void onFailure(Call<RetrofitResponse> call, Throwable t) {
             }
@@ -171,21 +176,21 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
                     public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
-                        String ehourOfDay = "", eminute= "", eTime = "";
-                        if(minute+Integer.parseInt(response.body().getText())>60){
-                            eminute=String.valueOf(minute+Integer.parseInt(response.body().getText())-60);
-                            if((hourOfDay+1)>23){
-                                ehourOfDay=String.valueOf(hourOfDay);
-                                eminute= "59";
-                            }else{
-                                ehourOfDay=String.valueOf(hourOfDay+1);
+                        String ehourOfDay = "", eminute = "", eTime = "";
+                        if (minute + Integer.parseInt(response.body().getText()) > 60) {
+                            eminute = String.valueOf(minute + Integer.parseInt(response.body().getText()) - 60);
+                            if ((hourOfDay + 1) > 23) {
+                                ehourOfDay = String.valueOf(hourOfDay);
+                                eminute = "59";
+                            } else {
+                                ehourOfDay = String.valueOf(hourOfDay + 1);
                             }
-                        }else{
-                            eminute=String.valueOf(minute+Integer.parseInt(response.body().getText()));
+                        } else {
+                            eminute = String.valueOf(minute + Integer.parseInt(response.body().getText()));
                         }
 
-                        ehour=Integer.parseInt(ehourOfDay);
-                        eminutes=Integer.parseInt(eminute);
+                        ehour = Integer.parseInt(ehourOfDay);
+                        eminutes = Integer.parseInt(eminute);
 
                         ehourOfDay = "0" + ehourOfDay;
                         eminute = "0" + eminute;
@@ -204,10 +209,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 });
 
 
-
             }, hour, minutes, true);
             picker.show(((Activity) mContext).getFragmentManager(), "Timepickerdialog");
-
 
 
         });
@@ -223,7 +226,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
                         + tminute.substring(tminute.length() - 2);
                 tv_reserveend.setText(NumberFunctions.PerisanNumber(Time));
-
 
 
             }, ehour, eminutes, true);
@@ -276,15 +278,16 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 @Override
                 public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
                     assert response.body() != null;
-                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
+                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
-                    }else{
+                    } else {
                         dialog.dismiss();
                         TableActivity activity = (TableActivity) mContext;
                         activity.CallSpinner();
                         callMethod.showToast("ثبت گردید");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<RetrofitResponse> call, Throwable t) {
                 }
@@ -297,33 +300,32 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-
-    public void ReserveBoxDialog(Good good) {
+    public void GoodBoxDialog(Good good) {
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.order_box_good_);
+        dialog.setContentView(R.layout.order_box_good);
 
         TextView ed_orderbox_goodname = dialog.findViewById(R.id.orderboxgood_goodname);
         EditText ed_orderbox_amount = dialog.findViewById(R.id.orderboxgood_amount);
         EditText ed_orderbox_explain = dialog.findViewById(R.id.orderboxgood_explain);
         Spinner spinner_orderbox = dialog.findViewById(R.id.orderboxgood_spinnerexplain);
+        RecyclerView rc_orderbox = dialog.findViewById(R.id.orderboxgood_rc);
 
 
         Button btn_orderbox = dialog.findViewById(R.id.orderboxgood_btn);
 
-        ed_orderbox_goodname.setText(good.getGoodFieldValue("GoodName"));
+        ed_orderbox_goodname.setText(good.getGoodName());
 
-        call = apiInterface.GetDistinctValues("GetDistinctValues","AppBasket" ,"Explain","");
+        call = apiInterface.GetDistinctValues("GetDistinctValues", "AppBasket", "Explain", "");
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
 
                 assert response.body() != null;
                 values_array.clear();
-                values=response.body().getValues();
-                for(DistinctValue value:values){
-                    Log.e("test",value.getValue());
+                values = response.body().getValues();
+                for (DistinctValue value : values) {
                     values_array.add(NumberFunctions.PerisanNumber(value.getValue()));
                 }
 
@@ -354,20 +356,92 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             }
         });
 
-        btn_orderbox.setOnClickListener(new View.OnClickListener() {
+        call = apiInterface.OrderGet(
+                "OrderGet",
+                callMethod.ReadString("AppBasketInfoCode"),
+                "3"
+        );
+        call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onClick(View v) {
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    good_box_items.clear();
+                    for (Good g : response.body().getGoods()) {
+                        if (g.getGoodCode().equals(good.getGoodCode())) {
+                            good_box_items.add(g);
+                        }
+                    }
 
-                NumberFunctions.EnglishNumber(ed_orderbox_amount.getText().toString());
-                NumberFunctions.EnglishNumber(ed_orderbox_explain.getText().toString());
-                callMethod.showToast("btn_orderbox");
+                    GoodBoxItemAdapter adapter = new GoodBoxItemAdapter(good_box_items, mContext);
+                    rc_orderbox.setLayoutManager(new GridLayoutManager(mContext, 1));
+                    rc_orderbox.setAdapter(adapter);
+                    rc_orderbox.setItemAnimator(new DefaultItemAnimator());
+                }
             }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+            }
+        });
+
+
+        btn_orderbox.setOnClickListener(v -> {
+            String amo = NumberFunctions.EnglishNumber(ed_orderbox_amount.getText().toString());
+            String explain = NumberFunctions.EnglishNumber(ed_orderbox_explain.getText().toString());
+
+
+            if (!amo.equals("")) {
+                if (Float.parseFloat(amo) > 0) {
+
+                    Call<RetrofitResponse> call = apiInterface.OrderRowInsert("OrderRowInsert",
+                            good.getGoodCode(),
+                            amo,
+                            good.getMaxSellPrice(),
+                            good.getGoodUnitRef(),
+                            good.getDefaultUnitValue(),
+                            explain,
+                            callMethod.ReadString("AppBasketInfoCode"),
+                            good.getRowCode()
+                    );
+                    call.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                            assert response.body() != null;
+
+                            Goods = response.body().getGoods();
+                            if (Integer.parseInt(Goods.get(0).getErrCode()) > 0) {
+                                callMethod.showToast(Goods.get(0).getErrDesc());
+                            } else {
+                                callMethod.showToast("ثبت گردید");
+                                dialog.dismiss();
+                                SearchActivity activity = (SearchActivity) mContext;
+                                activity.RefreshState();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                        }
+                    });
+
+                } else {
+                    callMethod.showToast("لطفا تعداد صحیح را وارد کنید");
+                }
+            } else {
+                callMethod.showToast("تعداد را وارد کنید");
+            }
+
+
         });
 
         dialog.show();
 
 
     }
+
     public void lottiereceipt() {
 
         Dialog dialog1 = new Dialog(mContext);

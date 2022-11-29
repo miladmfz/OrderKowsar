@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodBasketAdapter;
+import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
 import com.kits.orderkowsar.adapters.InternetConnection;
+import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
@@ -46,16 +48,21 @@ import retrofit2.Response;
 public class BasketActivity extends AppCompatActivity {
 
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-    RecyclerView re;
+    RecyclerView recyclerView;
     ArrayList<Good> Goods;
     APIInterface apiInterface ;
     CallMethod callMethod;
     TextView Buy_row,Buy_price,Buy_amount;
-    LottieAnimationView prog;
     GridLayoutManager gridLayoutManager;
     int id=0;
     Intent intent;
+    GoodBoxItemAdapter adapter;
 
+    ArrayList<Good> goods = new ArrayList<>();
+
+    LottieAnimationView prog;
+    LottieAnimationView img_lottiestatus;
+    TextView tv_lottiestatus;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -94,32 +101,44 @@ public class BasketActivity extends AppCompatActivity {
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
         Button total_delete = findViewById(R.id.BuyActivity_total_delete);
         Button final_buy_test = findViewById(R.id.BuyActivity_test);
-        re = findViewById(R.id.BuyActivity_R1);
+        recyclerView = findViewById(R.id.BuyActivity_R1);
+
         prog = findViewById(R.id.BuyActivity_prog);
+        img_lottiestatus = findViewById(R.id.BuyActivity_lottie);
+        tv_lottiestatus = findViewById(R.id.BuyActivity_tvstatus);
 
         Toolbar toolbar = findViewById(R.id.BuyActivity_toolbar);
         setSupportActionBar(toolbar);
 
 
-        Call<RetrofitResponse> call = apiInterface.GetBasketFromTable(
-                "BasketGet",
-                "AppBasketInfoCode"
-        );
+        goods.clear();
+        prog.setVisibility(View.VISIBLE);
+        img_lottiestatus.setVisibility(View.GONE);
+        tv_lottiestatus.setVisibility(View.GONE);
 
+        Call<RetrofitResponse> call = apiInterface.OrderGet(
+                "OrderGet",
+                callMethod.ReadString("AppBasketInfoCode"),
+                "3"
+        );
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call,@NotNull Response<RetrofitResponse> response) {
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-
-                    //todo
+                    goods=response.body().getGoods();
+                    callrecycler();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                prog.setVisibility(View.GONE);
+
             }
         });
+
+
 
 
 
@@ -160,8 +179,27 @@ public class BasketActivity extends AppCompatActivity {
                 .setNegativeButton("خیر", (dialogInterface, i) -> {
                 })
                 .show());
+    }
 
+
+
+    private void callrecycler() {
+        adapter = new GoodBoxItemAdapter(goods, this);
+
+        if (adapter.getItemCount() == 0) {
+            tv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");
+            img_lottiestatus.setVisibility(View.VISIBLE);
+            tv_lottiestatus.setVisibility(View.VISIBLE);
+        } else {
+            img_lottiestatus.setVisibility(View.GONE);
+            tv_lottiestatus.setVisibility(View.GONE);
+        }
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
     }
+
+
 
 }
