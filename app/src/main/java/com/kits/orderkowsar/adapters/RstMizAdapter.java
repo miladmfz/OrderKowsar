@@ -135,6 +135,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
         holder.btn_select.setOnClickListener(v -> {
+            if (call.isExecuted()){
+                call.cancel();
+            }
             if(basketInfos.get(position).getInfoState().equals("0")||basketInfos.get(position).getInfoState().equals("3")){
 
                 if(basketInfos.get(position).getIsReserved().equals("1")){
@@ -159,6 +162,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
                                 callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                             }else{
+                                Log.e("test_0",basketInfos.get(position).getAppBasketInfoCode());
                                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                                 intent = new Intent(mContext, SearchActivity.class);
                                 mContext.startActivity(intent);
@@ -192,8 +196,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode())>0){
                                 callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                             }else{
+                                Log.e("test_1",basketInfos.get(position).getAppBasketInfoCode());
 
-                                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+                                callMethod.EditString("AppBasketInfoCode", response.body().getBasketInfos().get(0).getAppBasketInfoCode());
                                 intent = new Intent(mContext, SearchActivity.class);
                                 mContext.startActivity(intent);
                             }
@@ -221,7 +226,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         });
 
         holder.btn_cleartable.setOnClickListener(v -> {
-
+            if (call.isExecuted()){
+                call.cancel();
+            }
             if (basketInfos.get(position).getIsReserved().equals("1")) {
                 call = apiInterface.OrderInfoInsert(
                         "OrderInfoInsert",

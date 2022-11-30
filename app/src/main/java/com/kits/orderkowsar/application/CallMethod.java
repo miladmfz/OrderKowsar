@@ -80,6 +80,12 @@ public class CallMethod extends Application {
         EditString(key, json);
     }
 
+    public void log(String key) {
+
+    Log.e("test_",key);
+
+    }
+
     public ArrayList<String> getArrayList(String key) {
         Gson gson = new Gson();
         String json = shPref.getString(key, null);

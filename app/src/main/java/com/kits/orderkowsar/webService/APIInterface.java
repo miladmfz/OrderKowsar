@@ -63,7 +63,17 @@ public interface APIInterface {
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> GetGoodFromGroup(@Field("tag") String tag,
-                                            @Field("GroupCode") String GroupCode);
+                                            @Field("Where") String Where,
+                                            @Field("GroupCode") String GroupCode,
+                                            @Field("AppBasketInfoRef") String AppBasketInfoRef
+                                            );
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> DeleteGoodFromBasket(@Field("tag") String tag,
+                                            @Field("RowCode") String RowCode,
+                                            @Field("AppBasketInfoRef") String AppBasketInfoRef
+                                            );
 
 
     @POST("index.php")

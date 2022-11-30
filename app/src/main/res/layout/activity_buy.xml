@@ -248,7 +248,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BuyActivity_test"
             android:layout_width="match_parent"
-            android:text="@string/buy_sendfactor"
+            android:text="نهایی کردن سفارش"
 
             android:textColor="#ffffff"
             android:textStyle="bold"

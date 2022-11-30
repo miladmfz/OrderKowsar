@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,36 +33,21 @@ import java.text.DecimalFormat;
 
 public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
 
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-    private long sum = 0;
-
-    private final TextView goodnameTextView;
-    private final TextView maxsellpriceTextView;
-    private final TextView priceTextView;
-    private final TextView total;
-    private final TextView maxtotal;
-    private final TextView amount;
-    private final TextView offer;
-    private final Button btndlt;
-    private final ImageView img;
-    private final MaterialCardView rltv;
+   public LinearLayout ll_explain;
+   public TextView tv_goodname;
+   public TextView tv_amount;
+   public TextView tv_explain;
+   public Button btn_dlt;
 
 
     public GoodBasketViewHolder(View itemView) {
         super(itemView);
 
-        goodnameTextView = itemView.findViewById(R.id.good_buy_name);
-        maxsellpriceTextView = itemView.findViewById(R.id.good_buy_maxprice);
-        priceTextView = itemView.findViewById(R.id.good_buy_price);
-        amount = itemView.findViewById(R.id.good_buy_amount);
-        total = itemView.findViewById(R.id.good_buy_total);
-        maxtotal = itemView.findViewById(R.id.good_buy_maxtotal);
-        img = itemView.findViewById(R.id.good_buy_img);
-        btndlt = itemView.findViewById(R.id.good_buy_btndlt);
-        offer = itemView.findViewById(R.id.good_buy_offer);
-
-
-        rltv = itemView.findViewById(R.id.good_buy);
+        ll_explain = itemView.findViewById(R.id.good_basket_item_ll_explain);
+        tv_goodname = itemView.findViewById(R.id.good_basket_item_goodname);
+        tv_amount = itemView.findViewById(R.id.good_basket_item_amount);
+        tv_explain = itemView.findViewById(R.id.good_basket_item_explain);
+        btn_dlt = itemView.findViewById(R.id.good_basket_item_dlt);
     }
 
 

@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +29,8 @@ import com.kits.orderkowsar.viewholder.GoodBoxItemViewHolder;
 import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,7 +50,7 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
     APIInterface apiInterface;
     Call<RetrofitResponse> call2;
     Action action;
-
+    Call<RetrofitResponse> call;
 
 
     public GoodBoxItemAdapter(ArrayList<Good> goods, Context context) {
@@ -70,12 +75,51 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final GoodBoxItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Log.e("test",goods.get(position).getExplain());
+        Log.e("test", goods.get(position).getExplain());
 
-      holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
-      holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
-      holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
+        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
+        holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
+        holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
+        holder.img_dlt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(mContext)
+                        .setTitle("توجه")
+                        .setMessage("خذف شود ؟")
+                        .setPositiveButton("بله", (dialogInterface, i) -> {
 
+                             call = apiInterface.DeleteGoodFromBasket(
+                                    "DeleteGoodFromBasket",
+                                     goods.get(position).getRowCode(),
+                                     goods.get(position).getAppBasketInfoRef()
+                            );
+                            call.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        assert response.body() != null;
+                                       if (response.body().getText().equals("Done")){
+                                           goods.remove( goods.get(position));
+                                           notifyDataSetChanged();
+                                       }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                                    callMethod.log("2");
+                                    callMethod.log(t.getMessage());
+
+                                }
+                            });
+
+                        })
+                        .setNegativeButton("خیر", (dialogInterface, i) -> {
+                        })
+                        .show();
+
+            }
+        });
     }
 
     @Override

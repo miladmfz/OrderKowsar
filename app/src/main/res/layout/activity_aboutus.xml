@@ -28,7 +28,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
-                app:title="@string/aboutus"
+                app:title="درباره ما"
                 app:titleTextColor="@color/white">
 
             </androidx.appcompat.widget.Toolbar>

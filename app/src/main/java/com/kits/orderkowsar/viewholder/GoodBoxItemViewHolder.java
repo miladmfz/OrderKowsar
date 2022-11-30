@@ -22,6 +22,7 @@ public class GoodBoxItemViewHolder extends RecyclerView.ViewHolder {
     public TextView tv_name;
     public TextView tv_amount;
     public TextView tv_explain;
+    public ImageView img_dlt;
 
     public GoodBoxItemViewHolder(View itemView) {
         super(itemView);
@@ -29,6 +30,7 @@ public class GoodBoxItemViewHolder extends RecyclerView.ViewHolder {
         tv_name = itemView.findViewById(R.id.good_box_item_goodname);
         tv_amount = itemView.findViewById(R.id.good_box_item_amount);
         tv_explain = itemView.findViewById(R.id.good_box_item_explain);
+        img_dlt = itemView.findViewById(R.id.good_box_item_delete);
     }
 
 

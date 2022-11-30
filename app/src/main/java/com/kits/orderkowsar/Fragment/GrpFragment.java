@@ -12,15 +12,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GrpAdapter;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.GoodGroup;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -42,7 +48,10 @@ public class GrpFragment extends Fragment {
     ArrayList<GoodGroup> goodGroups=new ArrayList<>();
     RecyclerView rc_grp;
     RecyclerView rc_good;
+    EditText ed_search;
+    Handler handler = new Handler();
     String groupCode;
+    String searchtarget="",Where="";
     FragmentManager fragmentManager ;
     FragmentTransaction fragmentTransaction;
     Call<RetrofitResponse> call;
@@ -70,6 +79,7 @@ public class GrpFragment extends Fragment {
 
         rc_grp=view.findViewById(R.id.fragment_grp_recy);
         rc_good=view.findViewById(R.id.fragment_good_recy);
+        ed_search=view.findViewById(R.id.fragment_good_search);
 
 
 
@@ -87,8 +97,30 @@ public class GrpFragment extends Fragment {
         fragmentTransaction = fragmentManager.beginTransaction();
 
 
-        allgrp();
 
+        allgrp();
+        allgood();
+        ed_search.setText(searchtarget);
+        ed_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(() -> {
+
+                    searchtarget = NumberFunctions.EnglishNumber(ed_search.getText().toString());
+                    Where = "GoodName Like N''%" + searchtarget.replaceAll(" ", "%") + "%'' ";
+                    allgood();
+                }, Integer.parseInt(callMethod.ReadString("Delay")));
+            }
+        });
 
     }
 
@@ -107,7 +139,7 @@ public class GrpFragment extends Fragment {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    allgood();
+
                     GrpAdapter adapter = new GrpAdapter(response.body().getGroups(),fragmentTransaction, requireActivity());
                     rc_grp.setLayoutManager(new LinearLayoutManager(requireActivity()));
                     rc_grp.setAdapter(adapter);
@@ -123,16 +155,27 @@ public class GrpFragment extends Fragment {
 
 
     void allgood() {
+        callMethod.log("0");
+        callMethod.log("_"+"GetOrderGoodList");
+        callMethod.log("_"+Where);
+        callMethod.log("_"+groupCode);
+        callMethod.log("_"+callMethod.ReadString("AppBasketInfoCode"));
+
+
+
 
         call = apiInterface.GetGoodFromGroup(
                 "GetOrderGoodList",
-                groupCode
+                Where,
+                groupCode,
+                callMethod.ReadString("AppBasketInfoCode")
         );
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
+                    callMethod.log("1");
 
                     GoodAdapter adapter = new GoodAdapter(response.body().getGoods(), requireActivity());
                     rc_good.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
@@ -143,6 +186,8 @@ public class GrpFragment extends Fragment {
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                callMethod.log("2");
+                callMethod.log(t.getMessage());
 
             }
         });

@@ -103,7 +103,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (callMethod.firstStart()) {
             callMethod.EditBoolan("FirstStart", false);
-            callMethod.EditString("Delay", "500");
+            callMethod.EditString("Delay", "1000");
             callMethod.EditString("TitleSize", "18");
             callMethod.EditString("BodySize", "18");
             callMethod.EditString("Theme", "Green");

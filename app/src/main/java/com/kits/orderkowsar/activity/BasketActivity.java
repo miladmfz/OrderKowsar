@@ -56,7 +56,7 @@ public class BasketActivity extends AppCompatActivity {
     GridLayoutManager gridLayoutManager;
     int id=0;
     Intent intent;
-    GoodBoxItemAdapter adapter;
+    GoodBasketAdapter adapter;
 
     ArrayList<Good> goods = new ArrayList<>();
 
@@ -128,12 +128,16 @@ public class BasketActivity extends AppCompatActivity {
                     assert response.body() != null;
                     goods=response.body().getGoods();
                     callrecycler();
+                    prog.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
                 prog.setVisibility(View.GONE);
+                img_lottiestatus.setVisibility(View.VISIBLE);
+                tv_lottiestatus.setVisibility(View.VISIBLE);
 
             }
         });
@@ -184,7 +188,7 @@ public class BasketActivity extends AppCompatActivity {
 
 
     private void callrecycler() {
-        adapter = new GoodBoxItemAdapter(goods, this);
+        adapter = new GoodBasketAdapter(goods, this);
 
         if (adapter.getItemCount() == 0) {
             tv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");

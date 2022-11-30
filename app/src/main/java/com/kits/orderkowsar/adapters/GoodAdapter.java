@@ -75,6 +75,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
 
         holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
         holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
+
         if (!goods.get(position).getGoodImageName().equals("")) {
             Glide.with(holder.img)
                     .asBitmap()
@@ -134,7 +135,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
             });
         }
 
-        holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position)));
+        holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position),"0"));
         
     }
 

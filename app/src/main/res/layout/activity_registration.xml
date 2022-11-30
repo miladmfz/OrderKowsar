@@ -143,11 +143,42 @@
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/config_delay"
+
+
+                            android:layout_weight="0.5"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/registr_delay"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/edittest1"
+                            android:textSize="22sp"
+                            android:layout_weight="0.5"
+                            android:gravity="center" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="5dp">
+                        android:padding="5dp"
+                        android:visibility="gone">
                         <TextView
                             android:layout_weight="0.5"
                             android:layout_width="match_parent"

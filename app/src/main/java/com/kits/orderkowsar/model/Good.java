@@ -70,6 +70,16 @@ public class Good implements Serializable {
     @SerializedName("CountGood")
     private String CountGood;
 
+    @SerializedName("AppBasketInfoRef")
+    private String AppBasketInfoRef;
+
+    public String getAppBasketInfoRef() {
+        return AppBasketInfoRef;
+    }
+
+    public void setAppBasketInfoRef(String appBasketInfoRef) {
+        AppBasketInfoRef = appBasketInfoRef;
+    }
 
     public String getDefaultUnitValue() {
         return DefaultUnitValue;

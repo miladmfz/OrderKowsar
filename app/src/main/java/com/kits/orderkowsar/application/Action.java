@@ -300,7 +300,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-    public void GoodBoxDialog(Good good) {
+    public void GoodBoxDialog(Good good,String Flag) {
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -311,9 +311,14 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         EditText ed_orderbox_explain = dialog.findViewById(R.id.orderboxgood_explain);
         Spinner spinner_orderbox = dialog.findViewById(R.id.orderboxgood_spinnerexplain);
         RecyclerView rc_orderbox = dialog.findViewById(R.id.orderboxgood_rc);
-
-
         Button btn_orderbox = dialog.findViewById(R.id.orderboxgood_btn);
+
+        if(Flag.equals("1")){
+            ed_orderbox_amount.setText(NumberFunctions.PerisanNumber(good.getAmount()));
+            ed_orderbox_explain.setText(NumberFunctions.PerisanNumber(good.getExplain()));
+            btn_orderbox.setText("اصلاح سفارش");
+        }
+
 
         ed_orderbox_goodname.setText(good.getGoodName());
 
