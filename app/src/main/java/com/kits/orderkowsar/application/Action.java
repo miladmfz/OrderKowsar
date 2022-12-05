@@ -6,12 +6,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +33,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
@@ -37,9 +44,11 @@ import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
 import com.kits.orderkowsar.adapters.ReserveAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
+import com.kits.orderkowsar.model.AppPrinter;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.DistinctValue;
+import com.kits.orderkowsar.model.Factor;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.ObjectType;
@@ -53,6 +62,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -76,6 +86,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog;
+    Dialog dialogprint;
     Calendar cldr;
     TimePickerDialog picker;
     TextView tv_reservestart;
@@ -83,10 +94,19 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     TextView tv_date;
     int ehour = 0;
     int eminutes = 0;
+    int printerconter = 0;
     ArrayList<DistinctValue> values = new ArrayList<>();
     ArrayList<String> values_array = new ArrayList<>();
     ArrayList<Good> Goods;
     ArrayList<Good> good_box_items = new ArrayList<>();
+    ArrayList<Factor> Factor_header = new ArrayList<>();
+    ArrayList<Factor> Factor_row = new ArrayList<>();
+    ArrayList<AppPrinter> AppPrinters = new ArrayList<>();
+    int width = 300;
+    LinearLayoutCompat main_layout;
+    Bitmap bitmap_factor;
+    String bitmap_factor_base64 = "";
+
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -96,7 +116,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         this.persianCalendar = new PersianCalendar();
         this.dialog = new Dialog(mContext);
-
+        this.AppPrinters = new ArrayList<>();
+        printerconter = 0;
 
     }
 
@@ -300,7 +321,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-    public void GoodBoxDialog(Good good,String Flag) {
+    public void GoodBoxDialog(Good good, String Flag) {
 
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -313,14 +334,18 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         RecyclerView rc_orderbox = dialog.findViewById(R.id.orderboxgood_rc);
         Button btn_orderbox = dialog.findViewById(R.id.orderboxgood_btn);
 
-        if(Flag.equals("1")){
+        if (Flag.equals("1")) {
             ed_orderbox_amount.setText(NumberFunctions.PerisanNumber(good.getAmount()));
             ed_orderbox_explain.setText(NumberFunctions.PerisanNumber(good.getExplain()));
             btn_orderbox.setText("اصلاح سفارش");
+        } else {
+            good.setRowCode("0");
+            btn_orderbox.setText("اضافه یه سفارش");
         }
 
 
         ed_orderbox_goodname.setText(good.getGoodName());
+        ed_orderbox_amount.setOnClickListener(v -> ed_orderbox_amount.selectAll());
 
         call = apiInterface.GetDistinctValues("GetDistinctValues", "AppBasket", "Explain", "");
         call.enqueue(new Callback<RetrofitResponse>() {
@@ -479,6 +504,670 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
 
     }
+
+    public void OrderToFactor() {
+
+        Call<RetrofitResponse> call = apiInterface.OrderToFactor(
+                "OrderToFactor",
+                callMethod.ReadString("AppBasketInfoCode")
+        );
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+
+                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                        callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                    } else {
+                        GetFactorPrint();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                Log.e("test", t.getMessage());
+            }
+        });
+
+
+    }
+
+
+    public void OrderGetAppPrinterList() {
+        call = apiInterface.OrderGetAppPrinter("OrderGetAppPrinter");
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    printerconter = 0;
+                    AppPrinters = response.body().getAppPrinters();
+                    OrderPrint();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                Log.e("test", t.getMessage());
+            }
+        });
+    }
+
+    public void OrderPrint() {
+
+
+        if (printerconter < (AppPrinters.size())) {
+
+            call = apiInterface.OrderGetFactorRow(
+                    "OrderGetFactorRow",
+                    callMethod.ReadString("AppBasketInfoCode"),
+                    AppPrinters.get(printerconter).getGoodGroups(),
+                    AppPrinters.get(printerconter).getWhereClause()
+            );
+            call.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        Factor_row = response.body().getFactors();
+                        if (Factor_row.size() > 0) {
+                            printDialogView();
+                        } else {
+                            printerconter++;
+                            OrderPrint();
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                    Log.e("test", t.getMessage());
+                }
+            });
+
+        } else {
+            callMethod.showToast("ثبت گردید");
+        }
+
+
+    }
+
+    public void GetFactorPrint() {
+
+        call = apiInterface.OrderGetFactor(
+                "OrderGetFactor",
+                callMethod.ReadString("AppBasketInfoCode")
+        );
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+
+                    Factor_header = response.body().getFactors();
+                    AppPrinters.clear();
+                    OrderGetAppPrinterList();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                Log.e("test", t.getMessage());
+            }
+        });
+
+    }
+
+
+    @SuppressLint("RtlHardcoded")
+    public void printDialogView() {
+
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        //height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
+        dialogprint = new Dialog(mContext);
+        dialogprint.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogprint.setContentView(R.layout.print_layout_view);
+        main_layout = dialogprint.findViewById(R.id.print_layout_view_ll);
+        CreateView();
+
+    }
+
+
+    @SuppressLint("RtlHardcoded")
+    public void CreateView() {
+
+        main_layout.removeAllViews();
+
+        LinearLayoutCompat title_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat boby_good_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat good_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat total_layout = new LinearLayoutCompat(mContext);
+        ViewPager ViewPager = new ViewPager(mContext);
+        ViewPager ViewPager_rast = new ViewPager(mContext);
+        ViewPager ViewPager_chap = new ViewPager(mContext);
+
+        title_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        title_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+        title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+        TextView company_tv = new TextView(mContext);
+        company_tv.setText(NumberFunctions.PerisanNumber("فاکتور فروش"));
+        company_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        company_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        company_tv.setGravity(Gravity.CENTER);
+        company_tv.setPadding(0, 0, 0, 20);
+
+
+        boby_good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        total_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+
+        good_layout.setOrientation(LinearLayoutCompat.HORIZONTAL);
+        boby_good_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+        total_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+
+        good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+        ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, 3));
+        ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
+        ViewPager_rast.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+        ViewPager_rast.setBackgroundResource(R.color.red_800);
+        ViewPager_chap.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+        ViewPager_chap.setBackgroundResource(R.color.green_800);
+
+
+        TextView customername_tv = new TextView(mContext);
+        customername_tv.setText(NumberFunctions.PerisanNumber(" میز :   " + Factor_header.get(0).getRstMizName()));
+        customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        customername_tv.setGravity(Gravity.RIGHT);
+        customername_tv.setPadding(0, 0, 0, 15);
+
+        TextView factorcode_tv = new TextView(mContext);
+        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode()));
+        factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        factorcode_tv.setGravity(Gravity.RIGHT);
+        factorcode_tv.setPadding(0, 0, 0, 15);
+
+        TextView factordate_tv = new TextView(mContext);
+        factordate_tv.setText(NumberFunctions.PerisanNumber(" تارخ فاکتور :   " + Factor_header.get(0).getFactorDate()));
+        factordate_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        factordate_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        factordate_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        factordate_tv.setGravity(Gravity.RIGHT);
+        factordate_tv.setPadding(0, 0, 0, 35);
+
+        TextView explain_tv = new TextView(mContext);
+        explain_tv.setText(Factor_header.get(0).getFactorExplain());
+        explain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        explain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        explain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        explain_tv.setGravity(Gravity.RIGHT);
+        explain_tv.setPadding(0, 0, 0, 35);
+
+        title_layout.addView(company_tv);
+        title_layout.addView(customername_tv);
+        title_layout.addView(factorcode_tv);
+        title_layout.addView(factordate_tv);
+        title_layout.addView(explain_tv);
+        title_layout.addView(ViewPager);
+
+
+        int CounterGood = 0;
+        for (Factor FactorRow_detail : Factor_row) {
+            CounterGood++;
+            LinearLayoutCompat first_layout = new LinearLayoutCompat(mContext);
+            first_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            first_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+
+            LinearLayoutCompat name_detail = new LinearLayoutCompat(mContext);
+            name_detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            name_detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
+            name_detail.setWeightSum(6);
+            name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+            TextView radif = new TextView(mContext);
+            radif.setText(NumberFunctions.PerisanNumber(String.valueOf(CounterGood)));
+            radif.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 5));
+            radif.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            radif.setGravity(Gravity.CENTER);
+            radif.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            radif.setBackgroundColor(mContext.getColor(R.color.grey_500));
+            radif.setPadding(0, 10, 0, Integer.parseInt(callMethod.ReadString("TitleSize")));
+
+            androidx.viewpager.widget.ViewPager ViewPager_goodname = new ViewPager(mContext);
+            ViewPager_goodname.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+            ViewPager_goodname.setBackgroundResource(R.color.colorPrimaryDark);
+
+            TextView good_name_tv = new TextView(mContext);
+            good_name_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getGoodName()));
+            good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
+            good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_name_tv.setGravity(Gravity.RIGHT);
+            good_name_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_name_tv.setPadding(0, 10, 5, 0);
+
+
+            LinearLayoutCompat detail = new LinearLayoutCompat(mContext);
+            detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
+            detail.setWeightSum(9);
+            detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+            TextView good_amount_tv = new TextView(mContext);
+            good_amount_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getFacAmount()));
+            good_amount_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 6));
+            good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_amount_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_amount_tv.setGravity(Gravity.CENTER);
+
+            TextView good_RowExplain_tv = new TextView(mContext);
+            good_RowExplain_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getRowExplain()));
+            good_RowExplain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 3));
+            good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_RowExplain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_RowExplain_tv.setPadding(0, 0, 0, 10);
+            good_RowExplain_tv.setGravity(Gravity.CENTER);
+
+
+            androidx.viewpager.widget.ViewPager ViewPager_sell2 = new ViewPager(mContext);
+            ViewPager_sell2.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+            ViewPager_sell2.setBackgroundResource(R.color.colorPrimaryDark);
+
+
+
+            androidx.viewpager.widget.ViewPager extra_ViewPager = new ViewPager(mContext);
+            extra_ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
+            extra_ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
+
+            androidx.viewpager.widget.ViewPager extra_ViewPager1 = new ViewPager(mContext);
+            extra_ViewPager1.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
+            extra_ViewPager1.setBackgroundResource(R.color.colorPrimaryDark);
+
+
+
+
+
+            name_detail.addView(radif);
+            name_detail.addView(ViewPager_goodname);
+            name_detail.addView(good_name_tv);
+
+            detail.addView(good_RowExplain_tv);
+            detail.addView(ViewPager_sell2);
+            detail.addView(good_amount_tv);
+
+
+            first_layout.addView(name_detail);
+            first_layout.addView(extra_ViewPager);
+            first_layout.addView(detail);
+            first_layout.addView(extra_ViewPager1);
+
+            boby_good_layout.addView(first_layout);
+
+
+        }
+        good_layout.addView(ViewPager_rast);
+        good_layout.addView(boby_good_layout);
+        good_layout.addView(ViewPager_chap);
+
+
+        main_layout.addView(title_layout);
+        main_layout.addView(good_layout);
+        main_layout.addView(total_layout);
+        bitmap_factor = loadBitmapFromView(main_layout);
+
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap_factor.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+
+        bitmap_factor_base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        //SendFactorPrint(appbasketinfocode,bitmap_factor_base64);
+        Call<RetrofitResponse> call = apiInterface.OrderSendImage("OrderSendImage",
+                bitmap_factor_base64,
+                callMethod.ReadString("AppBasketInfoCode"),
+                AppPrinters.get(printerconter).getPrinterName(),
+                AppPrinters.get(printerconter).getPrintCount()
+
+        );
+
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                assert response.body() != null;
+                if (response.body().getText().equals("Done")) {
+                    printerconter++;
+                    OrderPrint();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    @SuppressLint("RtlHardcoded")
+    public void CreateView1() {
+
+        main_layout.removeAllViews();
+
+        LinearLayoutCompat title_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat boby_good_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat good_layout = new LinearLayoutCompat(mContext);
+        LinearLayoutCompat total_layout = new LinearLayoutCompat(mContext);
+        ViewPager ViewPager = new ViewPager(mContext);
+        ViewPager ViewPager_rast = new ViewPager(mContext);
+        ViewPager ViewPager_chap = new ViewPager(mContext);
+
+        title_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        title_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+        title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+        TextView company_tv = new TextView(mContext);
+        company_tv.setText(NumberFunctions.PerisanNumber("فاکتور فروش"));
+        company_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        company_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        company_tv.setGravity(Gravity.CENTER);
+        company_tv.setPadding(0, 0, 0, 20);
+
+
+        boby_good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        total_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+
+        good_layout.setOrientation(LinearLayoutCompat.HORIZONTAL);
+        boby_good_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+        total_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+
+        good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+        ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, 3));
+        ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
+        ViewPager_rast.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+        ViewPager_rast.setBackgroundResource(R.color.red_800);
+        ViewPager_chap.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+        ViewPager_chap.setBackgroundResource(R.color.green_800);
+
+
+        TextView customername_tv = new TextView(mContext);
+        customername_tv.setText(NumberFunctions.PerisanNumber(" میز :   " + Factor_header.get(0).getRstMizName()));
+        customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        customername_tv.setGravity(Gravity.RIGHT);
+        customername_tv.setPadding(0, 0, 0, 15);
+
+        TextView factorcode_tv = new TextView(mContext);
+        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode()));
+        factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        factorcode_tv.setGravity(Gravity.RIGHT);
+        factorcode_tv.setPadding(0, 0, 0, 15);
+
+        TextView factordate_tv = new TextView(mContext);
+        factordate_tv.setText(NumberFunctions.PerisanNumber(" تارخ فاکتور :   " + Factor_header.get(0).getFactorDate()));
+        factordate_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        factordate_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        factordate_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        factordate_tv.setGravity(Gravity.RIGHT);
+        factordate_tv.setPadding(0, 0, 0, 35);
+
+        TextView explain_tv = new TextView(mContext);
+        explain_tv.setText(Factor_header.get(0).getFactorExplain());
+        explain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        explain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+        explain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        explain_tv.setGravity(Gravity.RIGHT);
+        explain_tv.setPadding(0, 0, 0, 35);
+
+        title_layout.addView(company_tv);
+        title_layout.addView(customername_tv);
+        title_layout.addView(factorcode_tv);
+        title_layout.addView(factordate_tv);
+        title_layout.addView(explain_tv);
+        title_layout.addView(ViewPager);
+
+
+        int CounterGood = 0;
+        for (Factor FactorRow_detail : Factor_row) {
+            CounterGood++;
+
+            LinearLayoutCompat first_layout = new LinearLayoutCompat(mContext);
+            first_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            first_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+
+            TextView radif = new TextView(mContext);
+            radif.setText(NumberFunctions.PerisanNumber(String.valueOf(CounterGood)));
+            radif.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 5));
+            radif.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            radif.setGravity(Gravity.CENTER);
+            radif.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            radif.setBackgroundColor(mContext.getColor(R.color.grey_500));
+            radif.setPadding(0, 10, 0, Integer.parseInt(callMethod.ReadString("TitleSize")));
+
+
+            LinearLayoutCompat good_explain_layout = new LinearLayoutCompat(mContext);
+            good_explain_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
+            good_explain_layout.setOrientation(LinearLayoutCompat.VERTICAL);
+
+
+
+
+
+
+
+//
+//            name_detail.addView(radif);
+//            name_detail.addView(ViewPager_goodname);
+//            name_detail.addView(good_name_tv);
+//
+//            detail.addView(good_RowExplain_tv);
+//            detail.addView(ViewPager_sell2);
+//            detail.addView(good_amount_tv);
+//
+//
+//            first_layout.addView(radif);
+//            first_layout.addView(ViewPager_goodname);
+//            first_layout.addView(good_explain_layout);
+//            first_layout.addView(ViewPager_goodname);
+//            first_layout.addView(good_amount_tv);
+//            first_layout.addView(extra_ViewPager1);
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            LinearLayoutCompat name_detail = new LinearLayoutCompat(mContext);
+            name_detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            name_detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
+            name_detail.setWeightSum(6);
+            name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+
+            androidx.viewpager.widget.ViewPager ViewPager_goodname = new ViewPager(mContext);
+            ViewPager_goodname.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+            ViewPager_goodname.setBackgroundResource(R.color.colorPrimaryDark);
+
+            TextView good_name_tv = new TextView(mContext);
+            good_name_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getGoodName()));
+            good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
+            good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_name_tv.setGravity(Gravity.RIGHT);
+            good_name_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_name_tv.setPadding(0, 10, 5, 0);
+
+
+            LinearLayoutCompat detail = new LinearLayoutCompat(mContext);
+            detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
+            detail.setWeightSum(9);
+            detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+
+            TextView good_amount_tv = new TextView(mContext);
+            good_amount_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getFacAmount()));
+            good_amount_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 6));
+            good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_amount_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_amount_tv.setGravity(Gravity.CENTER);
+
+            TextView good_RowExplain_tv = new TextView(mContext);
+            good_RowExplain_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getRowExplain()));
+            good_RowExplain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 3));
+            good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
+            good_RowExplain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+            good_RowExplain_tv.setPadding(0, 0, 0, 10);
+            good_RowExplain_tv.setGravity(Gravity.CENTER);
+
+
+            androidx.viewpager.widget.ViewPager ViewPager_sell2 = new ViewPager(mContext);
+            ViewPager_sell2.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
+            ViewPager_sell2.setBackgroundResource(R.color.colorPrimaryDark);
+
+
+
+            androidx.viewpager.widget.ViewPager extra_ViewPager = new ViewPager(mContext);
+            extra_ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
+            extra_ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
+
+            androidx.viewpager.widget.ViewPager extra_ViewPager1 = new ViewPager(mContext);
+            extra_ViewPager1.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
+            extra_ViewPager1.setBackgroundResource(R.color.colorPrimaryDark);
+
+
+
+
+
+            name_detail.addView(radif);
+            name_detail.addView(ViewPager_goodname);
+            name_detail.addView(good_name_tv);
+
+            detail.addView(good_RowExplain_tv);
+            detail.addView(ViewPager_sell2);
+            detail.addView(good_amount_tv);
+
+
+            first_layout.addView(name_detail);
+            first_layout.addView(extra_ViewPager);
+            first_layout.addView(detail);
+            first_layout.addView(extra_ViewPager1);
+
+            boby_good_layout.addView(first_layout);
+
+
+        }
+        good_layout.addView(ViewPager_rast);
+        good_layout.addView(boby_good_layout);
+        good_layout.addView(ViewPager_chap);
+
+
+        main_layout.addView(title_layout);
+        main_layout.addView(good_layout);
+        main_layout.addView(total_layout);
+        bitmap_factor = loadBitmapFromView(main_layout);
+
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap_factor.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+
+        bitmap_factor_base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        //SendFactorPrint(appbasketinfocode,bitmap_factor_base64);
+        Call<RetrofitResponse> call = apiInterface.OrderSendImage("OrderSendImage",
+                bitmap_factor_base64,
+                callMethod.ReadString("AppBasketInfoCode"),
+                AppPrinters.get(printerconter).getPrinterName(),
+                AppPrinters.get(printerconter).getPrintCount()
+
+        );
+
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                assert response.body() != null;
+                if (response.body().getText().equals("Done")) {
+                    printerconter++;
+                    OrderPrint();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    public Bitmap loadBitmapFromView(View v) {
+        v.measure(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
+        Bitmap b = Bitmap.createBitmap(width, v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas c = new Canvas(b);
+        v.layout(0, 0, width, v.getMeasuredHeight());
+        v.draw(c);
+        return b;
+    }
+
 
     public void lottieok() {
 

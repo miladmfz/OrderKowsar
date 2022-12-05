@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,7 +58,7 @@ public class BasketActivity extends AppCompatActivity {
     int id=0;
     Intent intent;
     GoodBasketAdapter adapter;
-
+    Action action;
     ArrayList<Good> goods = new ArrayList<>();
 
     LottieAnimationView prog;
@@ -94,10 +95,10 @@ public class BasketActivity extends AppCompatActivity {
 
 
         callMethod = new CallMethod(App.getContext());
+        action = new Action(App.getContext());
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
-        Buy_price = findViewById(R.id.BuyActivity_total_price_buy);
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
         Button total_delete = findViewById(R.id.BuyActivity_total_delete);
         Button final_buy_test = findViewById(R.id.BuyActivity_test);
@@ -150,6 +151,7 @@ public class BasketActivity extends AppCompatActivity {
 
         final_buy_test.setOnClickListener(view -> {
             //todo insert to shopfactor
+            action.OrderToFactor();
         });
 
 
@@ -204,6 +206,37 @@ public class BasketActivity extends AppCompatActivity {
 
     }
 
+
+    public void RefreshState() {
+
+            Call<RetrofitResponse> call2 = apiInterface.GetbasketSum(
+                    "GetOrderSum",
+                    callMethod.ReadString("AppBasketInfoCode")
+            );
+            call2.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        Buy_row.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getCountGood()));
+                        Buy_amount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
+                    }
+                }
+                @Override
+                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                }
+            });
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        Log.e("test_FocusCha","1");
+
+        RefreshState();
+        super.onWindowFocusChanged(hasFocus);
+    }
 
 
 }

@@ -354,7 +354,8 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
+            android:id="@+id/table_item_ll_print_change"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -410,7 +411,7 @@
                 android:visibility="gone"/>
 
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"

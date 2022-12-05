@@ -81,7 +81,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-
+                            android:background="@drawable/bg_round_selected"
+                            android:textStyle="bold"
                             tools:ignore="LabelFor" />
 
 
@@ -104,9 +105,9 @@
                             android:id="@+id/registr_broker"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/edittest1"
+                            android:background="@drawable/bg_round_selected"
                             android:gravity="center"
-
+                            android:textStyle="bold"
                             android:inputType="numberDecimal"
                             tools:ignore="LabelFor"
                             />
@@ -143,32 +144,69 @@
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_margin="10dp">
+                        android:layout_height="50dp"
+                        android:padding="5dp">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text="@string/config_delay"
-
-
                             android:layout_weight="0.5"
-
                             />
 
                         <TextView
                             android:id="@+id/registr_delay"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:background="@drawable/edittest1"
+                            android:layout_height="match_parent"
                             android:textSize="22sp"
                             android:layout_weight="0.5"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:background="@drawable/bg_round_selected"
+                            />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_weight="0.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="کد گروه" />
+
+                        <TextView
+                            android:id="@+id/registr_groupcode"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/bg_round_selected"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:layout_weight="0.5"
+                            android:id="@+id/registr_groupcode_refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            tools:ignore="LabelFor"
+                            android:text="بروزرسانی"
+                            android:textSize="14sp"
+                            android:layout_margin="5dp"
+                            />
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -31,6 +31,7 @@ import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivitySearchBinding;
+import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.NumberFunctions;
@@ -52,7 +53,7 @@ public class SearchActivity extends AppCompatActivity {
 
     CallMethod callMethod;
     APIInterface apiInterface;
-
+    DatabaseHelper dbh;
     Intent intent;
     TextView textCartItemCount;
 
@@ -95,6 +96,7 @@ public class SearchActivity extends AppCompatActivity {
     public void Config() {
         callMethod = new CallMethod(App.getContext());
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
+        dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -130,7 +132,6 @@ public class SearchActivity extends AppCompatActivity {
         grp_Fragment.setGroupCode(GroupCode);
         fragmentTransaction.replace(R.id.searchactivity_framelayout, grp_Fragment);
         fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
 
     }
@@ -138,27 +139,14 @@ public class SearchActivity extends AppCompatActivity {
 
     public void GetFirstData() {
 
-        Call<RetrofitResponse> call1 = apiInterface.kowsar_info("kowsar_info", "AppOrder_DefaultGroupCode");
-        call1.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    callGrpfragment(response.body().getText());
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-            }
-        });
+        callGrpfragment(dbh.ReadConfig("GroupCodeDefult"));
 
     }
 
 
     public void RefreshState() {
-
         if (textCartItemCount != null) {
+
             if (textCartItemCount.getVisibility() != View.GONE) {
                 textCartItemCount.setVisibility(View.GONE);
             }
@@ -171,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        Log.e("test",response.body().getGoods().get(0).getSumFacAmount());
+                        Log.e("test_GetOrderSum+-",response.body().getGoods().get(0).getSumFacAmount());
                         textCartItemCount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
                         if (Integer.parseInt(response.body().getGoods().get(0).getSumFacAmount()) > 0) {
                             if (textCartItemCount.getVisibility() != View.VISIBLE) {
@@ -190,6 +178,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+
         RefreshState();
         super.onWindowFocusChanged(hasFocus);
     }

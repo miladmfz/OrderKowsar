@@ -41,6 +41,14 @@ public class RetrofitResponse {
     private ArrayList<ObjectType> ObjectTypes;
 
 
+    @SerializedName("Factors")
+    private ArrayList<Factor> Factors;
+
+
+    @SerializedName("AppPrinters")
+    private ArrayList<AppPrinter> AppPrinters;
+
+
     @SerializedName("Text")
     private String Text;
     @SerializedName("ErrCode")
@@ -48,8 +56,21 @@ public class RetrofitResponse {
     @SerializedName("ErrDesc")
     private String ErrDesc;
 
+    public ArrayList<AppPrinter> getAppPrinters() {
+        return AppPrinters;
+    }
 
+    public void setAppPrinters(ArrayList<AppPrinter> appPrinters) {
+        AppPrinters = appPrinters;
+    }
 
+    public ArrayList<Factor> getFactors() {
+        return Factors;
+    }
+
+    public void setFactors(ArrayList<Factor> factors) {
+        Factors = factors;
+    }
 
     public ArrayList<BasketInfo> getBasketInfos() {
         return BasketInfos;

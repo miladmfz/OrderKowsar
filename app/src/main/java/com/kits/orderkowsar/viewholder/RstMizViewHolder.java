@@ -40,6 +40,7 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
     public Button btn_cleartable;
 
     public LinearLayout ll_table_infoexplain;
+    public LinearLayout ll_table_print_change;
     public LinearLayout ll_table_mizexplain;
     public LinearLayout ll_table_timebroker;
     public LinearLayout ll_table_reserve;
@@ -66,6 +67,7 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
         btn_explainedit = itemView.findViewById(R.id.table_item_explainedit);
         btn_cleartable = itemView.findViewById(R.id.table_item_cleartable);
         ll_table_infoexplain = itemView.findViewById(R.id.table_item_ll_infoexplain);
+        ll_table_print_change = itemView.findViewById(R.id.table_item_ll_print_change);
         ll_table_mizexplain = itemView.findViewById(R.id.table_item_ll_mizexplain);
         ll_table_timebroker = itemView.findViewById(R.id.table_item_ll_timebroker);
         ll_table_reserve = itemView.findViewById(R.id.table_item_ll_reserve);

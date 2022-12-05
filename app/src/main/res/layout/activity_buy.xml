@@ -51,21 +51,6 @@
                 android:background="@drawable/bg_round_green"
                 android:orientation="horizontal">
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/BuyActivity_total_delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="3dp"
-                    android:layout_weight="0.3"
-                    android:text="@string/buy_deletall"
-                    android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/red_800"
-                    app:strokeColor="@color/grey_1000"
-                    app:strokeWidth="1dp" />
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -91,7 +76,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
 
@@ -121,42 +106,27 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BuyActivity_total_delete"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="3dp"
                     android:layout_weight="0.3"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/buy_total"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-
-                    <TextView
-                        android:id="@+id/BuyActivity_total_price_buy"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
+                    android:text="@string/buy_deletall"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/red_800"
+                    app:strokeColor="@color/grey_1000"
+                    app:strokeWidth="1dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

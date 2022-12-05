@@ -167,6 +167,46 @@ public interface APIInterface {
                                         @Field("AppType") String AppType
                                         );
 
+    @FormUrlEncoded
+    @POST("index.php")
+    Call<RetrofitResponse> OrderSendImage(@Field("tag") String tag,
+                              @Field("Image") String image,
+                              @Field("Code") String barcode,
+                              @Field("PrinterName") String PrinterName,
+                              @Field("PrintCount") String PrintCount
+    );
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderGetFactor(@Field("tag") String tag,
+                                    @Field("AppBasketInfoRef") String AppBasketInfoRef
+
+    );
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderGetFactorRow(@Field("tag") String tag,
+                                    @Field("AppBasketInfoRef") String AppBasketInfoRef,
+                                    @Field("GoodGroups") String GoodGroups,
+                                    @Field("Where") String Where
+
+    );
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderToFactor(@Field("tag") String tag,
+                                    @Field("AppBasketInfoRef") String AppBasketInfoRef
+
+    );
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderGetAppPrinter(@Field("tag") String tag
+
+    );
 
 
 

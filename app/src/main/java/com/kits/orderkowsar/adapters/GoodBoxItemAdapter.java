@@ -80,28 +80,31 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
         holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
         holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
         holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
-        holder.img_dlt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(mContext)
+
+        if (goods.get(position).getFactorCode() == null) {
+            holder.img_dlt.setVisibility(View.VISIBLE);
+        } else {
+            holder.img_dlt.setVisibility(View.INVISIBLE);
+            if (Integer.parseInt(goods.get(position).getFactorCode()) > 0) {
+                holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
                         .setTitle("توجه")
                         .setMessage("خذف شود ؟")
                         .setPositiveButton("بله", (dialogInterface, i) -> {
 
-                             call = apiInterface.DeleteGoodFromBasket(
+                            call = apiInterface.DeleteGoodFromBasket(
                                     "DeleteGoodFromBasket",
-                                     goods.get(position).getRowCode(),
-                                     goods.get(position).getAppBasketInfoRef()
+                                    goods.get(position).getRowCode(),
+                                    goods.get(position).getAppBasketInfoRef()
                             );
                             call.enqueue(new Callback<RetrofitResponse>() {
                                 @Override
                                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                                     if (response.isSuccessful()) {
                                         assert response.body() != null;
-                                       if (response.body().getText().equals("Done")){
-                                           goods.remove( goods.get(position));
-                                           notifyDataSetChanged();
-                                       }
+                                        if (response.body().getText().equals("Done")) {
+                                            goods.remove(goods.get(position));
+                                            notifyDataSetChanged();
+                                        }
                                     }
                                 }
 
@@ -116,10 +119,9 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
                         })
                         .setNegativeButton("خیر", (dialogInterface, i) -> {
                         })
-                        .show();
-
+                        .show());
             }
-        });
+        }
     }
 
     @Override

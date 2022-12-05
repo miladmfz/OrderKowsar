@@ -37,7 +37,7 @@ public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
    public TextView tv_goodname;
    public TextView tv_amount;
    public TextView tv_explain;
-   public Button btn_dlt;
+   public ImageView btn_dlt;
 
 
     public GoodBasketViewHolder(View itemView) {

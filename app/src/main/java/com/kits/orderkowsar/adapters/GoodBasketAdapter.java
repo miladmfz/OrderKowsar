@@ -48,6 +48,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     Intent intent;
     Action action;
     Call<RetrofitResponse> call;
+
     public GoodBasketAdapter(ArrayList<Good> goods, Context mContext) {
         this.mContext = mContext;
         this.goods = goods;
@@ -70,19 +71,28 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     public void onBindViewHolder(@NonNull final GoodBasketViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-
         holder.tv_goodname.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
         holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
         holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
 
-        if (goods.get(position).getExplain().length()>0){
+        if (goods.get(position).getExplain().length() > 0) {
             holder.ll_explain.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.ll_explain.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position),"1"));
+        holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
+
+
+        if (goods.get(position).getFactorCode() == null) {
+            holder.btn_dlt.setVisibility(View.VISIBLE);
+            holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
+        } else if (Integer.parseInt(goods.get(position).getFactorCode()) > 0) {
+            holder.btn_dlt.setVisibility(View.INVISIBLE);
+            holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "0"));
+        }
+
 
         holder.btn_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
                 .setTitle("توجه")
@@ -99,8 +109,8 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
                         public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                             if (response.isSuccessful()) {
                                 assert response.body() != null;
-                                if (response.body().getText().equals("Done")){
-                                    goods.remove( goods.get(position));
+                                if (response.body().getText().equals("Done")) {
+                                    goods.remove(goods.get(position));
                                     notifyDataSetChanged();
                                 }
                             }
@@ -108,7 +118,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
 
                         @Override
                         public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                             callMethod.log("img_2");
+                            callMethod.log("img_2");
                             callMethod.log(t.getMessage());
 
                         }
@@ -118,9 +128,6 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
                 .setNegativeButton("خیر", (dialogInterface, i) -> {
                 })
                 .show());
-
-
-
     }
 
     @Override

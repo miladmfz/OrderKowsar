@@ -58,6 +58,27 @@ public class BasketInfo {
 
     @SerializedName("Today")
     private String Today;
+    @SerializedName("PreFactorCode")
+    private String PreFactorCode;
+
+    @SerializedName("FactorCode")
+    private String FactorCode;
+
+    public String getFactorCode() {
+        return FactorCode;
+    }
+
+    public void setFactorCode(String factorCode) {
+        FactorCode = factorCode;
+    }
+
+    public String getPreFactorCode() {
+        return PreFactorCode;
+    }
+
+    public void setPreFactorCode(String preFactorCode) {
+        PreFactorCode = preFactorCode;
+    }
 
     public String getRstmizCode() {
         if (RstmizCode == null) RstmizCode = "";

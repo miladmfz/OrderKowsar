@@ -70,8 +70,30 @@ public class Good implements Serializable {
     @SerializedName("CountGood")
     private String CountGood;
 
+    @SerializedName("PreFactorCode")
+    private String PreFactorCode;
+
+    @SerializedName("FactorCode")
+    private String FactorCode;
+
     @SerializedName("AppBasketInfoRef")
     private String AppBasketInfoRef;
+
+    public String getPreFactorCode() {
+        return PreFactorCode;
+    }
+
+    public String getFactorCode() {
+        return FactorCode;
+    }
+
+    public void setFactorCode(String factorCode) {
+        FactorCode = factorCode;
+    }
+
+    public void setPreFactorCode(String preFactorCode) {
+        PreFactorCode = preFactorCode;
+    }
 
     public String getAppBasketInfoRef() {
         return AppBasketInfoRef;
