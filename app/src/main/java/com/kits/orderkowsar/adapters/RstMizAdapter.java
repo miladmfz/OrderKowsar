@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -110,6 +111,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         holder.tv_name.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRstMizName()));
         holder.tv_placecount.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPlaceCount()));
 
+        Log.e("test=",position+"_"+basketInfos.get(position).getExplain());
+        Log.e("test=",position+"_"+basketInfos.get(position).getInfoExplain());
 
         if (basketInfos.get(position).getExplain().length() > 0) {
             holder.ll_table_mizexplain.setVisibility(View.VISIBLE);
@@ -281,6 +284,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             if (call.isExecuted()) {
                 call.cancel();
             }
+            Log.e("test", basketInfos.get(position).getIsReserved());
+
             if (basketInfos.get(position).getIsReserved().equals("1")) {
                 call = apiInterface.OrderInfoInsert(
                         "OrderInfoInsert",
@@ -313,26 +318,34 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 );
             }
 
-            call.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
-                    assert response.body() != null;
-                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                        callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
-                    } else {
-                        TableActivity activity = (TableActivity) mContext;
-                        activity.CallSpinner();
-                        callMethod.showToast("ثبت گردید");
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
-                }
-            });
+            new AlertDialog.Builder(mContext)
+                    .setTitle("توجه")
+                    .setMessage("میز خالی شود؟")
+                    .setPositiveButton("بله", (dialogInterface, i) -> {
 
 
+                        call.enqueue(new Callback<RetrofitResponse>() {
+                            @Override
+                            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                                assert response.body() != null;
+                                if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                    callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                } else {
+                                    TableActivity activity = (TableActivity) mContext;
+                                    activity.CallSpinner();
+                                    callMethod.showToast("ثبت گردید");
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                            }
+                        });
+                    })
+                    .setNegativeButton("خیر", (dialogInterface, i) -> {
+                    })
+                    .show();
         });
 
         holder.btn_reserve.setOnClickListener(v -> action.ReserveBoxDialog(basketInfos.get(position)));
@@ -341,7 +354,40 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         holder.btn_print.setOnClickListener(v -> {
             callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
             if (basketInfos.get(position).getInfoState().equals("2")) {
-                action.GetFactorPrint();
+                new AlertDialog.Builder(mContext)
+                        .setTitle("توجه")
+                        .setMessage("مجددا چاپ شود؟")
+                        .setPositiveButton("بله", (dialogInterface, i) -> {
+
+                            call = apiInterface.Order_CanPrint(
+                                    "Order_CanPrint",
+                                    callMethod.ReadString("AppBasketInfoCode"),
+                                    "1"
+                            );
+                            call.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        assert response.body() != null;
+                                        if (response.body().getText().equals("Done")) {
+                                            action.GetFactorPrint();
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                                    Log.e("test", t.getMessage());
+                                }
+                            });
+
+
+                        })
+                        .setNegativeButton("خیر", (dialogInterface, i) -> {
+                        })
+                        .show();
             } else {
                 intent = new Intent(mContext, BasketActivity.class);
                 mContext.startActivity(intent);
@@ -359,8 +405,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         holder.btn_explainedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                callMethod.showToast("btn_explainedit");
+                action.EditBasketInfoExplain(basketInfos.get(position));
 
             }
         });

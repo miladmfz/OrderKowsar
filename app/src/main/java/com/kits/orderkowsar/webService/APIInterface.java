@@ -208,6 +208,15 @@ public interface APIInterface {
 
     );
 
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> Order_CanPrint(@Field("tag") String tag,
+                                                @Field("AppBasketInfoRef") String AppBasketInfoRef,
+                                                @Field("CanPrint") String CanPrint
+
+
+    );
+
 
 
 }

@@ -375,6 +375,24 @@
                 app:backgroundTint="@color/white"
                 app:strokeColor="@color/grey_1000"
                 app:strokeWidth="1dp" />
+
+            <Button
+                android:id="@+id/table_item_explainedit"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:text="توضیحات"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/white"
+                app:strokeColor="@color/grey_1000"
+                app:strokeWidth="1dp"
+                android:visibility="visible"/>
+
             <Button
                 android:id="@+id/table_item_print"
                 style="?attr/materialButtonOutlinedStyle"
@@ -392,23 +410,6 @@
                 app:strokeWidth="1dp" />
 
 
-
-            <Button
-                android:id="@+id/table_item_explainedit"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="3dp"
-                android:layout_weight="0.25"
-                android:gravity="center"
-                android:text="توضیحات"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
-                app:strokeWidth="1dp"
-                android:visibility="gone"/>
 
 
         </LinearLayout>

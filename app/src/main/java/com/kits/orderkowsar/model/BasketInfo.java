@@ -64,6 +64,17 @@ public class BasketInfo {
     @SerializedName("FactorCode")
     private String FactorCode;
 
+    @SerializedName("Prepayed")
+    private String Prepayed;
+
+    public String getPrepayed() {
+        return Prepayed;
+    }
+
+    public void setPrepayed(String prepayed) {
+        Prepayed = prepayed;
+    }
+
     public String getFactorCode() {
         return FactorCode;
     }
