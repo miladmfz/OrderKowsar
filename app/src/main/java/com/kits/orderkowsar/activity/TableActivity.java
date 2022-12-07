@@ -14,12 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.adapters.EmptyRstMizAdapter;
 import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.adapters.ObjectTypeAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
@@ -45,19 +47,26 @@ public class TableActivity extends AppCompatActivity {
     CallMethod callMethod;
     APIInterface apiInterface;
     Intent intent;
-    RecyclerView recyclerView_object,recyclerView_Table;
-    ArrayList<BasketInfo> basketInfos= new ArrayList<>();
-    ArrayList<ObjectType> objectTypes= new ArrayList<>();
+    RecyclerView recyclerView_object, recyclerView_Table;
+    RecyclerView erecyclerView_object, erecyclerView_Table;
+    ArrayList<BasketInfo> basketInfos = new ArrayList<>();
+    ArrayList<ObjectType> objectTypes = new ArrayList<>();
     RstMizAdapter adapter;
     public String State = "0";
+    public String EditTable = "0";
     public String mizType = "0";
     ArrayList<String> InfoState_array = new ArrayList<>();
     Spinner spinner;
 
-
+    LinearLayout init_ll;
+    LinearLayout einit_ll;
     LottieAnimationView progressBar;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
+
+    LottieAnimationView eprogressBar;
+    LottieAnimationView eimg_lottiestatus;
+    TextView etv_lottiestatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +80,16 @@ public class TableActivity extends AppCompatActivity {
             intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
             finish();
-        }else {
-            init();
+        } else {
+            if (EditTable.equals("0")) {
+                init_ll.setVisibility(View.VISIBLE);
+                einit_ll.setVisibility(View.GONE);
+                init();
+            } else {
+                init_ll.setVisibility(View.GONE);
+                einit_ll.setVisibility(View.VISIBLE);
+               // einit();
+            }
         }
     }
 
@@ -80,6 +97,7 @@ public class TableActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         assert data != null;
         State = data.getString("State");
+        //EditTable = data.getString("EditTable");
     }
 
     public void Config() {
@@ -88,12 +106,22 @@ public class TableActivity extends AppCompatActivity {
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         spinner = findViewById(R.id.tableactivity_spinner);
 
+        einit_ll = findViewById(R.id.tableactivity_emiztype_ll);
+        init_ll = findViewById(R.id.tableactivity_miztype_ll);
+
         progressBar = findViewById(R.id.tableactivity_prog);
         img_lottiestatus = findViewById(R.id.tableactivity_lottie);
         tv_lottiestatus = findViewById(R.id.tableactivity_tvstatus);
 
         recyclerView_Table = findViewById(R.id.tableactivity_mizlist_recy);
         recyclerView_object = findViewById(R.id.tableactivity_miztype_recy);
+
+        eprogressBar = findViewById(R.id.tableactivity_eprog);
+        eimg_lottiestatus = findViewById(R.id.tableactivity_elottie);
+        etv_lottiestatus = findViewById(R.id.tableactivity_etvstatus);
+
+        erecyclerView_Table = findViewById(R.id.tableactivity_emizlist_recy);
+        erecyclerView_object = findViewById(R.id.tableactivity_emiztype_recy);
 
         InfoState_array.add("همه میز ها");
         InfoState_array.add("در حال سفارش");
@@ -105,18 +133,22 @@ public class TableActivity extends AppCompatActivity {
 
 
     public void CallTable() {
+        Log.e("ttest__","24");
 
         basketInfos.clear();
         progressBar.setVisibility(View.VISIBLE);
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
+        Log.e("ttest__","25");
 
-        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State,mizType);
+        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State, mizType);
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
+                    Log.e("ttest__","26");
+
                     basketInfos = response.body().getBasketInfos();
                     progressBar.setVisibility(View.GONE);
                     callrecycler();
@@ -133,6 +165,7 @@ public class TableActivity extends AppCompatActivity {
     }
 
     public void CallSpinner() {
+        Log.e("ttest__","22");
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, InfoState_array);
@@ -143,7 +176,9 @@ public class TableActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                State=String.valueOf(position);
+                Log.e("ttest__","23");
+
+                State = String.valueOf(position);
                 CallTable();
 
             }
@@ -166,12 +201,89 @@ public class TableActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
+                    Log.e("ttest","2");
                     objectTypes = response.body().getObjectTypes();
-                    for (ObjectType objectType : objectTypes){
-                        if(objectType.getIsDefault().equals("1")){
-                            mizType=objectType.getaType();
+                    Log.e("ttest__",objectTypes.size()+"");
+                    for (ObjectType objectType : objectTypes) {
+                        Log.e("ttest__","20");
+                        if (objectType.getIsDefault().equals("1")) {
+                            Log.e("ttest__","21");
+
+                            mizType = objectType.getaType();
                             State = "0";
                             CallSpinner();
+                        }
+                    }
+
+                    ObjectTypeAdapter objectadapter = new ObjectTypeAdapter(objectTypes, TableActivity.this);
+                    recyclerView_object.setLayoutManager(new GridLayoutManager(TableActivity.this, 1));
+                    recyclerView_object.setAdapter(objectadapter);
+                    recyclerView_object.setItemAnimator(new DefaultItemAnimator());
+
+                    Log.e("ttest","3");
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Log.e("ttest","4");
+            }
+        });
+
+        Log.e("ttest","5");
+    }
+
+    public void einit() {
+
+
+        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "RstMiz_MizType");
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    objectTypes = response.body().getObjectTypes();
+                    for (ObjectType objectType : objectTypes) {
+                        if (objectType.getIsDefault().equals("1")) {
+                            mizType = objectType.getaType();
+                            State = "3";
+                            basketInfos.clear();
+                            eprogressBar.setVisibility(View.VISIBLE);
+                            eimg_lottiestatus.setVisibility(View.GONE);
+                            etv_lottiestatus.setVisibility(View.GONE);
+
+                            Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State, mizType);
+                            call1.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        assert response.body() != null;
+                                        basketInfos = response.body().getBasketInfos();
+                                        eprogressBar.setVisibility(View.GONE);
+                                        EmptyRstMizAdapter adapter = new EmptyRstMizAdapter(basketInfos, TableActivity.this);
+
+                                        if (adapter.getItemCount() == 0) {
+                                            etv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");
+                                            eimg_lottiestatus.setVisibility(View.VISIBLE);
+                                            etv_lottiestatus.setVisibility(View.VISIBLE);
+                                        } else {
+                                            eimg_lottiestatus.setVisibility(View.GONE);
+                                            etv_lottiestatus.setVisibility(View.GONE);
+                                        }
+                                        erecyclerView_Table.setLayoutManager(new GridLayoutManager(TableActivity.this, 1));
+                                        erecyclerView_Table.setAdapter(adapter);
+                                        erecyclerView_Table.setItemAnimator(new DefaultItemAnimator());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                                    etv_lottiestatus.setText("میزی خالی وجود ندارد");
+                                    eimg_lottiestatus.setVisibility(View.VISIBLE);
+                                    etv_lottiestatus.setVisibility(View.VISIBLE);
+                                }
+                            });
                         }
                     }
 
@@ -192,15 +304,12 @@ public class TableActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
     }
 
 
     private void callrecycler() {
+        Log.e("ttest__","27");
+
         adapter = new RstMizAdapter(basketInfos, TableActivity.this);
 
         if (adapter.getItemCount() == 0) {

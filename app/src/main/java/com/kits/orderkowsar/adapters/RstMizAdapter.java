@@ -29,6 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.BasketActivity;
+import com.kits.orderkowsar.activity.NavActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
@@ -394,21 +395,18 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             }
         });
 
-        holder.btn_changemiz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callMethod.showToast("btn_changemiz");
+        holder.btn_changemiz.setOnClickListener(v -> {
+            callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+            intent = new Intent(mContext, TableActivity.class);
+            intent.putExtra("State", "3");
+            intent.putExtra("EditTable", "1");
+            mContext.startActivity(intent);
 
-            }
+
+
         });
 
-        holder.btn_explainedit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                action.EditBasketInfoExplain(basketInfos.get(position));
-
-            }
-        });
+        holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
 
 
     }

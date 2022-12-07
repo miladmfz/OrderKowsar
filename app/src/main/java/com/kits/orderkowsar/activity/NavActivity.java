@@ -141,6 +141,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "0");
+            intent.putExtra("EditTable", "0");
             startActivity(intent);
         });
 
@@ -149,6 +150,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "1");
+            intent.putExtra("EditTable", "0");
             startActivity(intent);
         });
 
@@ -157,6 +159,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "2");
+            intent.putExtra("EditTable", "0");
             startActivity(intent);
         });
 
@@ -165,6 +168,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "3");
+            intent.putExtra("EditTable", "0");
             startActivity(intent);
         });
 
@@ -173,6 +177,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "4");
+            intent.putExtra("EditTable", "0");
             startActivity(intent);
         });
 
