@@ -5,23 +5,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.adapters.EmptyRstMizAdapter;
+import com.kits.orderkowsar.adapters.RstMizEmptyAdapter;
 import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.adapters.ObjectTypeAdapter;
 import com.kits.orderkowsar.adapters.RstMizAdapter;
@@ -30,7 +26,6 @@ import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.model.RetrofitResponse;
-import com.kits.orderkowsar.model.RstMiz;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
@@ -88,7 +83,7 @@ public class TableActivity extends AppCompatActivity {
             } else {
                 init_ll.setVisibility(View.GONE);
                 einit_ll.setVisibility(View.VISIBLE);
-               // einit();
+               einit();
             }
         }
     }
@@ -97,7 +92,7 @@ public class TableActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         assert data != null;
         State = data.getString("State");
-        //EditTable = data.getString("EditTable");
+        EditTable = data.getString("EditTable");
     }
 
     public void Config() {
@@ -261,7 +256,7 @@ public class TableActivity extends AppCompatActivity {
                                         assert response.body() != null;
                                         basketInfos = response.body().getBasketInfos();
                                         eprogressBar.setVisibility(View.GONE);
-                                        EmptyRstMizAdapter adapter = new EmptyRstMizAdapter(basketInfos, TableActivity.this);
+                                        RstMizEmptyAdapter adapter = new RstMizEmptyAdapter(basketInfos, TableActivity.this);
 
                                         if (adapter.getItemCount() == 0) {
                                             etv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");

@@ -75,7 +75,6 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final GoodBoxItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Log.e("test", goods.get(position).getExplain());
 
         holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
         holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
@@ -85,10 +84,9 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
             holder.img_dlt.setVisibility(View.VISIBLE);
         } else {
             holder.img_dlt.setVisibility(View.INVISIBLE);
-            if (Integer.parseInt(goods.get(position).getFactorCode()) > 0) {
                 holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
                         .setTitle("توجه")
-                        .setMessage("خذف شود ؟")
+                        .setMessage("حذف شود ؟")
                         .setPositiveButton("بله", (dialogInterface, i) -> {
 
                             call = apiInterface.DeleteGoodFromBasket(
@@ -121,7 +119,7 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
                         })
                         .show());
             }
-        }
+
     }
 
     @Override

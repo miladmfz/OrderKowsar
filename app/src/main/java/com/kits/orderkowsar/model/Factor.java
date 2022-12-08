@@ -28,6 +28,51 @@ public class Factor {
     @SerializedName("GoodName")
     private String GoodName;
 
+    @SerializedName("IsExtra")
+    private String IsExtra;
+
+    @SerializedName("TimeStart")
+    private String TimeStart;
+
+    @SerializedName("ErrCode")
+    private String ErrCode;
+
+    @SerializedName("ErrDesc")
+    private String ErrDesc;
+
+
+    public String getErrCode() {
+        return ErrCode;
+    }
+
+    public void setErrCode(String errCode) {
+        ErrCode = errCode;
+    }
+
+    public String getErrDesc() {
+        return ErrDesc;
+    }
+
+    public void setErrDesc(String errDesc) {
+        ErrDesc = errDesc;
+    }
+
+    public String getTimeStart() {
+        return TimeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        TimeStart = timeStart;
+    }
+
+    public String getIsExtra() {
+        return IsExtra;
+    }
+
+    public void setIsExtra(String isExtra) {
+        IsExtra = isExtra;
+    }
+
     public String getGoodName() {
         return GoodName;
     }

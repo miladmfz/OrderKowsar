@@ -159,7 +159,6 @@ public class SearchActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        Log.e("test_GetOrderSum+-",response.body().getGoods().get(0).getSumFacAmount());
                         textCartItemCount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
                         if (Integer.parseInt(response.body().getGoods().get(0).getSumFacAmount()) > 0) {
                             if (textCartItemCount.getVisibility() != View.VISIBLE) {

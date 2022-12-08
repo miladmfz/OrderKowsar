@@ -94,8 +94,8 @@ public class BasketActivity extends AppCompatActivity {
     public void init() {
 
 
-        callMethod = new CallMethod(App.getContext());
-        action = new Action(App.getContext());
+        callMethod = new CallMethod(BasketActivity.this);
+        action = new Action(BasketActivity.this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
@@ -232,7 +232,6 @@ public class BasketActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.e("test_FocusCha","1");
 
         RefreshState();
         super.onWindowFocusChanged(hasFocus);

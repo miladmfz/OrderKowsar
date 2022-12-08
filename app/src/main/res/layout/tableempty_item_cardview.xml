@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/table_item"
+    android:id="@+id/tableempty_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -43,7 +43,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/emptytable_item_name"
+                    android:id="@+id/tableempty_item_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -65,7 +65,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/emptytable_item_select"
+                android:id="@+id/tableempty_item_select"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

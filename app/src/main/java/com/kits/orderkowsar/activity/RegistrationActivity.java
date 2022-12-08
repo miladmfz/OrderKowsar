@@ -80,12 +80,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        Log.e("test_res",response.body().getText());
-                        Log.e("test_dbh",dbh.ReadConfig("GroupCodeDefult"));
 
                         if (!response.body().getText().equals(dbh.ReadConfig("GroupCodeDefult"))){
-                            Log.e("test_res","1");
-
 
                             binding.registrGroupcode.setText(NumberFunctions.PerisanNumber(dbh.ReadConfig("GroupCodeDefult")));
                             dbh.SaveConfig("GroupCodeDefult",response.body().getText());

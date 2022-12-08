@@ -29,9 +29,9 @@ public class EmptyRstMizViewHolder extends RecyclerView.ViewHolder {
     public EmptyRstMizViewHolder(View itemView) {
         super(itemView);
 
-        rltv = itemView.findViewById(R.id.table_item);
-        tv_name = itemView.findViewById(R.id.table_item_name);
-        btn_select = itemView.findViewById(R.id.table_item_select);
+        rltv = itemView.findViewById(R.id.tableempty_item);
+        tv_name = itemView.findViewById(R.id.tableempty_item_name);
+        btn_select = itemView.findViewById(R.id.tableempty_item_select);
 
     }
 
