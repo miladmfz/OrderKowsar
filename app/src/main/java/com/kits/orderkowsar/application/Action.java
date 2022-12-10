@@ -348,7 +348,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             btn_orderbox.setText("اصلاح سفارش");
         } else {
             good.setRowCode("0");
-            btn_orderbox.setText("اضافه یه سفارش");
+            btn_orderbox.setText("اضافه به سفارش");
         }
 
 
@@ -420,11 +420,12 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
 
         btn_orderbox.setOnClickListener(v -> {
-            dialogProg();
+
             String amo = NumberFunctions.EnglishNumber(ed_orderbox_amount.getText().toString());
             String explain = NumberFunctions.EnglishNumber(ed_orderbox_explain.getText().toString());
             if (!amo.equals("")) {
                 if (Float.parseFloat(amo) > 0) {
+                    dialogProg();
                     Call<RetrofitResponse> call = apiInterface.OrderRowInsert("OrderRowInsert",
                             good.getGoodCode(),
                             amo,
@@ -467,7 +468,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
 
     public void OrderToFactor() {
-
+        dialogProg();
         Call<RetrofitResponse> call = apiInterface.OrderToFactor(
                 "OrderToFactor",
                 callMethod.ReadString("AppBasketInfoCode")
