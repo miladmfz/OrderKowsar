@@ -20,11 +20,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GrpAdapter;
+import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.application.CallMethod;
+import com.kits.orderkowsar.model.BasketInfo;
+import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
@@ -45,16 +51,23 @@ public class GrpFragment extends Fragment {
     CallMethod callMethod;
     APIInterface apiInterface;
     View view;
-    ArrayList<GoodGroup> goodGroups=new ArrayList<>();
+    ArrayList<GoodGroup> goodGroups = new ArrayList<>();
     RecyclerView rc_grp;
     RecyclerView rc_good;
     EditText ed_search;
     Handler handler = new Handler();
     String groupCode;
-    String searchtarget="",Where="";
-    FragmentManager fragmentManager ;
+    String searchtarget = "", Where = "";
+    FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Call<RetrofitResponse> call;
+    GoodAdapter adapter;
+    ArrayList<Good> Goods = new ArrayList<>();
+    LottieAnimationView progressBar;
+    LottieAnimationView img_lottiestatus;
+    TextView tv_lottiestatus;
+
+
     public String getGroupCode() {
         return groupCode;
     }
@@ -75,12 +88,15 @@ public class GrpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view= inflater.inflate(R.layout.fragment_grp, container, false);
+        view = inflater.inflate(R.layout.fragment_grp, container, false);
 
-        rc_grp=view.findViewById(R.id.fragment_grp_recy);
-        rc_good=view.findViewById(R.id.fragment_good_recy);
-        ed_search=view.findViewById(R.id.fragment_good_search);
+        rc_grp = view.findViewById(R.id.fragment_grp_recy);
+        rc_good = view.findViewById(R.id.fragment_good_recy);
+        ed_search = view.findViewById(R.id.fragment_good_search);
 
+        progressBar = view.findViewById(R.id.fragment_good_prog);
+        img_lottiestatus = view.findViewById(R.id.fragment_good_lottie);
+        tv_lottiestatus = view.findViewById(R.id.fragment_good_tvstatus);
 
 
         return view;
@@ -95,7 +111,6 @@ public class GrpFragment extends Fragment {
 
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-
 
 
         allgrp();
@@ -114,7 +129,6 @@ public class GrpFragment extends Fragment {
             public void afterTextChanged(final Editable editable) {
                 handler.removeCallbacksAndMessages(null);
                 handler.postDelayed(() -> {
-
                     searchtarget = NumberFunctions.EnglishNumber(ed_search.getText().toString());
                     Where = "GoodName Like N''%" + searchtarget.replaceAll(" ", "%") + "%'' ";
                     allgood();
@@ -123,10 +137,6 @@ public class GrpFragment extends Fragment {
         });
 
     }
-
-
-
-
 
 
     void allgrp() {
@@ -140,7 +150,7 @@ public class GrpFragment extends Fragment {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
 
-                    GrpAdapter adapter = new GrpAdapter(response.body().getGroups(),fragmentTransaction, requireActivity());
+                    GrpAdapter adapter = new GrpAdapter(response.body().getGroups(), fragmentTransaction, requireActivity());
                     rc_grp.setLayoutManager(new LinearLayoutManager(requireActivity()));
                     rc_grp.setAdapter(adapter);
                 }
@@ -155,14 +165,10 @@ public class GrpFragment extends Fragment {
 
 
     void allgood() {
-        callMethod.log("0");
-        callMethod.log("_"+"GetOrderGoodList");
-        callMethod.log("_"+Where);
-        callMethod.log("_"+groupCode);
-        callMethod.log("_"+callMethod.ReadString("AppBasketInfoCode"));
-
-
-
+        Goods.clear();
+        progressBar.setVisibility(View.VISIBLE);
+        img_lottiestatus.setVisibility(View.GONE);
+        tv_lottiestatus.setVisibility(View.GONE);
 
         call = apiInterface.GetGoodFromGroup(
                 "GetOrderGoodList",
@@ -175,28 +181,44 @@ public class GrpFragment extends Fragment {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    callMethod.log("1");
-
-                    GoodAdapter adapter = new GoodAdapter(response.body().getGoods(), requireActivity());
-                    rc_good.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-                    rc_good.setAdapter(adapter);
-                    rc_good.setItemAnimator(new DefaultItemAnimator());
+                    Goods = response.body().getGoods();
+                    callrecycler();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                callMethod.log("2");
-                callMethod.log(t.getMessage());
 
+                callrecycler();
             }
         });
     }
 
+
+    private void callrecycler() {
+
+        progressBar.setVisibility(View.GONE);
+
+        adapter = new GoodAdapter(Goods, requireActivity());
+        if (adapter.getItemCount() == 0) {
+            tv_lottiestatus.setText("کالایی یافت نشد");
+            img_lottiestatus.setVisibility(View.VISIBLE);
+            tv_lottiestatus.setVisibility(View.VISIBLE);
+        } else {
+            img_lottiestatus.setVisibility(View.GONE);
+            tv_lottiestatus.setVisibility(View.GONE);
+        }
+        rc_good.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+        rc_good.setAdapter(adapter);
+        rc_good.setItemAnimator(new DefaultItemAnimator());
+
+    }
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (call.isExecuted()){
+        if (call.isExecuted()) {
             call.cancel();
         }
 

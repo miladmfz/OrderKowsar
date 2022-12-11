@@ -38,6 +38,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.activity.BasketActivity;
 import com.kits.orderkowsar.activity.NavActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
@@ -86,7 +87,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     public Call<RetrofitResponse> call;
     PersianCalendar persianCalendar;
     String date;
-    Dialog dialog,dialogProg;
+    Dialog dialog, dialogProg;
     Dialog dialogprint;
     Calendar cldr;
     TimePickerDialog picker;
@@ -107,7 +108,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     LinearLayoutCompat main_layout;
     Bitmap bitmap_factor;
     String bitmap_factor_base64 = "";
-
+    TextView tv_rep;
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -122,10 +123,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         printerconter = 0;
 
     }
+
     public void dialogProg() {
         dialogProg.setContentView(R.layout.rep_prog);
-        TextView tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
-        tv_rep.setText("در حال ارسال اطلاعات");
+        tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
         dialogProg.show();
     }
 
@@ -287,6 +288,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
         btn_reserve.setOnClickListener(v -> {
             dialogProg();
+            tv_rep.setText("در حال ارسال اطلاعات");
             call = apiInterface.OrderInfoInsert(
                     "OrderInfoInsert",
                     dbh.ReadConfig("BrokerCode"),
@@ -308,6 +310,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     assert response.body() != null;
                     if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                        dialogProg.dismiss();
                     } else {
                         dialog.dismiss();
                         dialogProg.dismiss();
@@ -351,10 +354,15 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             btn_orderbox.setText("اضافه به سفارش");
         }
 
-
-        ed_orderbox_goodname.setText(good.getGoodName());
+        ed_orderbox_amount.selectAll();
+        ed_orderbox_amount.requestFocus();
+        ed_orderbox_amount.postDelayed(() -> {
+            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(ed_orderbox_amount, InputMethodManager.SHOW_IMPLICIT);
+        }, 500);
         ed_orderbox_amount.setOnClickListener(v -> ed_orderbox_amount.selectAll());
 
+        ed_orderbox_goodname.setText(good.getGoodName());
         call = apiInterface.GetDistinctValues("GetDistinctValues", "AppBasket", "Explain", "");
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
@@ -379,6 +387,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
                         ed_orderbox_explain.setText(values_array.get(position));
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -426,6 +435,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             if (!amo.equals("")) {
                 if (Float.parseFloat(amo) > 0) {
                     dialogProg();
+                    tv_rep.setText("در حال ارسال اطلاعات");
                     Call<RetrofitResponse> call = apiInterface.OrderRowInsert("OrderRowInsert",
                             good.getGoodCode(),
                             amo,
@@ -443,17 +453,37 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                             Goods = response.body().getGoods();
                             if (Integer.parseInt(Goods.get(0).getErrCode()) > 0) {
                                 callMethod.showToast(Goods.get(0).getErrDesc());
-                            } else {
-                                callMethod.showToast("ثبت گردید");
-                                dialog.dismiss();
                                 dialogProg.dismiss();
-                                SearchActivity activity = (SearchActivity) mContext;
-                                activity.RefreshState();
+                            } else {
+                                if (Flag.equals("0")) {
+                                    callMethod.showToast("ثبت گردید");
+                                    dialog.dismiss();
+                                    dialogProg.dismiss();
+                                    SearchActivity activity = (SearchActivity) mContext;
+                                    activity.RefreshState();
+                                } else {
+                                    intent = new Intent(mContext, BasketActivity.class);
+                                    ((Activity) mContext).finish();
+                                    ((Activity) mContext).overridePendingTransition(0, 0);
+                                    mContext.startActivity(intent);
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                            if (Flag.equals("0")) {
+                                callMethod.showToast("ثبت نگردید");
+                                dialog.dismiss();
+                                dialogProg.dismiss();
+                                SearchActivity activity = (SearchActivity) mContext;
+                                activity.RefreshState();
+                            } else {
+                                intent = new Intent(mContext, BasketActivity.class);
+                                ((Activity) mContext).finish();
+                                ((Activity) mContext).overridePendingTransition(0, 0);
+                                mContext.startActivity(intent);
+                            }
                         }
                     });
                 } else {
@@ -469,6 +499,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     public void OrderToFactor() {
         dialogProg();
+        tv_rep.setText("در حال ارسال اطلاعات");
         Call<RetrofitResponse> call = apiInterface.OrderToFactor(
                 "OrderToFactor",
                 callMethod.ReadString("AppBasketInfoCode")
@@ -481,6 +512,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     assert response.body() != null;
                     if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                        dialogProg.dismiss();
                     } else {
                         GetFactorPrint();
                     }
@@ -489,6 +521,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                intent = new Intent(mContext, BasketActivity.class);
+                ((Activity) mContext).finish();
+                ((Activity) mContext).overridePendingTransition(0, 0);
+                mContext.startActivity(intent);
             }
         });
 
@@ -510,13 +546,13 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                OrderGetAppPrinterList();
 
             }
         });
     }
 
     public void OrderPrint() {
-
 
         if (printerconter < (AppPrinters.size())) {
 
@@ -574,7 +610,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
                 @Override
                 public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
+                    OrderPrint();
                 }
             });
 
@@ -585,6 +621,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     public void GetFactorPrint() {
         dialogProg();
+        tv_rep.setText("در حال چاپ سفارش");
         call = apiInterface.OrderGetFactor(
                 "OrderGetFactor",
                 callMethod.ReadString("AppBasketInfoCode")
@@ -603,12 +640,11 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
+                GetFactorPrint();
             }
         });
 
     }
-
 
 
     public void EditBasketInfoExplain(BasketInfo basketInfo) {
@@ -632,6 +668,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         explain_btn.setOnClickListener(view -> {
 
             dialogProg();
+            tv_rep.setText("در حال ارسال اطلاعات");
             call = apiInterface.OrderInfoInsert(
                     "OrderInfoInsert",
                     dbh.ReadConfig("BrokerCode"),
@@ -646,8 +683,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     basketInfo.getInfoState(),
                     basketInfo.getAppBasketInfoCode()
             );
-            
-            if(!basketInfo.getInfoExplain().equals(NumberFunctions.EnglishNumber(explain_tv.getText().toString()))) {
+
+            if (!basketInfo.getInfoExplain().equals(NumberFunctions.EnglishNumber(explain_tv.getText().toString()))) {
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
@@ -655,6 +692,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                             assert response.body() != null;
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                                 callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                dialogProg.dismiss();
                             } else {
                                 dialog.dismiss();
                                 dialogProg.dismiss();
@@ -665,10 +703,11 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
                     @Override
                     public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
+                        dialog.dismiss();
+                        dialogProg.dismiss();
                     }
                 });
-            }else {
+            } else {
                 dialog.dismiss();
             }
 
@@ -757,7 +796,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         customername_tv.setPadding(0, 0, 0, 15);
 
 
-
         cldr = Calendar.getInstance();
         int hour = cldr.get(Calendar.HOUR_OF_DAY);
         int minutes = cldr.get(Calendar.MINUTE);
@@ -768,10 +806,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 + tminute.substring(tminute.length() - 2);
 
 
-
-
         TextView factorcode_tv = new TextView(mContext);
-        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode() + "             "+Time));
+        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode() + "             " + Time));
         factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -781,7 +817,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
 
         TextView factordate_tv = new TextView(mContext);
-        factordate_tv.setText(NumberFunctions.PerisanNumber(" زمان فاکتور :   " + Factor_header.get(0).getTimeStart() +"_"+ Factor_header.get(0).getFactorDate()));
+        factordate_tv.setText(NumberFunctions.PerisanNumber(" زمان فاکتور :   " + Factor_header.get(0).getTimeStart() + "_" + Factor_header.get(0).getFactorDate()));
         factordate_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         factordate_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         factordate_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -803,7 +839,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         title_layout.addView(factordate_tv);
         title_layout.addView(factorcode_tv);
         title_layout.addView(customername_tv);
-
 
 
         if (Factor_header.get(0).getFactorExplain().length() > 0) {
@@ -841,11 +876,11 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             ViewPager_goodname.setBackgroundResource(R.color.colorPrimaryDark);
 
             TextView good_name_tv = new TextView(mContext);
-            String goodname="";
-            if (FactorRow_detail.getIsExtra().equals("1")){
-                goodname=FactorRow_detail.getGoodName()+ "  (سفارش مجدد)  ";
-            }else {
-                goodname=FactorRow_detail.getGoodName();
+            String goodname = "";
+            if (FactorRow_detail.getIsExtra().equals("1")) {
+                goodname = FactorRow_detail.getGoodName() + "  (سفارش مجدد)  ";
+            } else {
+                goodname = FactorRow_detail.getGoodName();
             }
             good_name_tv.setText(NumberFunctions.PerisanNumber(goodname));
             good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
@@ -951,7 +986,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             @Override
             public void onFailure(Call<RetrofitResponse> call, Throwable t) {
-
+                printerconter++;
+                OrderPrint();
             }
         });
 

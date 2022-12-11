@@ -82,10 +82,10 @@
                     android:layout_weight="0.3"
                     android:gravity="center"
                     android:text="آزاد کردن"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/white"
-                    app:strokeColor="@color/grey_1000"
+                    app:backgroundTint="@color/red_600"
+                    android:textColor="@color/white"
                     app:strokeWidth="1dp" />
 
             </LinearLayout>

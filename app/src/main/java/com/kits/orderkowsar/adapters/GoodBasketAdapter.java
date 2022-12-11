@@ -81,16 +81,13 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
             holder.ll_explain.setVisibility(View.INVISIBLE);
         }
 
-
         holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
 
 
         if (goods.get(position).getFactorCode() == null) {
             holder.btn_dlt.setVisibility(View.VISIBLE);
-            holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
         } else if (Integer.parseInt(goods.get(position).getFactorCode()) > 0) {
             holder.btn_dlt.setVisibility(View.INVISIBLE);
-            holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "0"));
         }
 
 
@@ -118,8 +115,6 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
 
                         @Override
                         public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                            callMethod.log("img_2");
-                            callMethod.log(t.getMessage());
 
                         }
                     });

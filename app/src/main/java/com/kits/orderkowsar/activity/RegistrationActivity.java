@@ -1,13 +1,16 @@
 package com.kits.orderkowsar.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityRegistrationBinding;
@@ -60,7 +63,7 @@ public class RegistrationActivity extends AppCompatActivity {
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
         action = new Action(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
-
+        dbh.SaveConfig("GroupCodeDefult","0");
     }
 
     public void init() {
@@ -73,7 +76,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         binding.registrGroupcodeRefresh.setOnClickListener(v -> {
-
+            Dialog dialogProg=new Dialog(this);
+            dialogProg.setContentView(R.layout.rep_prog);
+            TextView tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
+            tv_rep.setText("در حال دریافت اطلاعات");
+            dialogProg.show();
             Call<RetrofitResponse> call1 = apiInterface.kowsar_info("kowsar_info", "AppOrder_DefaultGroupCode");
             call1.enqueue(new Callback<RetrofitResponse>() {
                 @Override
@@ -82,10 +89,11 @@ public class RegistrationActivity extends AppCompatActivity {
                         assert response.body() != null;
 
                         if (!response.body().getText().equals(dbh.ReadConfig("GroupCodeDefult"))){
-
-                            binding.registrGroupcode.setText(NumberFunctions.PerisanNumber(dbh.ReadConfig("GroupCodeDefult")));
                             dbh.SaveConfig("GroupCodeDefult",response.body().getText());
+                            binding.registrGroupcode.setText(NumberFunctions.PerisanNumber(dbh.ReadConfig("GroupCodeDefult")));
+                            callMethod.showToast("دریافت شد");
                         }
+                        dialogProg.dismiss();
                     }
                 }
 

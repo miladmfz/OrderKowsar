@@ -217,6 +217,12 @@ public interface APIInterface {
 
     );
 
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderDeleteAll(@Field("tag") String tag,
+                                          @Field("AppBasketInfoRef") String AppBasketInfoRef
+    );
+
 
 
 }

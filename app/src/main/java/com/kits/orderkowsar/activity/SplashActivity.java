@@ -127,6 +127,7 @@ public class SplashActivity extends AppCompatActivity {
         callMethod.EditString("TitleSize", "8");
         callMethod.EditString("BodySize", "8");
         callMethod.EditString("AppBasketInfoCode", "0");
+
         requestPermission();
 
 

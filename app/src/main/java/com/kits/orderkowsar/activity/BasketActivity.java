@@ -150,7 +150,6 @@ public class BasketActivity extends AppCompatActivity {
 
 
         final_buy_test.setOnClickListener(view -> {
-            //todo insert to shopfactor
             action.OrderToFactor();
         });
 
@@ -159,27 +158,28 @@ public class BasketActivity extends AppCompatActivity {
                 .setTitle("توجه")
                 .setMessage("آیا مایل به خالی کردن سبد خرید می باشید؟")
                 .setPositiveButton("بله", (dialogInterface, i) -> {
-//
-//                    Call<RetrofitResponse> call1 = apiInterface.Basketdeleteall(
-//                            "Basketdeleteall",
-//                            GetShared.ReadString("mobile")
-//                    );
-//                    call1.enqueue(new Callback<RetrofitResponse>() {
-//                        @Override
-//                        public void onResponse(@NotNull  Call<RetrofitResponse> call1, @NotNull  Response<RetrofitResponse> response) {
-//                            if (response.isSuccessful()) {
-//                                assert response.body() != null;
-//                                if (response.body().getText().equals("done")) {
-//                                    App.showToast("سبد خرید حذف گردید");
-//                                    finish();
-//                                }
-//                            }
-//                        }
-//                        @Override
-//                        public void onFailure(@NotNull Call<RetrofitResponse> call1,@NotNull  Throwable t) {
-//                        }
-//                    });
-//
+
+                    Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll(
+                            "OrderDeleteAll",
+                            callMethod.ReadString("AppBasketInfoCode")
+
+                    );
+                    call1.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(@NotNull  Call<RetrofitResponse> call1, @NotNull  Response<RetrofitResponse> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
+                                if (response.body().getText().equals("Done")) {
+                                    callMethod.showToast("سبد خرید حذف گردید");
+                                    finish();
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(@NotNull Call<RetrofitResponse> call1,@NotNull  Throwable t) {
+                        }
+                    });
+
 
                 })
                 .setNegativeButton("خیر", (dialogInterface, i) -> {

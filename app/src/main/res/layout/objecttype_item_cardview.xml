@@ -4,8 +4,7 @@
     android:id="@+id/objecttype_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@drawable/bg_round_selected"
+    android:layout_margin="5dp"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     app:cardCornerRadius="2dp"
@@ -17,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_round_selected"
+        android:padding="5sp">
 
         <TextView
             android:id="@+id/objecttype_item_itype"
@@ -26,6 +27,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:gravity="center"
+
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

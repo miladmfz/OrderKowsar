@@ -49,7 +49,7 @@ public class TableActivity extends AppCompatActivity {
     RstMizAdapter adapter;
     public String State = "0";
     public String EditTable = "0";
-    public String mizType = "0";
+    public String mizType = "";
     ArrayList<String> InfoState_array = new ArrayList<>();
     Spinner spinner;
 
@@ -124,17 +124,39 @@ public class TableActivity extends AppCompatActivity {
         InfoState_array.add("میز های خالی");
         InfoState_array.add("رزرو شده ها");
 
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, InfoState_array);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinner_adapter);
+        spinner.setSelection(Integer.parseInt(State));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                State = String.valueOf(position);
+                CallTable();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+    }
+    public void CallSpinner() {
+
+        if (String.valueOf(spinner.getSelectedItemPosition()).equals(State)){
+            CallTable();
+        }else{
+            spinner.setSelection(Integer.parseInt(State));
+        }
+
     }
 
-
     public void CallTable() {
-        Log.e("ttest__","24");
 
-        basketInfos.clear();
         progressBar.setVisibility(View.VISIBLE);
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
-        Log.e("ttest__","25");
 
         Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State, mizType);
         call1.enqueue(new Callback<RetrofitResponse>() {
@@ -142,53 +164,32 @@ public class TableActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Log.e("ttest__","26");
-
-                    basketInfos = response.body().getBasketInfos();
-                    progressBar.setVisibility(View.GONE);
-                    callrecycler();
+                    if (!response.body().getBasketInfos().equals(basketInfos)){
+                        basketInfos.clear();
+                        basketInfos = response.body().getBasketInfos();
+                        callrecycler();
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
-                progressBar.setVisibility(View.GONE);
+                basketInfos.clear();
                 callrecycler();
             }
         });
     }
 
-    public void CallSpinner() {
-        Log.e("ttest__","22");
 
-        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, InfoState_array);
-        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinner_adapter);
-        spinner.setSelection(Integer.parseInt(State));
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("ttest__","23");
-
-                State = String.valueOf(position);
-                CallTable();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        CallTable();
+        super.onWindowFocusChanged(hasFocus);
     }
 
 
     public void init() {
-
 
         Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "RstMiz_MizType");
         call1.enqueue(new Callback<RetrofitResponse>() {
@@ -196,37 +197,34 @@ public class TableActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Log.e("ttest","2");
+                    objectTypes.clear();
+                    ObjectType ob=new ObjectType();
+                    ob.setTid("0");
+                    ob.setaType("");
+                    ob.setIsDefault("0");
                     objectTypes = response.body().getObjectTypes();
-                    Log.e("ttest__",objectTypes.size()+"");
-                    for (ObjectType objectType : objectTypes) {
-                        Log.e("ttest__","20");
-                        if (objectType.getIsDefault().equals("1")) {
-                            Log.e("ttest__","21");
-
-                            mizType = objectType.getaType();
-                            State = "0";
+                    objectTypes.add(0,ob);
+//                    for (ObjectType objectType : objectTypes) {
+//                        if (objectType.getIsDefault().equals("1")) {
+//                            mizType = objectType.getaType();
                             CallSpinner();
-                        }
-                    }
+//                        }
+//                    }
 
                     ObjectTypeAdapter objectadapter = new ObjectTypeAdapter(objectTypes, TableActivity.this);
                     recyclerView_object.setLayoutManager(new GridLayoutManager(TableActivity.this, 1));
                     recyclerView_object.setAdapter(objectadapter);
                     recyclerView_object.setItemAnimator(new DefaultItemAnimator());
 
-                    Log.e("ttest","3");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Log.e("ttest","4");
             }
         });
 
-        Log.e("ttest","5");
     }
 
     public void einit() {
@@ -301,10 +299,8 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
-
     private void callrecycler() {
-        Log.e("ttest__","27");
-
+        progressBar.setVisibility(View.GONE);
         adapter = new RstMizAdapter(basketInfos, TableActivity.this);
 
         if (adapter.getItemCount() == 0) {
@@ -321,11 +317,6 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        CallSpinner();
-        super.onWindowFocusChanged(hasFocus);
-    }
 
 
 }

@@ -65,7 +65,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     public GoodItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.good_item_cardview, parent, false);
 
-        return new GoodItemViewHolder(view);
+        return new GoodItemViewHolder(view,mContext);
     }
 
 
@@ -75,67 +75,8 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
 
         holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
         holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
-
-        if (!goods.get(position).getGoodImageName().equals("")) {
-            Glide.with(holder.img)
-                    .asBitmap()
-                    .load(R.drawable.white)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
-                    .into(holder.img);
-            holder.img.setVisibility(View.VISIBLE);
-
-            Glide.with(holder.img)
-                    .asBitmap()
-                    .load(Base64.decode(goods.get(position).getGoodImageName(), Base64.DEFAULT))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
-                    .into(holder.img);
-
-
-        } 
-        else {
-
-
-            Glide.with(holder.img)
-                    .asBitmap()
-                    .load(R.drawable.white)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
-                    .into(holder.img);
-            holder.img.setVisibility(View.VISIBLE);
-            call2 = apiInterface.GetImage(
-                    "getImage",
-                    goods.get(position).getGoodCode(),
-                    "TGood",
-                    "0",
-                    "200"
-            );
-            call2.enqueue(new Callback<RetrofitResponse>() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onResponse(@NonNull Call<RetrofitResponse> call2, @NonNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-
-                        assert response.body() != null;
-                        if (!response.body().getText().equals("no_photo")) {
-                            goods.get(position).setGoodImageName(response.body().getText());
-                        } else {
-                            goods.get(position).setGoodImageName(String.valueOf(R.string.no_photo));
-
-                        }
-                        notifyItemChanged(position);
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<RetrofitResponse> call2, @NonNull Throwable t) {
-
-                }
-            });
-        }
-
         holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position),"0"));
+        holder.callimage(goods.get(position));
         
     }
 
@@ -144,5 +85,14 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
         return goods.size();
     }
 
+
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull GoodItemViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (holder.call.isExecuted()) {
+            holder.call.cancel();
+        }
+    }
 
 }

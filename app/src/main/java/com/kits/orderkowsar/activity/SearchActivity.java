@@ -131,7 +131,7 @@ public class SearchActivity extends AppCompatActivity {
 
         grp_Fragment.setGroupCode(GroupCode);
         fragmentTransaction.replace(R.id.searchactivity_framelayout, grp_Fragment);
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -182,19 +182,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
     }
 
-    @Override
-    public void onBackPressed() {
 
-        int count = fragmentManager.getBackStackEntryCount();
-        if (count == 0) {
-            super.onBackPressed();
-            //additional code
-        } else {
-            fragmentManager.popBackStack();
-
-        }
-
-    }
 
 
     @Override
@@ -223,7 +211,6 @@ public class SearchActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }
 

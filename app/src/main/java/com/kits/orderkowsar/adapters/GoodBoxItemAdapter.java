@@ -108,8 +108,6 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
 
                                 @Override
                                 public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                                    callMethod.log("2");
-                                    callMethod.log(t.getMessage());
 
                                 }
                             });

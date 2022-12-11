@@ -66,10 +66,7 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
 
         holder.grpname.setText(GoodGroups.get(position).getGoodGroupFieldValue("Name"));
 
-        holder.grpname.setOnClickListener(v -> {
 
-            //todo
-        });
 
 
         if (!GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName").equals("")) {
@@ -101,6 +98,8 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
                         assert response.body() != null;
                         if (!response.body().getText().equals("no_photo")) {
                             GoodGroups.get(position).setGoodGroupImageName(response.body().getText());
+                        }else {
+                            GoodGroups.get(position).setGoodGroupImageName("no_photo");
                         }
                         notifyItemChanged(position);
                     }
