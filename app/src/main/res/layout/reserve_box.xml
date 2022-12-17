@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/reserve_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,14 +15,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/reserve_box_rstmiz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_margin="5sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -92,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="توضیحات" />
+                    android:text="نفرات" />
 
                 <EditText
 
@@ -104,7 +111,7 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="توضیحات" />
+                    android:hint="نفرات" />
 
             </LinearLayout>
 
@@ -212,11 +219,18 @@
                 android:orientation="horizontal">
 
                 <Button
+                    style="?attr/materialButtonOutlinedStyle"
                     android:id="@+id/reserve_box_btn_send"
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="ثبت رزرو" />
+                    android:text="ثبت رزرو"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#D7BE9F"
+                    app:strokeColor="#B96838"
+                    app:strokeWidth="1dp"/>
 
 
             </LinearLayout>
@@ -228,7 +242,7 @@
                 android:layout_gravity="center"
                 android:background="@color/grey_600"
                 android:gravity="center"
-                android:text=" لیست رزرو های امروز میز"
+                android:text="لیست رزرو میز"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"

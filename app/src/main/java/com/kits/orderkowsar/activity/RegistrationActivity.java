@@ -63,7 +63,6 @@ public class RegistrationActivity extends AppCompatActivity {
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
         action = new Action(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
-        dbh.SaveConfig("GroupCodeDefult","0");
     }
 
     public void init() {

@@ -49,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="@string/amount"
+                    android:text="تعداد"
                     android:textStyle="bold" />
 
                 <EditText
@@ -60,7 +60,7 @@
                     android:layout_weight="0.4"
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:hint="@string/amount"
+                    android:hint="تعداد"
                     android:inputType="number"
                     android:maxLength="4"
                     android:textStyle="bold"
@@ -110,7 +110,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.95"
                 android:gravity="center"
-                android:text="@string/boxbuy_total"
                 android:textSize="30sp"
                 android:visibility="invisible" />
 
@@ -137,13 +136,13 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:text="افزودن به سفارش"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/green_600"
+            app:backgroundTint="#D7BE9F"
             app:icon="@drawable/ic_add_shopping_black"
-            app:iconTint="@color/white"
-            app:strokeColor="@color/grey_1000"
+            app:iconTint="@color/black"
+            app:strokeColor="#B96838"
             app:strokeWidth="1dp"
             />
         <androidx.recyclerview.widget.RecyclerView

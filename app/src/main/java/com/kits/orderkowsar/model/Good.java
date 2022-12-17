@@ -79,6 +79,30 @@ public class Good implements Serializable {
     @SerializedName("AppBasketInfoRef")
     private String AppBasketInfoRef;
 
+
+    @SerializedName("AppBasketInfoCode")
+    private String AppBasketInfoCode;
+
+
+    @SerializedName("InfoState")
+    private String InfoState;
+
+    public String getAppBasketInfoCode() {
+        return AppBasketInfoCode;
+    }
+
+    public void setAppBasketInfoCode(String appBasketInfoCode) {
+        AppBasketInfoCode = appBasketInfoCode;
+    }
+
+    public String getInfoState() {
+        return InfoState;
+    }
+
+    public void setInfoState(String infoState) {
+        InfoState = infoState;
+    }
+
     public String getPreFactorCode() {
         return PreFactorCode;
     }

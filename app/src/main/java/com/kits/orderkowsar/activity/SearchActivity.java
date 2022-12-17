@@ -3,14 +3,10 @@ package com.kits.orderkowsar.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,30 +14,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.kits.orderkowsar.Fragment.GrpFragment;
+import com.kits.orderkowsar.Fragment.SearchViewFragment;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivitySearchBinding;
 import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    GrpFragment grp_Fragment;
+    SearchViewFragment grp_Fragment;
     FrameLayout grp_framelayout;
     Toolbar toolbar;
     int width = 1;
@@ -103,11 +89,12 @@ public class SearchActivity extends AppCompatActivity {
         width = metrics.widthPixels;
 
         toolbar = findViewById(R.id.SearchActivity_toolbar);
+        toolbar.setTitle(NumberFunctions.PerisanNumber(" میز "+callMethod.ReadString("RstMizName")));
         setSupportActionBar(toolbar);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        grp_Fragment = new GrpFragment();
+        grp_Fragment = new SearchViewFragment();
 
 
         grp_framelayout = findViewById(R.id.searchactivity_framelayout);
@@ -129,7 +116,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private void callGrpfragment(String GroupCode) {
 
-        grp_Fragment.setGroupCode(GroupCode);
+        grp_Fragment.setParent_GourpCode(GroupCode);
+        grp_Fragment.setGood_GourpCode(GroupCode);
         fragmentTransaction.replace(R.id.searchactivity_framelayout, grp_Fragment);
         //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

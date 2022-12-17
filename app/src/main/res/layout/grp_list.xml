@@ -31,7 +31,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_margin="5dp"
-                    android:text="@string/detail_buy"
+                    android:text="Name"
+                    android:textColor="@color/color_black"
+                    android:textSize="16sp" />
+                <ImageView
+                    android:id="@+id/grp_list_imgv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Name"
+                    android:background="@drawable/ic_keyboard_arrow_down_black_24dp"
                     android:textColor="@color/color_black"
                     android:textSize="16sp" />
         </LinearLayout>

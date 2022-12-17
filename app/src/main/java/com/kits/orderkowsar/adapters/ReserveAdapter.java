@@ -9,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.activity.SearchActivity;
+import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
@@ -25,6 +28,8 @@ import com.kits.orderkowsar.webService.APIInterface;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
@@ -67,8 +72,40 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
             holder.tv_reserveend.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveEnd()));
             holder.tv_reservebrokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRes_BrokerName()));
             holder.tv_reservepersonname.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPersonName()));
+            holder.tv_reserveeplain.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getInfoExplain()));
             holder.tv_reservemobileno.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getMobileNo()));
             holder.tv_reservedate.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getAppBasketInfoDate()));
+
+
+            holder.rltv.setOnClickListener(v -> {
+
+                new AlertDialog.Builder(mContext)
+                        .setTitle("توجه")
+                        .setMessage("آیا مایل به سفارش هستید ؟؟")
+                        .setPositiveButton("بله", (dialogInterface, i) -> {
+                            callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName()+" (رزرو) ");
+                            callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+                            intent = new Intent(mContext, SearchActivity.class);
+                            mContext.startActivity(intent);
+                        })
+                        .setNegativeButton("خیر", (dialogInterface, i) -> {
+                        })
+                        .show();
+            });
+
+        holder.rltv.setOnLongClickListener(v -> {
+
+            new AlertDialog.Builder(mContext)
+                    .setTitle("توجه")
+                    .setMessage("آیا رزرو حذف شود؟")
+                    .setPositiveButton("بله", (dialogInterface, i) -> {
+                        action.DeleteReserveDialog(basketInfos.get(position));
+                    })
+                    .setNegativeButton("خیر", (dialogInterface, i) -> {
+                    })
+                    .show();
+            return false;
+        });
 
     }
 

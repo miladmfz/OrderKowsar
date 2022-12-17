@@ -49,14 +49,14 @@
                     <Button
                         android:id="@+id/registr_btn"
                         android:layout_width="match_parent"
-                        android:text="@string/reg_save"
+                        android:text="ثبت اطلاعات"
                         android:layout_margin="5dp"
                         android:textColor="#ffffff"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        app:backgroundTint="@color/green_600"
+                        app:backgroundTint="#DF5D10"
                         app:strokeColor="@color/grey_1000"
                         app:strokeWidth="1dp"
                         style="?attr/materialButtonOutlinedStyle"
@@ -118,36 +118,6 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        android:padding="5dp"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/config_real_amount"
-                            android:layout_weight="0.5" />
-
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/registr_real_amount"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.75" />
-
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.75"
-                            android:visibility="invisible" />
-
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
                         android:padding="5dp">
 
                         <TextView
@@ -155,7 +125,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/config_delay"
+                            android:text="وقفه جستجو :"
                             android:layout_weight="0.5"
                             />
 

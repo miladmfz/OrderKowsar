@@ -28,6 +28,7 @@ import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
+import com.kits.orderkowsar.application.Print;
 import com.kits.orderkowsar.databinding.ActivityBuyBinding;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
@@ -59,11 +60,14 @@ public class BasketActivity extends AppCompatActivity {
     Intent intent;
     GoodBasketAdapter adapter;
     Action action;
+    Print print;
     ArrayList<Good> goods = new ArrayList<>();
-
+    Button total_delete;
+    Button final_buy_test;
     LottieAnimationView prog;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
+    String State="0";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -96,12 +100,13 @@ public class BasketActivity extends AppCompatActivity {
 
         callMethod = new CallMethod(BasketActivity.this);
         action = new Action(BasketActivity.this);
+        print = new Print(BasketActivity.this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
-        Button total_delete = findViewById(R.id.BuyActivity_total_delete);
-        Button final_buy_test = findViewById(R.id.BuyActivity_test);
+        total_delete = findViewById(R.id.BuyActivity_total_delete);
+        final_buy_test = findViewById(R.id.BuyActivity_test);
         recyclerView = findViewById(R.id.BuyActivity_R1);
 
         prog = findViewById(R.id.BuyActivity_prog);
@@ -109,6 +114,8 @@ public class BasketActivity extends AppCompatActivity {
         tv_lottiestatus = findViewById(R.id.BuyActivity_tvstatus);
 
         Toolbar toolbar = findViewById(R.id.BuyActivity_toolbar);
+        toolbar.setTitle(NumberFunctions.PerisanNumber( " سفارشات "+ callMethod.ReadString("RstMizName")));
+
         setSupportActionBar(toolbar);
 
 
@@ -137,20 +144,20 @@ public class BasketActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
                 prog.setVisibility(View.GONE);
-                img_lottiestatus.setVisibility(View.VISIBLE);
-                tv_lottiestatus.setVisibility(View.VISIBLE);
-
+                goods.clear();
+                callrecycler();
             }
         });
 
 
-
-
-
-
-
         final_buy_test.setOnClickListener(view -> {
-            action.OrderToFactor();
+            Log.e("test__",State);
+
+            if (State.equals("4")){
+                print.GetHeader_Data("");
+            }else{
+                action.OrderToFactor();
+            }
         });
 
 
@@ -190,13 +197,20 @@ public class BasketActivity extends AppCompatActivity {
 
 
     private void callrecycler() {
+
         adapter = new GoodBasketAdapter(goods, this);
 
         if (adapter.getItemCount() == 0) {
-            tv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");
+            tv_lottiestatus.setText("موردی یافت نشد");
             img_lottiestatus.setVisibility(View.VISIBLE);
             tv_lottiestatus.setVisibility(View.VISIBLE);
         } else {
+            for(Good good:goods){
+                if (good.getFactorCode()==null){
+                    final_buy_test.setVisibility(View.VISIBLE);
+                    total_delete.setVisibility(View.VISIBLE);
+                }
+            }
             img_lottiestatus.setVisibility(View.GONE);
             tv_lottiestatus.setVisibility(View.GONE);
         }
@@ -218,13 +232,20 @@ public class BasketActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
+                        State=response.body().getGoods().get(0).getInfoState();
+                        Log.e("Test_",response.body().getGoods().get(0).getCountGood());
+                        Log.e("Test_",response.body().getGoods().get(0).getSumFacAmount());
                         Buy_row.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getCountGood()));
                         Buy_amount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
+                        if (State.equals("4")){
+                            final_buy_test.setText("ثبت سفارش رزرو");
+                        }
                     }
                 }
                 @Override
                 public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
+                    goods.clear();
+                    callrecycler();
                 }
             });
 

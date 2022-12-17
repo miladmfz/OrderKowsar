@@ -97,6 +97,13 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/reserve_item_reserveeplain"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:textSize="12sp" />
+            <TextView
                 android:id="@+id/reserve_item_reservepersonname"
                 android:layout_width="match_parent"
                 android:layout_height="31dp"

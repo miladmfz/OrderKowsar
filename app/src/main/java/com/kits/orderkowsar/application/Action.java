@@ -88,7 +88,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog, dialogProg;
-    Dialog dialogprint;
     Calendar cldr;
     TimePickerDialog picker;
     TextView tv_reservestart;
@@ -101,25 +100,21 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     ArrayList<String> values_array = new ArrayList<>();
     ArrayList<Good> Goods;
     ArrayList<Good> good_box_items = new ArrayList<>();
-    ArrayList<Factor> Factor_header = new ArrayList<>();
-    ArrayList<Factor> Factor_row = new ArrayList<>();
-    ArrayList<AppPrinter> AppPrinters = new ArrayList<>();
-    int width = 500;
-    LinearLayoutCompat main_layout;
-    Bitmap bitmap_factor;
-    String bitmap_factor_base64 = "";
+
+
     TextView tv_rep;
+    Print print;
 
     public Action(Context mContext) {
         this.mContext = mContext;
         this.il = 0;
         this.callMethod = new CallMethod(mContext);
+        this.print = new Print(mContext);
         this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         this.persianCalendar = new PersianCalendar();
         this.dialog = new Dialog(mContext);
         this.dialogProg = new Dialog(mContext);
-        this.AppPrinters = new ArrayList<>();
         printerconter = 0;
 
     }
@@ -128,6 +123,35 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialogProg.setContentView(R.layout.rep_prog);
         tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
         dialogProg.show();
+    }
+
+    public void DeleteReserveDialog(BasketInfo basketInfo) {
+        dialogProg();
+        call = apiInterface.OrderInfoReserveDelete(
+                "OrderInfoReserveDelete",
+                basketInfo.getAppBasketInfoCode()
+        );
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                assert response.body() != null;
+
+                intent = new Intent(mContext, TableActivity.class);
+                intent.putExtra("State", "0");
+                intent.putExtra("EditTable", "0");
+                mContext.startActivity(intent);
+                ((Activity) mContext).finish();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            }
+        });
+
+
+
     }
 
     public void ReserveBoxDialog(BasketInfo basketInfo) {
@@ -143,10 +167,18 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         tv_reserveend = dialog.findViewById(R.id.reserve_box_reserveend);
         tv_date = dialog.findViewById(R.id.reserve_box_date);
 
+        TextView tv_rstmizname = dialog.findViewById(R.id.reserve_box_rstmiz);
         TextView tv_showrecycler = dialog.findViewById(R.id.reserve_box_show_recycler);
         RecyclerView recycler = dialog.findViewById(R.id.reserve_box_recycler);
 
         Button btn_reserve = dialog.findViewById(R.id.reserve_box_btn_send);
+
+
+
+        tv_showrecycler.setText(NumberFunctions.PerisanNumber("لیست رزرو میز "+ basketInfo.getRstMizName()));
+        tv_rstmizname.setText(NumberFunctions.PerisanNumber(basketInfo.getRstMizName()));
+
+
 
         call = apiInterface.OrderReserveList("OrderReserveList", basketInfo.getRstmizCode());
         call.enqueue(new Callback<RetrofitResponse>() {
@@ -276,6 +308,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
         });
 
+
         tv_showrecycler.setOnClickListener(v -> {
 
             if (recycler.getVisibility() == View.GONE) {
@@ -295,7 +328,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     basketInfo.getRstmizCode(),
                     NumberFunctions.EnglishNumber(ed_personname.getText().toString()),
                     NumberFunctions.EnglishNumber(ed_mobileno.getText().toString()),
-                    NumberFunctions.EnglishNumber(ed_explain.getText().toString()),
+                    NumberFunctions.EnglishNumber(ed_explain.getText().toString())+" (رزرو) ",
                     "0",
                     NumberFunctions.EnglishNumber(tv_reservestart.getText().toString()),
                     NumberFunctions.EnglishNumber(tv_reserveend.getText().toString()),
@@ -316,7 +349,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         dialogProg.dismiss();
                         TableActivity activity = (TableActivity) mContext;
                         activity.CallSpinner();
-                        callMethod.showToast("ثبت گردید");
+                        lottieok();
                     }
                 }
 
@@ -363,13 +396,15 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         ed_orderbox_amount.setOnClickListener(v -> ed_orderbox_amount.selectAll());
 
         ed_orderbox_goodname.setText(good.getGoodName());
-        call = apiInterface.GetDistinctValues("GetDistinctValues", "AppBasket", "Explain", "");
+
+        call = apiInterface.GetDistinctValues("GetDistinctValues", "AppBasket", "Explain", "Where GoodRef=" + good.getGoodCode());
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
 
                 assert response.body() != null;
                 values_array.clear();
+                values_array.add(0, "");
                 values = response.body().getValues();
                 for (DistinctValue value : values) {
                     values_array.add(NumberFunctions.PerisanNumber(value.getValue()));
@@ -379,7 +414,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         android.R.layout.simple_spinner_item, values_array);
                 spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_orderbox.setAdapter(spinner_adapter);
-                spinner_orderbox.setSelection(0);
+
 
                 spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -392,6 +427,13 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+                if (good.getRowCode().length() > 0) {
+                    for (String strexplain : values_array) {
+                        if (strexplain.equals(good.getExplain())) {
+                            spinner_orderbox.setSelection(values_array.indexOf(strexplain));
+                        }
+                    }
+                }
             }
 
             @Override
@@ -434,15 +476,38 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             String explain = NumberFunctions.EnglishNumber(ed_orderbox_explain.getText().toString());
             if (!amo.equals("")) {
                 if (Float.parseFloat(amo) > 0) {
+
+                    good.setAmount(amo);
+                    good.setExplain(explain);
+
+                    for (Good goodlikeorder : good_box_items) {
+
+                        if (goodlikeorder.getExplain().equals(explain)) {
+
+                            if (goodlikeorder.getFactorCode() == null) {
+                                good.setRowCode(goodlikeorder.getRowCode());
+                                if (Flag.equals("0")) {
+                                    good.setAmount(String.valueOf(Integer.parseInt(goodlikeorder.getAmount()) + Integer.parseInt(amo)));
+
+                                }
+
+                            } else {
+                                good.setRowCode("0");
+                            }
+                        }
+
+                    }
+
+
                     dialogProg();
                     tv_rep.setText("در حال ارسال اطلاعات");
                     Call<RetrofitResponse> call = apiInterface.OrderRowInsert("OrderRowInsert",
                             good.getGoodCode(),
-                            amo,
+                            good.getAmount(),
                             good.getMaxSellPrice(),
                             good.getGoodUnitRef(),
                             good.getDefaultUnitValue(),
-                            explain,
+                            good.getExplain(),
                             callMethod.ReadString("AppBasketInfoCode"),
                             good.getRowCode()
                     );
@@ -514,7 +579,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                         dialogProg.dismiss();
                     } else {
-                        GetFactorPrint();
+                        print.GetHeader_Data("");
                     }
                 }
             }
@@ -525,122 +590,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 ((Activity) mContext).finish();
                 ((Activity) mContext).overridePendingTransition(0, 0);
                 mContext.startActivity(intent);
-            }
-        });
-
-    }
-
-
-    public void OrderGetAppPrinterList() {
-        call = apiInterface.OrderGetAppPrinter("OrderGetAppPrinter");
-        call.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    printerconter = 0;
-                    AppPrinters = response.body().getAppPrinters();
-                    OrderPrint();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                OrderGetAppPrinterList();
-
-            }
-        });
-    }
-
-    public void OrderPrint() {
-
-        if (printerconter < (AppPrinters.size())) {
-
-            call = apiInterface.OrderGetFactorRow(
-                    "OrderGetFactorRow",
-                    callMethod.ReadString("AppBasketInfoCode"),
-                    AppPrinters.get(printerconter).getGoodGroups(),
-                    AppPrinters.get(printerconter).getWhereClause()
-            );
-
-            call.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        Factor_row = response.body().getFactors();
-                        if (Factor_row.size() > 0) {
-                            printDialogView();
-                        } else {
-                            printerconter++;
-                            OrderPrint();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                    printerconter++;
-                    OrderPrint();
-                }
-            });
-
-        } else {
-            call = apiInterface.Order_CanPrint(
-                    "Order_CanPrint",
-                    callMethod.ReadString("AppBasketInfoCode"),
-                    "0"
-            );
-            call.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        if (response.body().getText().equals("Done")) {
-                            callMethod.showToast("ثبت گردید");
-                            ((Activity) mContext).finish();
-                            dialogProg.dismiss();
-                            intent = new Intent(mContext, TableActivity.class);
-                            intent.putExtra("State", "0");
-                            intent.putExtra("EditTable", "0");
-                            mContext.startActivity(intent);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                    OrderPrint();
-                }
-            });
-
-        }
-
-
-    }
-
-    public void GetFactorPrint() {
-        dialogProg();
-        tv_rep.setText("در حال چاپ سفارش");
-        call = apiInterface.OrderGetFactor(
-                "OrderGetFactor",
-                callMethod.ReadString("AppBasketInfoCode")
-        );
-        call.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-
-                    Factor_header = response.body().getFactors();
-                    AppPrinters.clear();
-                    OrderGetAppPrinterList();
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                GetFactorPrint();
             }
         });
 
@@ -710,299 +659,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             } else {
                 dialog.dismiss();
             }
-
         });
 
-
     }
 
-
-    @SuppressLint("RtlHardcoded")
-    public void printDialogView() {
-
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(displayMetrics);
-        //height = displayMetrics.heightPixels;
-        //width = displayMetrics.widthPixels;
-
-        dialogprint = new Dialog(mContext);
-        dialogprint.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogprint.setContentView(R.layout.print_layout_view);
-        main_layout = dialogprint.findViewById(R.id.print_layout_view_ll);
-        CreateView();
-
-    }
-
-
-    @SuppressLint("RtlHardcoded")
-    public void CreateView() {
-
-        main_layout.removeAllViews();
-
-        LinearLayoutCompat title_layout = new LinearLayoutCompat(mContext);
-        LinearLayoutCompat boby_good_layout = new LinearLayoutCompat(mContext);
-        LinearLayoutCompat good_layout = new LinearLayoutCompat(mContext);
-        LinearLayoutCompat total_layout = new LinearLayoutCompat(mContext);
-        ViewPager ViewPager = new ViewPager(mContext);
-        ViewPager ViewPager_rast = new ViewPager(mContext);
-        ViewPager ViewPager_chap = new ViewPager(mContext);
-
-
-        title_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        title_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-        title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
-
-        TextView company_tv = new TextView(mContext);
-        company_tv.setText(NumberFunctions.PerisanNumber(AppPrinters.get(printerconter).getPrinterExplain()));
-        company_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
-        company_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        company_tv.setGravity(Gravity.CENTER);
-        company_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        company_tv.setPadding(0, 0, 0, 15);
-
-
-        boby_good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        good_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        total_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-
-
-        good_layout.setOrientation(LinearLayoutCompat.HORIZONTAL);
-        boby_good_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-        total_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-
-        good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
-
-        ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, 3));
-        ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
-        ViewPager_rast.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
-        ViewPager_rast.setBackgroundResource(R.color.red_800);
-        ViewPager_chap.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
-        ViewPager_chap.setBackgroundResource(R.color.green_800);
-
-
-        TextView customername_tv = new TextView(mContext);
-        customername_tv.setText(NumberFunctions.PerisanNumber(" میز :   " + Factor_header.get(0).getRstMizName()));
-        customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
-        customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        customername_tv.setGravity(Gravity.RIGHT);
-        customername_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        customername_tv.setPadding(0, 0, 0, 15);
-
-
-        cldr = Calendar.getInstance();
-        int hour = cldr.get(Calendar.HOUR_OF_DAY);
-        int minutes = cldr.get(Calendar.MINUTE);
-        String thourOfDay, tminute, Time = "";
-        thourOfDay = "0" + hour;
-        tminute = "0" + minutes;
-        Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
-                + tminute.substring(tminute.length() - 2);
-
-
-        TextView factorcode_tv = new TextView(mContext);
-        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode() + "             " + Time));
-        factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
-        factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        factorcode_tv.setGravity(Gravity.RIGHT);
-        factorcode_tv.setPadding(0, 0, 0, 15);
-        factorcode_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-
-        TextView factordate_tv = new TextView(mContext);
-        factordate_tv.setText(NumberFunctions.PerisanNumber(" زمان فاکتور :   " + Factor_header.get(0).getTimeStart() + "_" + Factor_header.get(0).getFactorDate()));
-        factordate_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        factordate_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
-        factordate_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        factordate_tv.setGravity(Gravity.RIGHT);
-        factordate_tv.setPadding(0, 0, 0, 35);
-        factordate_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-
-        TextView explain_tv = new TextView(mContext);
-        explain_tv.setText(NumberFunctions.PerisanNumber(Factor_header.get(0).getFactorExplain()));
-        explain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        explain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
-        explain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        explain_tv.setGravity(Gravity.RIGHT);
-        explain_tv.setPadding(0, 0, 0, 35);
-        explain_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-        title_layout.addView(company_tv);
-        title_layout.addView(factordate_tv);
-        title_layout.addView(factorcode_tv);
-        title_layout.addView(customername_tv);
-
-
-        if (Factor_header.get(0).getFactorExplain().length() > 0) {
-            title_layout.addView(explain_tv);
-        }
-        title_layout.addView(ViewPager);
-
-
-        int CounterGood = 0;
-        for (Factor FactorRow_detail : Factor_row) {
-
-            CounterGood++;
-            LinearLayoutCompat first_layout = new LinearLayoutCompat(mContext);
-            first_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-            first_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-
-            LinearLayoutCompat name_detail = new LinearLayoutCompat(mContext);
-            name_detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-            name_detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
-            name_detail.setWeightSum(6);
-            name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
-            TextView radif = new TextView(mContext);
-            radif.setText(NumberFunctions.PerisanNumber(String.valueOf(CounterGood)));
-            radif.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 5));
-            radif.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
-            radif.setGravity(Gravity.CENTER);
-            radif.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-            radif.setBackgroundColor(mContext.getColor(R.color.grey_500));
-            radif.setPadding(0, 10, 0, Integer.parseInt(callMethod.ReadString("TitleSize")));
-            radif.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-            androidx.viewpager.widget.ViewPager ViewPager_goodname = new ViewPager(mContext);
-            ViewPager_goodname.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
-            ViewPager_goodname.setBackgroundResource(R.color.colorPrimaryDark);
-
-            TextView good_name_tv = new TextView(mContext);
-            String goodname = "";
-            if (FactorRow_detail.getIsExtra().equals("1")) {
-                goodname = FactorRow_detail.getGoodName() + "  (سفارش مجدد)  ";
-            } else {
-                goodname = FactorRow_detail.getGoodName();
-            }
-            good_name_tv.setText(NumberFunctions.PerisanNumber(goodname));
-            good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
-            good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
-            good_name_tv.setGravity(Gravity.RIGHT);
-            good_name_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-            good_name_tv.setPadding(0, 10, 5, 0);
-            good_name_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-
-            LinearLayoutCompat detail = new LinearLayoutCompat(mContext);
-            detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-            detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
-            detail.setWeightSum(9);
-            detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
-
-            TextView good_amount_tv = new TextView(mContext);
-            good_amount_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getFacAmount()));
-            good_amount_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 6));
-            good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
-            good_amount_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-            good_amount_tv.setGravity(Gravity.CENTER);
-            good_amount_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-            TextView good_RowExplain_tv = new TextView(mContext);
-            good_RowExplain_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getRowExplain()));
-            good_RowExplain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 3));
-            good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
-            good_RowExplain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-            good_RowExplain_tv.setPadding(0, 0, 0, 10);
-            good_RowExplain_tv.setGravity(Gravity.CENTER);
-            good_RowExplain_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-
-
-            androidx.viewpager.widget.ViewPager ViewPager_sell2 = new ViewPager(mContext);
-            ViewPager_sell2.setLayoutParams(new LinearLayoutCompat.LayoutParams(2, LinearLayoutCompat.LayoutParams.MATCH_PARENT));
-            ViewPager_sell2.setBackgroundResource(R.color.colorPrimaryDark);
-
-
-            androidx.viewpager.widget.ViewPager extra_ViewPager = new ViewPager(mContext);
-            extra_ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
-            extra_ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
-
-            androidx.viewpager.widget.ViewPager extra_ViewPager1 = new ViewPager(mContext);
-            extra_ViewPager1.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 2));
-            extra_ViewPager1.setBackgroundResource(R.color.colorPrimaryDark);
-
-
-            name_detail.addView(radif);
-            name_detail.addView(ViewPager_goodname);
-            name_detail.addView(good_name_tv);
-
-            detail.addView(good_RowExplain_tv);
-            detail.addView(ViewPager_sell2);
-            detail.addView(good_amount_tv);
-
-
-            first_layout.addView(name_detail);
-            first_layout.addView(extra_ViewPager);
-            first_layout.addView(detail);
-            first_layout.addView(extra_ViewPager1);
-
-            boby_good_layout.addView(first_layout);
-
-
-        }
-        good_layout.addView(ViewPager_rast);
-        good_layout.addView(boby_good_layout);
-        good_layout.addView(ViewPager_chap);
-
-
-        main_layout.addView(title_layout);
-        main_layout.addView(good_layout);
-        main_layout.addView(total_layout);
-        bitmap_factor = loadBitmapFromView(main_layout);
-
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap_factor.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-
-        bitmap_factor_base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        //SendFactorPrint(appbasketinfocode,bitmap_factor_base64);
-        Call<RetrofitResponse> call = apiInterface.OrderSendImage("OrderSendImage",
-                bitmap_factor_base64,
-                callMethod.ReadString("AppBasketInfoCode"),
-                AppPrinters.get(printerconter).getPrinterName(),
-                AppPrinters.get(printerconter).getPrintCount()
-
-        );
-
-        call.enqueue(new Callback<RetrofitResponse>() {
-            @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
-                assert response.body() != null;
-                if (response.body().getText().equals("Done")) {
-                    printerconter++;
-                    OrderPrint();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
-                printerconter++;
-                OrderPrint();
-            }
-        });
-
-
-    }
-
-    public Bitmap loadBitmapFromView(View v) {
-        v.measure(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
-        Bitmap b = Bitmap.createBitmap(width, v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas c = new Canvas(b);
-        v.layout(0, 0, width, v.getMeasuredHeight());
-        v.draw(c);
-        return b;
-    }
 
 
     public void lottieok() {
@@ -1023,11 +683,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             @Override
             public void onAnimationEnd(Animator animation) {
                 dialog1.dismiss();
-                intent = new Intent(mContext, NavActivity.class);
-                ((Activity) mContext).finish();
-                ((Activity) mContext).overridePendingTransition(0, 0);
-                mContext.startActivity(intent);
-                ((Activity) mContext).overridePendingTransition(0, 0);
             }
 
             @Override
@@ -1057,38 +712,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         tv_date.setText(NumberFunctions.PerisanNumber(date));
     }
 
-    public void lottiereceipt() {
 
-        Dialog dialog1 = new Dialog(mContext);
-        dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog1.setContentView(R.layout.lottie);
-        LottieAnimationView animationView = dialog1.findViewById(R.id.lottie_name);
-        animationView.setAnimation(R.raw.receipt);
-        dialog1.show();
-        animationView.setRepeatCount(0);
-
-        animationView.addAnimatorListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                dialog1.dismiss();
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
-
-
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -1100,4 +724,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 
     }
+
+
+
 }

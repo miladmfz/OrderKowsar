@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
-    tools:context=".Fragment.GrpFragment">
+    tools:context=".Fragment.SearchViewFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,8 +74,8 @@
                 android:id="@+id/fragment_good_tvstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="#03a9f4"
+                android:layout_gravity="center"
+                android:textColor="#BD622B"
                 android:textSize="40sp"
 
                 />

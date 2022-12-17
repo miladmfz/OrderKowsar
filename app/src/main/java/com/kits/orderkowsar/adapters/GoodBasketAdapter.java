@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.model.layer.BaseLayer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.activity.BasketActivity;
+import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.ImageInfo;
@@ -81,7 +84,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
             holder.ll_explain.setVisibility(View.INVISIBLE);
         }
 
-        holder.tv_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
+        holder.ll_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
 
 
         if (goods.get(position).getFactorCode() == null) {
@@ -109,6 +112,8 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
                                 if (response.body().getText().equals("Done")) {
                                     goods.remove(goods.get(position));
                                     notifyDataSetChanged();
+                                    BasketActivity activity = (BasketActivity) mContext;
+                                    activity.RefreshState();
                                 }
                             }
                         }

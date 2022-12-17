@@ -7,17 +7,9 @@
     android:layoutDirection="rtl"
     android:gravity="center"
     android:layout_gravity="center"
-
+    android:orientation="vertical"
     >
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        app:lottie_rawRes="@raw/waiter"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/splash_refresh"
         android:layout_width="match_parent"
@@ -27,5 +19,13 @@
         android:textSize="20dp"
         android:visibility="gone"
         android:textStyle="bold"
-        android:background="@color/white"/>
+        android:background="@color/black"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:lottie_rawRes="@raw/waiter"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

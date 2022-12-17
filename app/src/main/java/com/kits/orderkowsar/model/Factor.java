@@ -41,6 +41,65 @@ public class Factor {
     private String ErrDesc;
 
 
+    @SerializedName("InfoState")
+    private String InfoState;
+
+
+    @SerializedName("ReserveStart")
+    private String ReserveStart;
+
+
+
+    @SerializedName("InfoPrintCount")
+    private String InfoPrintCount;
+
+    @SerializedName("AppBasketInfoDate")
+    private String AppBasketInfoDate;
+
+
+    @SerializedName("InfoExplain")
+    private String InfoExplain;
+
+    public String getInfoExplain() {
+        return InfoExplain;
+    }
+
+    public void setInfoExplain(String infoExplain) {
+        InfoExplain = infoExplain;
+    }
+
+    public String getAppBasketInfoDate() {
+        return AppBasketInfoDate;
+    }
+
+    public void setAppBasketInfoDate(String appBasketInfoDate) {
+        AppBasketInfoDate = appBasketInfoDate;
+    }
+
+    public String getInfoState() {
+        return InfoState;
+    }
+
+    public void setInfoState(String infoState) {
+        InfoState = infoState;
+    }
+
+    public String getReserveStart() {
+        return ReserveStart;
+    }
+
+    public void setReserveStart(String reserveStart) {
+        ReserveStart = reserveStart;
+    }
+
+    public String getInfoPrintCount() {
+        return InfoPrintCount;
+    }
+
+    public void setInfoPrintCount(String infoPrintCount) {
+        InfoPrintCount = infoPrintCount;
+    }
+
     public String getErrCode() {
         return ErrCode;
     }

@@ -50,19 +50,19 @@ public class SplashActivity extends AppCompatActivity {
         Config();
 
 
-       @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button splash_refresh= findViewById(R.id.splash_refresh);
-        InternetConnection ic = new  InternetConnection(this);
-        if(ic.has()){
-
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        Button splash_refresh = findViewById(R.id.splash_refresh);
+        InternetConnection ic = new InternetConnection(this);
+        if (ic.has()) {
             try {
                 init();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        } else{
+        } else {
 
-            final Dialog dialog1 ;
+            final Dialog dialog1;
             dialog1 = new Dialog(this);
             dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog1.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -87,14 +87,13 @@ public class SplashActivity extends AppCompatActivity {
 
 
     public void Config() {
-
+        callMethod = new CallMethod(this);
+        dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
     }
 
 
     @SuppressLint("SdCardPath")
     public void init() {
-        callMethod = new CallMethod(this);
-        dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
 
 
         if (callMethod.ReadString("ServerURLUse").equals("")) {
@@ -127,6 +126,7 @@ public class SplashActivity extends AppCompatActivity {
         callMethod.EditString("TitleSize", "8");
         callMethod.EditString("BodySize", "8");
         callMethod.EditString("AppBasketInfoCode", "0");
+        callMethod.EditString("RstMizName", "");
 
         requestPermission();
 
@@ -242,7 +242,6 @@ public class SplashActivity extends AppCompatActivity {
             throw new IllegalStateException("Unexpected value: " + requestCode);
         }
     }
-
 
 
 

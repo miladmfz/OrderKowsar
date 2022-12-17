@@ -43,7 +43,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tableempty_item_name"
+                    android:id="@+id/table_item_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -65,7 +65,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/tableempty_item_select"
+                android:id="@+id/table_item_select"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -76,8 +76,8 @@
                 android:text="انتخاب میز"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
                 app:strokeWidth="1dp" />
 
 

@@ -63,6 +63,8 @@
                 android:background="@color/grey_500" />
 
             <LinearLayout
+
+                android:id="@+id/good_basket_item_ll_amount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"

@@ -10,6 +10,7 @@
     android:orientation="vertical"
     app:cardCornerRadius="2dp"
     app:cardElevation="6dp"
+    app:strokeColor="#B96838"
     app:strokeWidth="1dp">
 
 
@@ -82,10 +83,10 @@
                     android:layout_weight="0.3"
                     android:gravity="center"
                     android:text="آزاد کردن"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:backgroundTint="@color/red_600"
-                    android:textColor="@color/white"
                     app:strokeWidth="1dp" />
 
             </LinearLayout>
@@ -238,7 +239,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:visibility="visible">
@@ -247,36 +248,43 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="رزرو:"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                    <TextView
-                        android:id="@+id/table_item_reservestart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:text="رزرو:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/table_item_reservestart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
 
-
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/table_item_reservebrokername"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_weight="0.25"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -287,7 +295,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_weight="0.25"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -316,8 +324,8 @@
                 android:text="انتخاب میز"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
                 app:strokeWidth="1dp" />
 
             <Button
@@ -332,13 +340,11 @@
                 android:text="رزرو میز"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
                 app:strokeWidth="1dp"
 
                 />
-
-
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -360,6 +366,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/table_item_changemiz"
                 style="?attr/materialButtonOutlinedStyle"
@@ -372,8 +379,8 @@
                 android:text="تغییر میز"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
                 app:strokeWidth="1dp" />
 
             <Button
@@ -388,10 +395,10 @@
                 android:text="توضیحات"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
-                app:strokeWidth="1dp"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
+                app:strokeWidth="1dp" />
 
             <Button
                 android:id="@+id/table_item_print"
@@ -405,11 +412,9 @@
                 android:text="چاپ سفارش"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/grey_1000"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
                 app:strokeWidth="1dp" />
-
-
 
 
         </LinearLayout>

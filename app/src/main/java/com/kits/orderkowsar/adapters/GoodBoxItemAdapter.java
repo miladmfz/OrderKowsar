@@ -82,41 +82,42 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
 
         if (goods.get(position).getFactorCode() == null) {
             holder.img_dlt.setVisibility(View.VISIBLE);
-        } else {
-            holder.img_dlt.setVisibility(View.INVISIBLE);
-                holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
-                        .setTitle("توجه")
-                        .setMessage("حذف شود ؟")
-                        .setPositiveButton("بله", (dialogInterface, i) -> {
+            holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
+                    .setTitle("توجه")
+                    .setMessage("حذف شود ؟")
+                    .setPositiveButton("بله", (dialogInterface, i) -> {
 
-                            call = apiInterface.DeleteGoodFromBasket(
-                                    "DeleteGoodFromBasket",
-                                    goods.get(position).getRowCode(),
-                                    goods.get(position).getAppBasketInfoRef()
-                            );
-                            call.enqueue(new Callback<RetrofitResponse>() {
-                                @Override
-                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                                    if (response.isSuccessful()) {
-                                        assert response.body() != null;
-                                        if (response.body().getText().equals("Done")) {
-                                            goods.remove(goods.get(position));
-                                            notifyDataSetChanged();
-                                        }
+                        call = apiInterface.DeleteGoodFromBasket(
+                                "DeleteGoodFromBasket",
+                                goods.get(position).getRowCode(),
+                                goods.get(position).getAppBasketInfoRef()
+                        );
+                        call.enqueue(new Callback<RetrofitResponse>() {
+                            @Override
+                            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                if (response.isSuccessful()) {
+                                    assert response.body() != null;
+                                    if (response.body().getText().equals("Done")) {
+                                        goods.remove(goods.get(position));
+                                        notifyDataSetChanged();
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                            @Override
+                            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
 
-                                }
-                            });
+                            }
+                        });
 
-                        })
-                        .setNegativeButton("خیر", (dialogInterface, i) -> {
-                        })
-                        .show());
-            }
+                    })
+                    .setNegativeButton("خیر", (dialogInterface, i) -> {
+                    })
+                    .show());
+        } else {
+            holder.img_dlt.setVisibility(View.INVISIBLE);
+
+        }
 
     }
 

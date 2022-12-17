@@ -55,9 +55,9 @@
             android:text="تنظیمات اینترنت"
             android:textSize="16dp"
             android:padding="3dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_margin="5dp"
-            app:backgroundTint="@color/green_400"
+            app:backgroundTint="#DF5D10"
               />
 
 

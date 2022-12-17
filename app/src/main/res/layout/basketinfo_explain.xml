@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:hint="@string/explain"
+        android:hint="توضیحات"
         android:singleLine="true"
         android:inputType="text"
         android:focusable="true">
@@ -36,12 +36,9 @@
         android:layout_height="50dp"
         android:text="ثبت توضیحات"
         android:textSize="20sp"
-        android:textColor="#ffffff"
-
-
-        app:backgroundTint="@color/green_600"
-
-
+        android:textColor="@color/black"
+        app:backgroundTint="#D5BC9D"
+        app:strokeColor="#B96838"
         style="?attr/materialButtonOutlinedStyle" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -98,6 +98,13 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tableactivity_mizlist_recy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:visibility="visible" />
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/tableactivity_prog"
                     style="?android:attr/progressBarStyle"
@@ -108,13 +115,6 @@
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/loading" />
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tableactivity_mizlist_recy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:visibility="visible" />
-
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/tableactivity_lottie"
@@ -139,79 +139,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/tableactivity_emiztype_ll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="0.75"
-                >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tableactivity_emiztype_recy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:visibility="visible" />
-            </LinearLayout>
-            <androidx.viewpager.widget.ViewPager
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@color/grey_900" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="0.25"
-                >
-
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tableactivity_emizlist_recy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:visibility="visible" />
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/tableactivity_eprog"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="2dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/loading" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/tableactivity_elottie"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="2dp"
-                    android:visibility="gone"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/notfind" />
-
-                <TextView
-                    android:id="@+id/tableactivity_etvstatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#03a9f4"
-                    android:textSize="40sp"
-
-                    />
-            </LinearLayout>
-        </LinearLayout>
         </LinearLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

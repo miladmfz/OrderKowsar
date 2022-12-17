@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
 
    public LinearLayout ll_explain;
+   public LinearLayout ll_amount;
    public TextView tv_goodname;
    public TextView tv_amount;
    public TextView tv_explain;
@@ -44,6 +45,7 @@ public class GoodBasketViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         ll_explain = itemView.findViewById(R.id.good_basket_item_ll_explain);
+        ll_amount = itemView.findViewById(R.id.good_basket_item_ll_amount);
         tv_goodname = itemView.findViewById(R.id.good_basket_item_goodname);
         tv_amount = itemView.findViewById(R.id.good_basket_item_amount);
         tv_explain = itemView.findViewById(R.id.good_basket_item_explain);
