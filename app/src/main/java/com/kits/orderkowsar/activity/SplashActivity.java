@@ -3,8 +3,13 @@ package com.kits.orderkowsar.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +35,7 @@ import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.DatabaseHelper;
 
 import java.io.File;
+import java.util.Locale;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
@@ -72,7 +78,7 @@ public class SplashActivity extends AppCompatActivity {
             to_setting.setOnClickListener(view -> startActivity(new Intent(Settings.ACTION_SETTINGS)));
             splash_refresh.setVisibility(View.VISIBLE);
 
-            callMethod.showToast("عدم اتصال به اینترنت");
+            callMethod.showToast(getString(R.string.toastvalue_dcmessage));
         }
 
         splash_refresh.setOnClickListener(view -> {
@@ -107,12 +113,13 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditString("BodySize", "12");
             callMethod.EditString("Theme", "Green");
 
+            callMethod.EditString("LANG", "");
+
             callMethod.EditString("AppBasketInfoCode", "0");
 
             callMethod.EditBoolan("RealAmount", false);
             callMethod.EditBoolan("ActiveStack", false);
             callMethod.EditBoolan("GoodAmount", false);
-
 
             callMethod.EditString("ServerURLUse", "");
             callMethod.EditString("SQLiteURLUse", "");
@@ -127,7 +134,6 @@ public class SplashActivity extends AppCompatActivity {
         callMethod.EditString("BodySize", "8");
         callMethod.EditString("AppBasketInfoCode", "0");
         callMethod.EditString("RstMizName", "");
-
         requestPermission();
 
 
@@ -212,7 +218,7 @@ public class SplashActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
                     requestPermission();
-                    callMethod.showToast("مجوز صادر شد");
+                    callMethod.showToast(getString(R.string.toastvalue_permissiongrand));
 
                 } else {
                     handler = new Handler();
@@ -221,7 +227,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     }, 2000);
-                    callMethod.showToast("مجوز مربوطه را فعال نمایید");
+                    callMethod.showToast(getString(R.string.toastvalue_permissiondoing));
                 }
             }
         }
@@ -233,9 +239,9 @@ public class SplashActivity extends AppCompatActivity {
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                callMethod.showToast("permission granted");
+                callMethod.showToast(getString(R.string.toastvalue_permissionresult));
             } else {
-                callMethod.showToast("permission denied");
+                callMethod.showToast(getString(R.string.toastvalue_unpermissionresult));
             }
             requestPermission();
         } else {
@@ -243,6 +249,54 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
 
 
 }

@@ -74,9 +74,9 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     public void onBindViewHolder(@NonNull final GoodBasketViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-        holder.tv_goodname.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
-        holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
-        holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
+        holder.tv_goodname.setText(callMethod.NumberRegion(goods.get(position).getGoodName()));
+        holder.tv_amount.setText(callMethod.NumberRegion(goods.get(position).getAmount()));
+        holder.tv_explain.setText(callMethod.NumberRegion(goods.get(position).getExplain()));
 
         if (goods.get(position).getExplain().length() > 0) {
             holder.ll_explain.setVisibility(View.VISIBLE);
@@ -95,9 +95,9 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
 
 
         holder.btn_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
-                .setTitle("توجه")
-                .setMessage("خذف شود ؟")
-                .setPositiveButton("بله", (dialogInterface, i) -> {
+                .setTitle(R.string.textvalue_allert)
+                .setMessage(R.string.textvalue_ifdelete)
+                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
                     call = apiInterface.DeleteGoodFromBasket(
                             "DeleteGoodFromBasket",
@@ -125,7 +125,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
                     });
 
                 })
-                .setNegativeButton("خیر", (dialogInterface, i) -> {
+                .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                 })
                 .show());
     }

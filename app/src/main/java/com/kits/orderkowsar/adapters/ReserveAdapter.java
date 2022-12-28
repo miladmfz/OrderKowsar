@@ -68,27 +68,27 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
 
 
 
-            holder.tv_reservestart.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveStart()));
-            holder.tv_reserveend.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveEnd()));
-            holder.tv_reservebrokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRes_BrokerName()));
-            holder.tv_reservepersonname.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPersonName()));
-            holder.tv_reserveeplain.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getInfoExplain()));
-            holder.tv_reservemobileno.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getMobileNo()));
-            holder.tv_reservedate.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getAppBasketInfoDate()));
+            holder.tv_reservestart.setText(callMethod.NumberRegion(basketInfos.get(position).getReserveStart()));
+            holder.tv_reserveend.setText(callMethod.NumberRegion(basketInfos.get(position).getReserveEnd()));
+            holder.tv_reservebrokername.setText(callMethod.NumberRegion(basketInfos.get(position).getRes_BrokerName()));
+            holder.tv_reservepersonname.setText(callMethod.NumberRegion(basketInfos.get(position).getPersonName()));
+            holder.tv_reserveeplain.setText(callMethod.NumberRegion(basketInfos.get(position).getInfoExplain()));
+            holder.tv_reservemobileno.setText(callMethod.NumberRegion(basketInfos.get(position).getMobileNo()));
+            holder.tv_reservedate.setText(callMethod.NumberRegion(basketInfos.get(position).getAppBasketInfoDate()));
 
 
             holder.rltv.setOnClickListener(v -> {
 
                 new AlertDialog.Builder(mContext)
-                        .setTitle("توجه")
-                        .setMessage("آیا مایل به سفارش هستید ؟؟")
-                        .setPositiveButton("بله", (dialogInterface, i) -> {
+                        .setTitle(R.string.textvalue_allert)
+                        .setMessage(R.string.textvalue_ordering)
+                        .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
                             callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName()+" (رزرو) ");
                             callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                             intent = new Intent(mContext, SearchActivity.class);
                             mContext.startActivity(intent);
                         })
-                        .setNegativeButton("خیر", (dialogInterface, i) -> {
+                        .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                         })
                         .show();
             });
@@ -96,12 +96,12 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
         holder.rltv.setOnLongClickListener(v -> {
 
             new AlertDialog.Builder(mContext)
-                    .setTitle("توجه")
-                    .setMessage("آیا رزرو حذف شود؟")
-                    .setPositiveButton("بله", (dialogInterface, i) -> {
+                    .setTitle(R.string.textvalue_allert)
+                    .setMessage(R.string.textvalue_resdel)
+                    .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
                         action.DeleteReserveDialog(basketInfos.get(position));
                     })
-                    .setNegativeButton("خیر", (dialogInterface, i) -> {
+                    .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                     })
                     .show();
             return false;

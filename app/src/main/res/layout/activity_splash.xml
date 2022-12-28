@@ -14,9 +14,9 @@
         android:id="@+id/splash_refresh"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="تلاش مجدد"
+        android:text="@string/splashactivity_trayagin"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:visibility="gone"
         android:textStyle="bold"
         android:background="@color/black"/>

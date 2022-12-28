@@ -25,7 +25,7 @@
             android:background="?attr/colorPrimary"
 
             app:titleTextColor="@color/white"
-            app:title="دسته بندی">
+            app:title="@string/allviewactivity_titlename">
 
         </androidx.appcompat.widget.Toolbar>
 

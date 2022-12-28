@@ -228,7 +228,7 @@ public class SearchViewFragment extends Fragment {
 
         adapter = new GoodAdapter(Goods, requireActivity());
         if (adapter.getItemCount() == 0) {
-            tv_lottiestatus.setText("کالایی یافت نشد");
+            tv_lottiestatus.setText(R.string.textvalue_notfound);
             img_lottiestatus.setVisibility(View.VISIBLE);
             tv_lottiestatus.setVisibility(View.VISIBLE);
         } else {

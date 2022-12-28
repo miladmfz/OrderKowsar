@@ -18,10 +18,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:hint="توضیحات"
+        android:hint="@string/basketinfo_edexplain"
         android:singleLine="true"
         android:inputType="text"
-        android:focusable="true">
+        android:focusable="true"
+        android:autofillHints="">
 
 
     </EditText>
@@ -34,7 +35,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:layout_height="50dp"
-        android:text="ثبت توضیحات"
+        android:text="@string/basketinfo_setexplain"
         android:textSize="20sp"
         android:textColor="@color/black"
         app:backgroundTint="#D5BC9D"

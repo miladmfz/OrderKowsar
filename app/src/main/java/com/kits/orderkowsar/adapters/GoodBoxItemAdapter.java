@@ -41,14 +41,12 @@ import retrofit2.Response;
 
 
 public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHolder> {
-    DecimalFormat decimalFormat = new DecimalFormat("0,000");
     Context mContext;
     CallMethod callMethod;
     ArrayList<Good> goods;
     DatabaseHelper dbh;
 
     APIInterface apiInterface;
-    Call<RetrofitResponse> call2;
     Action action;
     Call<RetrofitResponse> call;
 
@@ -72,20 +70,19 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
     }
 
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final GoodBoxItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
-        holder.tv_amount.setText(NumberFunctions.PerisanNumber(goods.get(position).getAmount()));
-        holder.tv_explain.setText(NumberFunctions.PerisanNumber(goods.get(position).getExplain()));
+        holder.tv_name.setText(callMethod.NumberRegion(goods.get(position).getGoodName()));
+        holder.tv_amount.setText(callMethod.NumberRegion(goods.get(position).getAmount()));
+        holder.tv_explain.setText(callMethod.NumberRegion(goods.get(position).getExplain()));
 
         if (goods.get(position).getFactorCode() == null) {
             holder.img_dlt.setVisibility(View.VISIBLE);
             holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
-                    .setTitle("توجه")
-                    .setMessage("حذف شود ؟")
-                    .setPositiveButton("بله", (dialogInterface, i) -> {
+                    .setTitle(R.string.textvalue_allert)
+                    .setMessage(R.string.textvalue_ifdelete)
+                    .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
                         call = apiInterface.DeleteGoodFromBasket(
                                 "DeleteGoodFromBasket",
@@ -111,7 +108,7 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
                         });
 
                     })
-                    .setNegativeButton("خیر", (dialogInterface, i) -> {
+                    .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                     })
                     .show());
         } else {

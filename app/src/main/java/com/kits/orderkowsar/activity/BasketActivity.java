@@ -2,14 +2,17 @@ package com.kits.orderkowsar.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -22,17 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodBasketAdapter;
-import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
 import com.kits.orderkowsar.adapters.InternetConnection;
-import com.kits.orderkowsar.adapters.RstMizAdapter;
 import com.kits.orderkowsar.application.Action;
-import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.Print;
-import com.kits.orderkowsar.databinding.ActivityBuyBinding;
-import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -41,22 +38,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
-import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BasketActivity extends AppCompatActivity {
 
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
     RecyclerView recyclerView;
-    ArrayList<Good> Goods;
     APIInterface apiInterface ;
     CallMethod callMethod;
-    TextView Buy_row,Buy_price,Buy_amount;
-    GridLayoutManager gridLayoutManager;
-    int id=0;
+    TextView Buy_row,Buy_amount;
     Intent intent;
     GoodBasketAdapter adapter;
     Action action;
@@ -69,7 +62,6 @@ public class BasketActivity extends AppCompatActivity {
     TextView tv_lottiestatus;
     String State="0";
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +106,8 @@ public class BasketActivity extends AppCompatActivity {
         tv_lottiestatus = findViewById(R.id.BuyActivity_tvstatus);
 
         Toolbar toolbar = findViewById(R.id.BuyActivity_toolbar);
-        toolbar.setTitle(NumberFunctions.PerisanNumber( " سفارشات "+ callMethod.ReadString("RstMizName")));
+
+        toolbar.setTitle(callMethod.NumberRegion( getString(R.string.textvalue_order)+ callMethod.ReadString("RstMizName")));
 
         setSupportActionBar(toolbar);
 
@@ -151,7 +144,6 @@ public class BasketActivity extends AppCompatActivity {
 
 
         final_buy_test.setOnClickListener(view -> {
-            Log.e("test__",State);
 
             if (State.equals("4")){
                 print.GetHeader_Data("");
@@ -162,9 +154,9 @@ public class BasketActivity extends AppCompatActivity {
 
 
         total_delete.setOnClickListener(view -> new AlertDialog.Builder(this)
-                .setTitle("توجه")
-                .setMessage("آیا مایل به خالی کردن سبد خرید می باشید؟")
-                .setPositiveButton("بله", (dialogInterface, i) -> {
+                .setTitle(R.string.textvalue_allert)
+                .setMessage(R.string.textvalue_freetablemessage)
+                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
                     Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll(
                             "OrderDeleteAll",
@@ -177,7 +169,7 @@ public class BasketActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 assert response.body() != null;
                                 if (response.body().getText().equals("Done")) {
-                                    callMethod.showToast("سبد خرید حذف گردید");
+                                    callMethod.showToast(getString(R.string.textvalue_deleteorderbasket));
                                     finish();
                                 }
                             }
@@ -189,7 +181,7 @@ public class BasketActivity extends AppCompatActivity {
 
 
                 })
-                .setNegativeButton("خیر", (dialogInterface, i) -> {
+                .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                 })
                 .show());
     }
@@ -201,7 +193,7 @@ public class BasketActivity extends AppCompatActivity {
         adapter = new GoodBasketAdapter(goods, this);
 
         if (adapter.getItemCount() == 0) {
-            tv_lottiestatus.setText("موردی یافت نشد");
+            tv_lottiestatus.setText(R.string.textvalue_notfound);
             img_lottiestatus.setVisibility(View.VISIBLE);
             tv_lottiestatus.setVisibility(View.VISIBLE);
         } else {
@@ -233,12 +225,11 @@ public class BasketActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
                         State=response.body().getGoods().get(0).getInfoState();
-                        Log.e("Test_",response.body().getGoods().get(0).getCountGood());
-                        Log.e("Test_",response.body().getGoods().get(0).getSumFacAmount());
-                        Buy_row.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getCountGood()));
-                        Buy_amount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
+
+                        Buy_row.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getCountGood()));
+                        Buy_amount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
                         if (State.equals("4")){
-                            final_buy_test.setText("ثبت سفارش رزرو");
+                            final_buy_test.setText(R.string.textvalue_setreserveorder);
                         }
                     }
                 }
@@ -259,4 +250,52 @@ public class BasketActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
 }

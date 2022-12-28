@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        tools:ignore="UselessParent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_grp_recy"
@@ -40,7 +41,8 @@
                 android:layout_margin="5sp"
                 android:background="@drawable/bg_round_selected"
                 android:padding="5sp"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/fragment_good_prog"

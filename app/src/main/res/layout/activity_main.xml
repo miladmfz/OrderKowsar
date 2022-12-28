@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView2"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainactivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl">
@@ -83,7 +84,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:gravity="center"
-                        android:text="تمامی میز ها"
+                        android:text="@string/mainactivity_btn0"
                         android:background="#C55615"
                         android:textSize="42sp"
                         android:textColor="@color/white"
@@ -107,7 +108,8 @@
                             android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
-                            android:background="@drawable/emptytable" />
+                            android:background="@drawable/emptytable"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/mainactivity_btn3"
@@ -116,7 +118,7 @@
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="میزهای خالی"
+                            android:text="@string/mainactivity_btn1"
                             android:textColor="@color/black"
                             android:textSize="42sp" />
 
@@ -138,7 +140,8 @@
                             android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
-                            android:background="@drawable/inordertable" />
+                            android:background="@drawable/inordertable"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/mainactivity_btn1"
@@ -147,7 +150,7 @@
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="در حال سفارش"
+                            android:text="@string/mainactivity_btn2"
                             android:textColor="@color/black"
                             android:textSize="42sp" />
 
@@ -169,7 +172,8 @@
                             android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
-                            android:background="@drawable/fulltable" />
+                            android:background="@drawable/fulltable"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/mainactivity_btn2"
@@ -178,7 +182,7 @@
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="چاپ شده"
+                            android:text="@string/mainactivity_btn3"
                             android:textColor="@color/black"
                             android:textSize="42sp" />
 
@@ -200,7 +204,8 @@
                             android:layout_height="70dp"
                             android:layout_gravity="center"
                             android:layout_margin="5sp"
-                            android:background="@drawable/reservetable" />
+                            android:background="@drawable/reservetable"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/mainactivity_btn4"
@@ -209,7 +214,7 @@
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:gravity="center"
-                            android:text="رزرو شده"
+                            android:text="@string/mainactivity_btn4"
                             android:textColor="@color/black"
                             android:textSize="42sp" />
 

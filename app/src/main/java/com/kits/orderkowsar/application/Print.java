@@ -1,5 +1,7 @@
 package com.kits.orderkowsar.application;
 
+import static com.kits.orderkowsar.R.string.textvalue_tabletag;
+
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -99,7 +101,7 @@ public class Print {
     public void GetHeader_Data(String Filter) {
         Filter_print = Filter;
         dialogProg();
-        tv_rep.setText("در حال چاپ سفارش");
+        tv_rep.setText(R.string.textvalue_printing);
         call = apiInterface.OrderGetFactor(
                 "OrderGetFactor",
                 callMethod.ReadString("AppBasketInfoCode")
@@ -222,7 +224,7 @@ public class Print {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
                         if (response.body().getText().equals("Done")) {
-                            callMethod.showToast("ثبت گردید");
+                            callMethod.showToast(String.valueOf(R.string.textvalue_recorded));
                             ((Activity) mContext).finish();
                             dialogProg.dismiss();
                             intent = new Intent(mContext, TableActivity.class);
@@ -279,7 +281,7 @@ public class Print {
 
 
         TextView tv_printCount = new TextView(mContext);
-        tv_printCount.setText(NumberFunctions.PerisanNumber("(چاپ مجدد)"));
+        tv_printCount.setText(R.string.textvalue_printagain);
         tv_printCount.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         tv_printCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
         tv_printCount.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -289,7 +291,7 @@ public class Print {
 
 
         TextView company_tv = new TextView(mContext);
-        company_tv.setText(NumberFunctions.PerisanNumber(AppPrinters.get(printerconter).getPrinterExplain()));
+        company_tv.setText(callMethod.NumberRegion(AppPrinters.get(printerconter).getPrinterExplain()));
         company_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
         company_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -321,7 +323,7 @@ public class Print {
 
 
         TextView customername_tv = new TextView(mContext);
-        customername_tv.setText(NumberFunctions.PerisanNumber(" میز :   " + Factor_header.get(0).getRstMizName()));
+        customername_tv.setText(callMethod.NumberRegion(mContext.getString(textvalue_tabletag) + Factor_header.get(0).getRstMizName()));
         customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -341,7 +343,7 @@ public class Print {
 
 
         TextView factorcode_tv = new TextView(mContext);
-        factorcode_tv.setText(NumberFunctions.PerisanNumber(" کد فاکتور :   " + Factor_header.get(0).getDailyCode() + "             " + Time));
+        factorcode_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_factorcodetag) + Factor_header.get(0).getDailyCode() + "             " + Time));
         factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -352,9 +354,9 @@ public class Print {
 
         TextView factordate_tv = new TextView(mContext);
         if (Factor_header.get(0).getInfoState().equals("2")) {
-            factordate_tv.setText(NumberFunctions.PerisanNumber(" زمان فاکتور :   " + Factor_header.get(0).getTimeStart() + "_" + Factor_header.get(0).getAppBasketInfoDate()));
+            factordate_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_factortimetag) + Factor_header.get(0).getTimeStart() + "_" + Factor_header.get(0).getAppBasketInfoDate()));
         } else if (Factor_header.get(0).getInfoState().equals("4")) {
-            factordate_tv.setText(NumberFunctions.PerisanNumber(" زمان فاکتور :   " + Factor_header.get(0).getReserveStart() + "_" + Factor_header.get(0).getAppBasketInfoDate()));
+            factordate_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_factortimetag) + Factor_header.get(0).getReserveStart() + "_" + Factor_header.get(0).getAppBasketInfoDate()));
         }
 
         factordate_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
@@ -366,7 +368,7 @@ public class Print {
 
 
         TextView explain_tv = new TextView(mContext);
-        explain_tv.setText(NumberFunctions.PerisanNumber(Factor_header.get(0).getInfoExplain()));
+        explain_tv.setText(callMethod.NumberRegion(Factor_header.get(0).getInfoExplain()));
         explain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         explain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
         explain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -406,7 +408,7 @@ public class Print {
 
 
             TextView good_amount_tv = new TextView(mContext);
-            good_amount_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getFacAmount()));
+            good_amount_tv.setText(callMethod.NumberRegion(FactorRow_detail.getFacAmount()));
             good_amount_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 5));
             good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
             good_amount_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -421,12 +423,12 @@ public class Print {
             TextView good_name_tv = new TextView(mContext);
             String goodname = "";
             if (FactorRow_detail.getIsExtra().equals("1")) {
-                goodname = FactorRow_detail.getGoodName() + "  (سفارش مجدد)  ";
+                goodname = FactorRow_detail.getGoodName() + mContext.getString(R.string.textvalue_orderagaintag);
             } else {
                 goodname = FactorRow_detail.getGoodName();
             }
 
-            good_name_tv.setText(NumberFunctions.PerisanNumber(goodname));
+            good_name_tv.setText(callMethod.NumberRegion(goodname));
             good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
             good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
             good_name_tv.setGravity(Gravity.RIGHT);
@@ -441,7 +443,7 @@ public class Print {
             detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
             TextView good_RowExplain_tv = new TextView(mContext);
-            good_RowExplain_tv.setText(NumberFunctions.PerisanNumber(FactorRow_detail.getRowExplain()));
+            good_RowExplain_tv.setText(callMethod.NumberRegion(FactorRow_detail.getRowExplain()));
             good_RowExplain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
             good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")));
             good_RowExplain_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));

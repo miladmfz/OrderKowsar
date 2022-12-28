@@ -5,7 +5,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +37,7 @@ import com.kits.orderkowsar.webService.APIInterface;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,11 +104,11 @@ public class TableActivity extends AppCompatActivity {
         recyclerView_Table = findViewById(R.id.tableactivity_mizlist_recy);
         recyclerView_object = findViewById(R.id.tableactivity_miztype_recy);
 
-        InfoState_array.add("همه میز ها");
-        InfoState_array.add("در حال سفارش");
-        InfoState_array.add("ثبت شده ها");
-        InfoState_array.add("میز های خالی");
-        InfoState_array.add("رزرو شده ها");
+        InfoState_array.add(getString(R.string.infostatearray_0));
+        InfoState_array.add(getString(R.string.infostatearray_1));
+        InfoState_array.add(getString(R.string.infostatearray_2));
+        InfoState_array.add(getString(R.string.infostatearray_3));
+        InfoState_array.add(getString(R.string.infostatearray_4));
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, InfoState_array);
@@ -210,7 +218,7 @@ public class TableActivity extends AppCompatActivity {
         adapter = new RstMizAdapter(basketInfos, EditTable, TableActivity.this);
 
         if (adapter.getItemCount() == 0) {
-            tv_lottiestatus.setText("میزی با این وضعیت وجود ندارد");
+            tv_lottiestatus.setText(R.string.textvalue_notfound);
             img_lottiestatus.setVisibility(View.VISIBLE);
             tv_lottiestatus.setVisibility(View.VISIBLE);
         } else {
@@ -223,5 +231,53 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
 
 }

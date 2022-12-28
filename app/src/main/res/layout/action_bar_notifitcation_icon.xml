@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="?attr/actionButtonStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
@@ -11,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_shopping_cart_white_24dp"/>
+        app:srcCompat="@drawable/ic_shopping_cart_white_24dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/cart_badge"
@@ -25,7 +27,7 @@
         android:gravity="center"
         android:padding="3dp"
         android:textColor="@color/white"
-        android:text="0"
-        android:textSize="10sp"/>
+        android:textSize="10sp"
+        tools:ignore="RtlHardcoded,SmallSp" />
 
 </FrameLayout>

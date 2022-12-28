@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/good_basket_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -38,10 +39,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.75"
                     android:gravity="center"
-                    android:text="نام:"
-
+                    android:text="@string/goodbasketitem_name"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/good_basket_item_goodname"
@@ -49,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center"
-                    android:hint="نام کالا :"
+                    android:hint="@string/goodbasketitem_goodname"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -77,9 +78,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:text="تعداد :"
+                    android:text="@string/goodbasketitem_amount"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/good_basket_item_amount"
@@ -87,7 +89,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:gravity="center"
-                    android:hint="تعداد :"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -118,11 +119,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="0.75"
+                    android:layout_weight= "0.75"
                     android:gravity="center"
-                    android:text="توضیحات"
+                    android:text="@string/goodbasketitem_explain"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/good_basket_item_explain"
@@ -130,7 +132,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
                     android:gravity="center"
-                    android:hint="توضیحات"
+                    android:hint="@string/goodbasketitem_explain"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -147,7 +149,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:background="@drawable/ic_baseline_delete_forever_24"
-                />
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
 

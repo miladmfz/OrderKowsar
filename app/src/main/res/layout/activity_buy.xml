@@ -63,7 +63,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="تعداد ردیف:"
+                        android:text="@string/buyactivity_rowcount"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:text="تعداد کل:"
+                        android:text="@string/buyactivity_totalamount"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:layout_weight="0.3"
-                    android:text="حذف"
+                    android:text="@string/buyactivity_delete"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -196,7 +196,7 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:titleTextColor="@color/white"
-            app:title="سبد خرید">
+            app:title="@string/buyactivity_titlename">
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -215,7 +215,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BuyActivity_test"
             android:layout_width="match_parent"
-            android:text="نهایی کردن سفارش"
+            android:text="@string/buyactivity_finalstep"
             android:visibility="gone"
             android:textColor="@color/black"
             android:textStyle="bold"

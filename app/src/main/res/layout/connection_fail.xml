@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -20,40 +21,41 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:background="@drawable/cd_fail"/>
+            android:background="@drawable/cd_fail"
+            tools:ignore="ContentDescription" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="عدم اتصال به اینترنت"
+            android:text="@string/connectionfail_title"
             android:textColor="@color/overlay_dark_90"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_margin="5dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="اتصال شما به اینترنت برقرار نمی باشد."
+            android:text="@string/connectionfail_text"
             android:textColor="@color/overlay_dark_60"
             android:gravity="center"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:paddingTop="5dp"
             android:textStyle="bold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="برای استفاده از نرم افزار به اینترنت متصل شوید."
+            android:text="@string/connectionfail_text2"
             android:textColor="@color/overlay_dark_60"
             android:gravity="center"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:textStyle="bold"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/to_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="تنظیمات اینترنت"
-            android:textSize="16dp"
+            android:text="@string/connectionfail_gosetting"
+            android:textSize="16sp"
             android:padding="3dp"
             android:textColor="@color/black"
             android:layout_margin="5dp"

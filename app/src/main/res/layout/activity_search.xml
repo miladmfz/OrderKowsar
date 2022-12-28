@@ -28,7 +28,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
-                app:title="جستجوی کالا"
+                app:title="@string/searchactivity_titlename"
                 app:titleTextColor="@color/white">
 
 

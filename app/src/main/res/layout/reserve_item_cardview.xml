@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reserve_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="NestedWeights" />
             <TextView
                 android:id="@+id/reserve_item_reservedate"
                 android:layout_width="match_parent"
@@ -63,7 +65,8 @@
                 android:layout_weight="0.4"
                 android:gravity="left"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="NestedWeights,RtlHardcoded" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -71,7 +74,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:textSize="14sp"
-                android:text="  الی "
+                android:text="@string/reserveitem_until"
                 android:textStyle="bold" />
 
 
@@ -82,7 +85,8 @@
                 android:layout_weight="0.4"
                 android:gravity="right"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
 
 
 
@@ -102,7 +106,8 @@
                 android:layout_height="31dp"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="NestedWeights" />
             <TextView
                 android:id="@+id/reserve_item_reservepersonname"
                 android:layout_width="match_parent"

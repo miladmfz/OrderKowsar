@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/color_black"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:gravity="center"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -38,7 +38,7 @@
                 android:id="@+id/activition_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="کد فعال سازی"
+                android:hint="@string/databaseactivity_activation"
                 android:textDirection="rtl"
                 android:inputType="number"
                 android:textSize="36sp"
@@ -57,7 +57,7 @@
                 android:id="@+id/activition_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ثبت"
+                android:text="@string/databaseactivity_set"
                 android:textSize="36sp"
                 android:padding="5dp"
                 android:textColor="@color/white"

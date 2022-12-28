@@ -1,6 +1,9 @@
 package com.kits.orderkowsar.adapters;
 
 
+import static com.kits.orderkowsar.R.string.textvalue_recorded;
+import static com.kits.orderkowsar.R.string.textvalue_transfertext;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -116,28 +119,28 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     public void onBindViewHolder(@NonNull final RstMizViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         if (changeTable.equals("0")) {
-            holder.tv_name.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRstMizName()));
-            holder.tv_placecount.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPlaceCount()));
+            holder.tv_name.setText(callMethod.NumberRegion(basketInfos.get(position).getRstMizName()));
+            holder.tv_placecount.setText(callMethod.NumberRegion(basketInfos.get(position).getPlaceCount()));
 
             if (basketInfos.get(position).getExplain().length() > 0) {
                 holder.ll_table_mizexplain.setVisibility(View.VISIBLE);
-                holder.tv_mizexplain.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getExplain()));
+                holder.tv_mizexplain.setText(callMethod.NumberRegion(basketInfos.get(position).getExplain()));
             } else {
                 holder.ll_table_mizexplain.setVisibility(View.GONE);
             }
 
             if (basketInfos.get(position).getInfoExplain().length() > 0) {
                 holder.ll_table_infoexplain.setVisibility(View.VISIBLE);
-                holder.tv_infoexplain.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getInfoExplain()));
+                holder.tv_infoexplain.setText(callMethod.NumberRegion(basketInfos.get(position).getInfoExplain()));
             } else {
                 holder.ll_table_infoexplain.setVisibility(View.GONE);
             }
 
             if (basketInfos.get(position).getRes_BrokerName().length() > 0) {
                 holder.ll_table_reserve.setVisibility(View.VISIBLE);
-                holder.tv_reservestart.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getReserveStart()));
-                holder.tv_reservebrokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getPersonName()));
-                holder.tv_reservemobileno.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getMobileNo()));
+                holder.tv_reservestart.setText(callMethod.NumberRegion(basketInfos.get(position).getReserveStart()));
+                holder.tv_reservebrokername.setText(callMethod.NumberRegion(basketInfos.get(position).getPersonName()));
+                holder.tv_reservemobileno.setText(callMethod.NumberRegion(basketInfos.get(position).getMobileNo()));
             } else {
                 holder.ll_table_reserve.setVisibility(View.GONE);
             }
@@ -156,13 +159,13 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     }
                     break;
                 case "1":
-                    holder.btn_print.setText("مشاهده و چاپ");
+                    holder.btn_print.setText(R.string.rstmiz_seeandprintbtn);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.btn_cleartable.setVisibility(View.VISIBLE);
-                    holder.tv_brokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getBrokerName()));
+                    holder.tv_brokername.setText(callMethod.NumberRegion(basketInfos.get(position).getBrokerName()));
                     break;
                 case "2":
-                    holder.btn_print.setText("چاپ مجدد");
+                    holder.btn_print.setText(R.string.rstmiz_reprint);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.btn_cleartable.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
@@ -178,8 +181,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     tminute = "0" + ((bet / (1000 * 60)) % 60);
                     Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
                             + tminute.substring(tminute.length() - 2);
-                    holder.tv_time.setText(NumberFunctions.PerisanNumber(Time));
-                    holder.tv_brokername.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getBrokerName()));
+                    holder.tv_time.setText(callMethod.NumberRegion(Time));
+                    holder.tv_brokername.setText(callMethod.NumberRegion(basketInfos.get(position).getBrokerName()));
                     break;
                 default:
                     break;
@@ -317,9 +320,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 }
 
                 new AlertDialog.Builder(mContext)
-                        .setTitle("توجه")
-                        .setMessage("میز خالی شود؟")
-                        .setPositiveButton("بله", (dialogInterface, i) -> {
+                        .setTitle(R.string.textvalue_allert)
+                        .setMessage(R.string.textvalue_freetable)
+                        .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
 
                             call.enqueue(new Callback<RetrofitResponse>() {
@@ -331,7 +334,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                     } else {
                                         TableActivity activity = (TableActivity) mContext;
                                         activity.CallSpinner();
-                                        callMethod.showToast("ثبت گردید");
+                                        callMethod.showToast(activity.getString(textvalue_recorded));
                                     }
 
                                 }
@@ -341,7 +344,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                 }
                             });
                         })
-                        .setNegativeButton("خیر", (dialogInterface, i) -> {
+                        .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                         })
                         .show();
             });
@@ -353,9 +356,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                 if (basketInfos.get(position).getInfoState().equals("2")) {
                     new AlertDialog.Builder(mContext)
-                            .setTitle("توجه")
-                            .setMessage("مجددا چاپ شود؟")
-                            .setPositiveButton("بله", (dialogInterface, i) -> {
+                            .setTitle(R.string.textvalue_allert)
+                            .setMessage(R.string.textvalue_reprinting)
+                            .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
                                 call = apiInterface.Order_CanPrint(
                                         "Order_CanPrint",
@@ -382,7 +385,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
                             })
-                            .setNegativeButton("خیر", (dialogInterface, i) -> {
+                            .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
                             })
                             .show();
                 } else {
@@ -392,7 +395,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_changemiz.setOnClickListener(v -> {
-                String extraexplain = "( انتقالی از " + basketInfos.get(position).getRstMizName() + ") ";
+                String extraexplain = mContext.getString(textvalue_transfertext) + basketInfos.get(position).getRstMizName() + ") ";
                 call = apiInterface.OrderInfoInsert(
                         "OrderInfoInsert",
                         basketInfos.get(position).getBrokerRef(),
@@ -435,7 +438,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
             holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
         } else {
-            holder.tv_name.setText(NumberFunctions.PerisanNumber(basketInfos.get(position).getRstMizName()));
+            holder.tv_name.setText(callMethod.NumberRegion(basketInfos.get(position).getRstMizName()));
             holder.btn_select.setOnClickListener(v -> {
 
                 call = apiInterface.OrderInfoInsert(

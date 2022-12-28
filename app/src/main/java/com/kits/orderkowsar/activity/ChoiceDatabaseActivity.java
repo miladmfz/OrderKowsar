@@ -1,8 +1,16 @@
 package com.kits.orderkowsar.activity;
 
+import static com.kits.orderkowsar.R.string.textvalue_downloading;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +41,7 @@ import com.kits.orderkowsar.webService.APIInterface;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -93,7 +102,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     public void init() {
 
         activations = dbhbase.getActivation();
-        binding.activitionVersion.setText(NumberFunctions.PerisanNumber("نسخه نرم افزار : " + BuildConfig.VERSION_NAME));
+        binding.activitionVersion.setText(callMethod.NumberRegion(getString(R.string.textvalue_versionname) + BuildConfig.VERSION_NAME));
         for (Activation singleactive : activations) {
             CreateView(singleactive);
         }
@@ -159,9 +168,9 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                 })
 
                 .setOnProgressListener(progress -> {
-                    tv_rep.setText("در حال بارگیری...");
+                    tv_rep.setText(textvalue_downloading);
                     tv_step.setVisibility(View.VISIBLE);
-                    tv_step.setText(NumberFunctions.PerisanNumber((((progress.currentBytes) * 100) / progress.totalBytes) + "/100"));
+                    tv_step.setText(callMethod.NumberRegion((((progress.currentBytes) * 100) / progress.totalBytes) + "/100"));
                 })
 
 
@@ -196,7 +205,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                         btn_prog.setVisibility(View.VISIBLE);
                         File DownloadTemp = new File(activation.getDatabaseFolderPath() + "/KowsarDbTemp.sqlite");
                         DownloadTemp.delete();
-                        tv_step.setText("مشکل ارتباطی لطفا دوباره امتحان کنید");
+                        tv_step.setText(R.string.textvalue_disconnectmessage);
                     }
                 });
 
@@ -270,11 +279,11 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         btn_gap.setVisibility(View.INVISIBLE);
 
 
-        tv_PersianCompanyName.setText(NumberFunctions.PerisanNumber(singleactive.getPersianCompanyName()));
-        tv_EnglishCompanyName.setText("نام پوشه عکس : " + singleactive.getEnglishCompanyName());
-        tv_ServerURL.setText("آدرس سرور : " + serverip);
-        btn_login.setText("ورود");
-        btn_update.setText("اصلاح");
+        tv_PersianCompanyName.setText(callMethod.NumberRegion(singleactive.getPersianCompanyName()));
+        tv_EnglishCompanyName.setText(getString(R.string.textvalue_imagefolername) + singleactive.getEnglishCompanyName());
+        tv_ServerURL.setText(getString(R.string.textvalue_ipserver) + serverip);
+        btn_login.setText(R.string.textvalue_login);
+        btn_update.setText(R.string.textvalue_edit);
 
 
         btn_login.setOnClickListener(v -> {
@@ -345,5 +354,55 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         }
         super.onDestroy();
 
+    }
+
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
     }
 }

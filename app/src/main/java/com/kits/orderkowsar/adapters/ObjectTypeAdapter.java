@@ -44,7 +44,7 @@ public class ObjectTypeAdapter extends RecyclerView.Adapter<ObjectTypeViewHolder
     public void onBindViewHolder(@NonNull ObjectTypeViewHolder holder, int position) {
 
 
-        holder.tv_name.setText(NumberFunctions.PerisanNumber(objectTypes.get(position).getaType()));
+        holder.tv_name.setText(callMethod.NumberRegion(objectTypes.get(position).getaType()));
         holder.rltv.setOnClickListener(v -> {
             TableActivity activity = (TableActivity) mContext;
             activity.mizType=objectTypes.get(position).getaType();

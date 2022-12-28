@@ -1,7 +1,13 @@
 package com.kits.orderkowsar.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -28,6 +34,8 @@ import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,7 +97,7 @@ public class SearchActivity extends AppCompatActivity {
         width = metrics.widthPixels;
 
         toolbar = findViewById(R.id.SearchActivity_toolbar);
-        toolbar.setTitle(NumberFunctions.PerisanNumber(" میز "+callMethod.ReadString("RstMizName")));
+        toolbar.setTitle(callMethod.NumberRegion(getString(R.string.textvalue_tablelable)+callMethod.ReadString("RstMizName")));
         setSupportActionBar(toolbar);
 
         fragmentManager = getSupportFragmentManager();
@@ -119,7 +127,6 @@ public class SearchActivity extends AppCompatActivity {
         grp_Fragment.setParent_GourpCode(GroupCode);
         grp_Fragment.setGood_GourpCode(GroupCode);
         fragmentTransaction.replace(R.id.searchactivity_framelayout, grp_Fragment);
-        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -147,7 +154,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        textCartItemCount.setText(NumberFunctions.PerisanNumber(response.body().getGoods().get(0).getSumFacAmount()));
+                        textCartItemCount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
                         if (Integer.parseInt(response.body().getGoods().get(0).getSumFacAmount()) > 0) {
                             if (textCartItemCount.getVisibility() != View.VISIBLE) {
                                 textCartItemCount.setVisibility(View.VISIBLE);
@@ -200,6 +207,55 @@ public class SearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
 }
 
 

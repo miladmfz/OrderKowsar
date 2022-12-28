@@ -49,7 +49,7 @@
                     <Button
                         android:id="@+id/registr_btn"
                         android:layout_width="match_parent"
-                        android:text="ثبت اطلاعات"
+                        android:text="@string/registeractivity_save"
                         android:layout_margin="5dp"
                         android:textColor="#ffffff"
                         android:textStyle="bold"
@@ -73,7 +73,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="اسم مجموعه : " />
+                            android:text="@string/companyname" />
 
                         <TextView
                             android:layout_weight="0.5"
@@ -98,7 +98,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="کد سفارشگیر" />
+                            android:text="@string/registeractivity_brokercode" />
 
                         <EditText
                             android:layout_weight="0.5"
@@ -109,7 +109,7 @@
                             android:gravity="center"
                             android:textStyle="bold"
                             android:inputType="numberDecimal"
-                            tools:ignore="LabelFor"
+                            tools:ignore="Autofill,LabelFor"
                             />
 
 
@@ -125,7 +125,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="وقفه جستجو :"
+                            android:text="@string/registeractivity_delay"
                             android:layout_weight="0.5"
                             />
 
@@ -153,7 +153,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="کد گروه" />
+                            android:text="@string/registeractivity_groupcode" />
 
                         <TextView
                             android:id="@+id/registr_groupcode"
@@ -173,10 +173,38 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             tools:ignore="LabelFor"
-                            android:text="بروزرسانی"
+                            android:text="@string/registeractivity_updatebtn"
                             android:textSize="14sp"
                             android:layout_margin="5dp"
                             />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_weight="0.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/registeractivity_lng" />
+
+                        <Spinner
+                            android:id="@+id/registr_spinnerlang"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_weight="0.5"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            />
+
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -193,7 +221,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="سایز عنوان ها" />
+                            android:text="@string/registeractivity_titlesize" />
 
                         <EditText
                             android:layout_weight="0.5"
@@ -201,17 +229,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/edittest1"
-
-                            android:inputType="text"
-                            tools:ignore="LabelFor"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:autofillHints=""
+                            tools:ignore="LabelFor,TextFields" />
                         <TextView
                             android:layout_weight="0.5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="سایز اطلاعات" />
+                            android:text="@string/registeractivity_bodysize" />
 
                         <EditText
                             android:layout_weight="0.5"
@@ -219,10 +246,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/edittest1"
-
-                            android:inputType="text"
-                            tools:ignore="LabelFor"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:autofillHints=""
+                            tools:ignore="LabelFor,TextFields" />
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/orderboxgood"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -49,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="تعداد"
+                    android:text="@string/goodorder_amount"
                     android:textStyle="bold" />
 
                 <EditText
@@ -60,11 +61,12 @@
                     android:layout_weight="0.4"
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:hint="تعداد"
+                    android:hint="@string/goodorder_amount"
                     android:inputType="number"
                     android:maxLength="4"
                     android:textStyle="bold"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:autofillHints="" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -84,7 +86,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.95"
                 android:gravity="center"
-                android:text="توضیحات"
+                android:text="@string/goodorder_explain"
                 android:textStyle="bold" />
 
             <Spinner
@@ -121,9 +123,11 @@
                 android:layout_weight="0.05"
                 android:background="@drawable/bg_round_selected"
                 android:gravity="center"
-                android:hint="توضیحات"
+                android:hint="@string/goodorder_explain"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:autofillHints=""
+                tools:ignore="TextFields" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -135,7 +139,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="افزودن به سفارش"
+            android:text="@string/goodorder_addcard"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/header_versionname"
-        android:text="تغییر نرم افزار"
+        android:text="@string/header_changedbbtn"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:backgroundTint="@color/deep_orange_500"
@@ -31,8 +31,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="10sp"
         android:textStyle="bold"
-
-        />
+        tools:ignore="SmallSp" />
 
 
     <TextView
@@ -51,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:textStyle="bold" />

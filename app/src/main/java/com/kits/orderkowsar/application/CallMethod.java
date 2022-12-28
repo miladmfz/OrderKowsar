@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kits.orderkowsar.BuildConfig;
 import com.kits.orderkowsar.model.DatabaseHelper;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.model.UserInfo;
 import com.kits.orderkowsar.webService.APIClient_kowsar;
@@ -39,6 +40,20 @@ public class CallMethod extends Application {
         this.context = mContext;
         this.shPref = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
     }
+
+
+    public String NumberRegion(String String) {
+
+        if (ReadString("LANG").equals("fa")) {
+            return NumberFunctions.PerisanNumber(String);
+        } else if (ReadString("LANG").equals("ar")) {
+            return NumberFunctions.PerisanNumber(String);
+        } else {
+            return NumberFunctions.EnglishNumber(String);
+        }
+
+    }
+
 
     public void EditString(String Key, String Value) {
         sEdit = shPref.edit();
@@ -67,7 +82,7 @@ public class CallMethod extends Application {
     }
 
     public void showToast(String string) {
-        if (toast!=null)
+        if (toast != null)
             toast.cancel();
         toast = Toast.makeText(context, string, Toast.LENGTH_LONG);
         toast.show();
@@ -82,7 +97,7 @@ public class CallMethod extends Application {
 
     public void log(String key) {
 
-    Log.e("test_",key);
+        Log.e("test_", key);
 
     }
 

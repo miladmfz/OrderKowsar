@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reserve_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +39,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="نام :" />
+                    android:text="@string/reservebox_name"
+                    tools:ignore="NestedWeights" />
 
                 <EditText
 
@@ -49,7 +52,9 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="نام" />
+                    android:hint="@string/reservebox_name"
+                    android:autofillHints=""
+                    tools:ignore="TextFields" />
 
             </LinearLayout>
 
@@ -68,7 +73,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="موبایل :" />
+                    android:text="@string/reservebox_mobile"
+                    tools:ignore="NestedWeights" />
 
                 <EditText
 
@@ -80,7 +86,9 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="موبایل" />
+                    android:hint="@string/reservebox_mobile"
+                    android:autofillHints=""
+                    tools:ignore="TextFields" />
 
             </LinearLayout>
 
@@ -99,7 +107,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="نفرات" />
+                    android:text="@string/reservebox_explain"
+                    tools:ignore="MissingPrefix,NestedWeights" />
 
                 <EditText
 
@@ -111,7 +120,9 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="نفرات" />
+                    android:hint="@string/reservebox_explain"
+                    tools:ignore="TextFields"
+                    android:autofillHints="" />
 
             </LinearLayout>
 
@@ -130,7 +141,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="زمان شروع" />
+                    android:text="@string/reservebox_starttime"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
 
@@ -142,7 +154,7 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="زمان شروع" />
+                    android:hint="@string/reservebox_starttime" />
 
             </LinearLayout>
 
@@ -161,7 +173,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="زمان پایان" />
+                    android:text="@string/reservebox_endtime"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/reserve_box_reserveend"
@@ -173,7 +186,7 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="زمان پایان" />
+                    android:hint="@string/reservebox_endtime" />
 
             </LinearLayout>
 
@@ -192,7 +205,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:gravity="center"
-                    android:text="تاریخ" />
+                    android:text="@string/reservebox_date"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/reserve_box_date"
@@ -204,7 +218,7 @@
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:hint="تاریخ" />
+                    android:hint="@string/reservebox_date" />
 
             </LinearLayout>
 
@@ -224,7 +238,7 @@
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="ثبت رزرو"
+                    android:text="@string/reservebox_setreservebtn"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -242,7 +256,7 @@
                 android:layout_gravity="center"
                 android:background="@color/grey_600"
                 android:gravity="center"
-                android:text="لیست رزرو میز"
+                android:text="@string/reservebox_tvlisttitle"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"

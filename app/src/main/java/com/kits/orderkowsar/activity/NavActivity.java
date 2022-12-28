@@ -1,10 +1,19 @@
 package com.kits.orderkowsar.activity;
 
 
+import static com.kits.orderkowsar.R.string.textvalue_exitmessage;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +50,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +85,6 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
     Button btn_test;
     TextView tv_test;
-
     PersianCalendar persianCalendar = new PersianCalendar();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +123,11 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         btn_changedb = hView.findViewById(R.id.header_changedb);
 
 
-
          Getmizlist_btn0 = findViewById(R.id.mainactivity_btn0);
          Getmizlist_btn1 = findViewById(R.id.mainactivity_btn1);
          Getmizlist_btn2 = findViewById(R.id.mainactivity_btn2);
          Getmizlist_btn3 = findViewById(R.id.mainactivity_btn3);
          Getmizlist_btn4 = findViewById(R.id.mainactivity_btn4);
-
-
 
     }
 
@@ -131,11 +137,9 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         Config();
 
 
-        tv_versionname.setText(NumberFunctions.PerisanNumber(BuildConfig.VERSION_NAME));
+        tv_versionname.setText(callMethod.NumberRegion(BuildConfig.VERSION_NAME));
         tv_dbname.setText(callMethod.ReadString("PersianCompanyNameUse"));
         toolbar.setTitle(callMethod.ReadString("PersianCompanyNameUse"));
-
-
 
         Getmizlist_btn0.setOnClickListener(v -> {
 
@@ -182,8 +186,6 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         });
 
 
-
-
         btn_changedb.setOnClickListener(v -> {
             callMethod.EditString("PersianCompanyNameUse", "");
             callMethod.EditString("EnglishCompanyNameUse", "");
@@ -207,7 +209,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
             return;
         }
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "برای خروج مجددا کلیک کنید", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, textvalue_exitmessage, Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
@@ -233,6 +235,62 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
     }
 
+
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")){
+            currentLang=getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    public String getAppLanguage() {
+        return Locale.getDefault().getLanguage();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
+    }
 }
 
 

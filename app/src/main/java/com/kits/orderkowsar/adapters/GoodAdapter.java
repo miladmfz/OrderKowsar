@@ -73,8 +73,8 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final GoodItemViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.tv_name.setText(NumberFunctions.PerisanNumber(goods.get(position).getGoodName()));
-        holder.tv_price.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
+        holder.tv_name.setText(callMethod.NumberRegion(goods.get(position).getGoodName()));
+        holder.tv_price.setText(callMethod.NumberRegion(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
         holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position),"0"));
         holder.callimage(goods.get(position));
         
