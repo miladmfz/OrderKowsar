@@ -5,19 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.kits.orderkowsar.BuildConfig;
 import com.kits.orderkowsar.application.CallMethod;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -37,7 +31,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.goods = new ArrayList<>();
 
     }
-
 
 
     public void CreateActivationDb() {
@@ -117,11 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void closedb() {
-        getWritableDatabase().close();
-    }
-
-
     public void SaveConfig(String key, String Value) {
 
         query = " Insert Into Config(KeyValue, DataValue) Select '" + key + "', '" + Value + "' Where Not Exists(Select * From Config Where KeyValue = '" + key + "');";
@@ -145,13 +133,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
 
     }
-
-
-
-    public void ExecQuery(String Query) {
-        getWritableDatabase().execSQL(Query);
-    }
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

@@ -33,7 +33,6 @@ public class RetrofitResponse {
     private ArrayList<DistinctValue> Values;
 
 
-
     @SerializedName("Groups")
     private ArrayList<GoodGroup> Groups;
 
@@ -95,6 +94,7 @@ public class RetrofitResponse {
     public void setGoods(ArrayList<Good> goods) {
         Goods = goods;
     }
+
     public ArrayList<Activation> getActivations() {
         return Activations;
     }

@@ -43,11 +43,11 @@ public class GoodGroup {
         switch (iKey) {
             case "goodgroupcode":
                 if (GoodGroupCode == null) Res = "";
-                else Res = GoodGroupCode.toString();
+                else Res = GoodGroupCode;
                 break;
             case "groupcode":
                 if (GroupCode == null) Res = "";
-                else Res = GroupCode.toString();
+                else Res = GroupCode;
                 break;
             case "name":
                 if (Name == null) Res = "";
@@ -55,31 +55,31 @@ public class GoodGroup {
                 break;
             case "goodgroupimagename":
                 if (GoodGroupImageName == null) Res = "";
-                else Res = GoodGroupImageName.toString();
+                else Res = GoodGroupImageName;
                 break;
             case "l1":
                 if (L1 == null) Res = "";
-                else Res = L1.toString();
+                else Res = L1;
                 break;
             case "l2":
                 if (L2 == null) Res = "";
-                else Res = L2.toString();
+                else Res = L2;
                 break;
             case "l3":
                 if (L3 == null) Res = "";
-                else Res = L3.toString();
+                else Res = L3;
                 break;
             case "l4":
                 if (L4 == null) Res = "";
-                else Res = L4.toString();
+                else Res = L4;
                 break;
             case "l5":
                 if (L5 == null) Res = "";
-                else Res = L5.toString();
+                else Res = L5;
                 break;
             case "childno":
                 if (ChildNo == null) Res = "0";
-                else Res = ChildNo.toString();
+                else Res = ChildNo;
                 break;
         }
 

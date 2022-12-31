@@ -75,38 +75,30 @@ public class GoodBoxItemAdapter extends RecyclerView.Adapter<GoodBoxItemViewHold
 
         if (goods.get(position).getFactorCode() == null) {
             holder.img_dlt.setVisibility(View.VISIBLE);
-            holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
-                    .setTitle(R.string.textvalue_allert)
-                    .setMessage(R.string.textvalue_ifdelete)
-                    .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+            holder.img_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_ifdelete).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
-                        call = apiInterface.DeleteGoodFromBasket(
-                                "DeleteGoodFromBasket",
-                                goods.get(position).getRowCode(),
-                                goods.get(position).getAppBasketInfoRef()
-                        );
-                        call.enqueue(new Callback<RetrofitResponse>() {
-                            @Override
-                            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                                if (response.isSuccessful()) {
-                                    assert response.body() != null;
-                                    if (response.body().getText().equals("Done")) {
-                                        goods.remove(goods.get(position));
-                                        notifyDataSetChanged();
-                                    }
-                                }
+                call = apiInterface.DeleteGoodFromBasket("DeleteGoodFromBasket", goods.get(position).getRowCode(), goods.get(position).getAppBasketInfoRef());
+                call.enqueue(new Callback<RetrofitResponse>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getText().equals("Done")) {
+                                goods.remove(goods.get(position));
+                                notifyDataSetChanged();
                             }
+                        }
+                    }
 
-                            @Override
-                            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
 
-                            }
-                        });
+                    }
+                });
 
-                    })
-                    .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                    })
-                    .show());
+            }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
+            }).show());
         } else {
             holder.img_dlt.setVisibility(View.INVISIBLE);
 

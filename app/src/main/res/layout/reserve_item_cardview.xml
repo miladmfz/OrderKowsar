@@ -39,6 +39,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights" />
+
             <TextView
                 android:id="@+id/reserve_item_reservedate"
                 android:layout_width="match_parent"
@@ -58,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/reserve_item_reservestart"
                 android:layout_width="match_parent"
@@ -67,14 +69,15 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="NestedWeights,RtlHardcoded" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
                 android:gravity="center"
-                android:textSize="14sp"
                 android:text="@string/reserveitem_until"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
 
@@ -87,8 +90,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="RtlHardcoded" />
-
-
 
 
         </LinearLayout>
@@ -108,6 +109,7 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 tools:ignore="NestedWeights" />
+
             <TextView
                 android:id="@+id/reserve_item_reservepersonname"
                 android:layout_width="match_parent"

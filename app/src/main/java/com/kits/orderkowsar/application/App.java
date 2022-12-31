@@ -3,12 +3,19 @@ package com.kits.orderkowsar.application;
 import android.app.Application;
 import android.content.Context;
 
-import com.kits.orderkowsar.R;
-
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
     private static App instance;
+
+    public App() {
+        instance = this;
+    }
+
+    public static Context getContext() {
+        return instance;
+
+    }
 
     @Override
     public void onCreate() {
@@ -18,15 +25,6 @@ public class App extends Application {
                 .setFontAttrId(uk.co.chrisjenx.calligraphy.R.attr.fontPath)
                 .build()
         );
-    }
-
-    public App() {
-        instance = this;
-    }
-
-    public static Context getContext() {
-        return instance;
-
     }
 
 

@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.model.GoodGroup;
-import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.viewholder.ObjectTypeViewHolder;
 
@@ -36,9 +34,9 @@ public class ObjectTypeAdapter extends RecyclerView.Adapter<ObjectTypeViewHolder
     @Override
     public ObjectTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.objecttype_item_cardview, parent, false);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -54,8 +52,8 @@ public class ObjectTypeAdapter extends RecyclerView.Adapter<ObjectTypeViewHolder
         holder.tv_name.setText(callMethod.NumberRegion(objectTypes.get(position).getaType()));
         holder.rltv.setOnClickListener(v -> {
             TableActivity activity = (TableActivity) mContext;
-            activity.mizType=objectTypes.get(position).getaType();
-            activity.State="0";
+            activity.mizType = objectTypes.get(position).getaType();
+            activity.State = "0";
             activity.CallSpinner();
         });
 

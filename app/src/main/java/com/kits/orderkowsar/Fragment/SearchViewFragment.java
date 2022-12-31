@@ -1,6 +1,15 @@
 package com.kits.orderkowsar.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,23 +21,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GrpAdapter;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
@@ -48,7 +46,6 @@ public class SearchViewFragment extends Fragment {
     CallMethod callMethod;
     APIInterface apiInterface;
     View view;
-    ArrayList<GoodGroup> goodGroups = new ArrayList<>();
     RecyclerView rc_grp;
     RecyclerView rc_good;
     EditText ed_search;
@@ -65,44 +62,17 @@ public class SearchViewFragment extends Fragment {
 
     String Parent_GourpCode;
     String good_GourpCode;
-    GoodGroup goodGroup;
-
-
-    public String getParent_GourpCode() {
-        return Parent_GourpCode;
-    }
 
     public void setParent_GourpCode(String parent_GourpCode) {
         Parent_GourpCode = parent_GourpCode;
-    }
-
-    public String getGood_GourpCode() {
-        return good_GourpCode;
     }
 
     public void setGood_GourpCode(String good_GourpCode) {
         this.good_GourpCode = good_GourpCode;
     }
 
-    public GoodGroup getGoodGroup() {
-        return goodGroup;
-    }
-
-    public void setGoodGroup(GoodGroup goodGroup) {
-        this.goodGroup = goodGroup;
-    }
-
-    public ArrayList<GoodGroup> getGoodGroups() {
-        return goodGroups;
-    }
-
-    public void setGoodGroups(ArrayList<GoodGroup> goodGroups) {
-        this.goodGroups = goodGroups;
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_goodview, container, false);
 
@@ -151,31 +121,23 @@ public class SearchViewFragment extends Fragment {
         });
 
 
-
         allgrp();
         allgood();
-
-
-
-
 
 
     }
 
 
     void allgrp() {
-        Call<RetrofitResponse> call = apiInterface.Getgrp(
-                "GoodGroupInfo",
-                Parent_GourpCode
-        );
+        Call<RetrofitResponse> call = apiInterface.Getgrp("GoodGroupInfo", Parent_GourpCode);
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
 
-                    Log.e("test",response.body().getGroups().size()+"");
-                    GrpAdapter adapter = new GrpAdapter(response.body().getGroups(),Parent_GourpCode, fragmentTransaction, requireActivity());
+                    Log.e("test", response.body().getGroups().size() + "");
+                    GrpAdapter adapter = new GrpAdapter(response.body().getGroups(), Parent_GourpCode, fragmentTransaction, requireActivity());
                     rc_grp.setLayoutManager(new LinearLayoutManager(requireActivity()));
                     rc_grp.setAdapter(adapter);
                 }
@@ -195,18 +157,13 @@ public class SearchViewFragment extends Fragment {
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        call = apiInterface.GetGoodFromGroup(
-                "GetOrderGoodList",
-                Where,
-                good_GourpCode,
-                callMethod.ReadString("AppBasketInfoCode")
-        );
+        call = apiInterface.GetGoodFromGroup("GetOrderGoodList", Where, good_GourpCode, callMethod.ReadString("AppBasketInfoCode"));
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Log.e("test",response.body().getGoods().size()+"");
+                    Log.e("test", response.body().getGoods().size() + "");
 
                     Goods = response.body().getGoods();
                     callrecycler();

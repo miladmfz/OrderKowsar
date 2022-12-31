@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/basketinfo_explain"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_gravity="center"
-    android:id="@+id/basketinfo_explain"
     android:background="@drawable/bg_round_selected"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
 
 
     <EditText
         android:id="@+id/basketinfo_explain_tv"
-        android:background="@drawable/bg_round_selected"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:autofillHints=""
+        android:background="@drawable/bg_round_selected"
+        android:focusable="true"
         android:gravity="center"
         android:hint="@string/basketinfo_edexplain"
-        android:singleLine="true"
         android:inputType="text"
-        android:focusable="true"
-        android:autofillHints="">
+        android:singleLine="true">
 
 
     </EditText>
@@ -30,16 +30,16 @@
 
     <Button
         android:id="@+id/basketinfo_explain_btn"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="250dp"
-        android:gravity="center"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:layout_height="50dp"
+        android:gravity="center"
         android:text="@string/basketinfo_setexplain"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
         app:backgroundTint="#D5BC9D"
-        app:strokeColor="#B96838"
-        style="?attr/materialButtonOutlinedStyle" />
+        app:strokeColor="#B96838" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

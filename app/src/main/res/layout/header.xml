@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="10dp"
     android:background="@drawable/nav_header"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:paddingTop="10dp">
 
     <Button
         android:id="@+id/header_changedb"

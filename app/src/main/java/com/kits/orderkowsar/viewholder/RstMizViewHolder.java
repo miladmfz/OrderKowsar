@@ -1,6 +1,5 @@
 package com.kits.orderkowsar.viewholder;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -10,15 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.model.Good;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 
 public class RstMizViewHolder extends RecyclerView.ViewHolder {
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
 
     public MaterialCardView rltv;
     public TextView tv_name;
@@ -72,7 +65,6 @@ public class RstMizViewHolder extends RecyclerView.ViewHolder {
         ll_table_timebroker = itemView.findViewById(R.id.table_item_ll_timebroker);
         ll_table_reserve = itemView.findViewById(R.id.table_item_ll_reserve);
     }
-
 
 
 }

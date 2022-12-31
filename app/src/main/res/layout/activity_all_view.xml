@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layoutDirection="rtl"
+    android:orientation="vertical"
     tools:viewBindingIgnore="true"
 
     >
@@ -24,8 +24,8 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
 
-            app:titleTextColor="@color/white"
-            app:title="@string/allviewactivity_titlename">
+            app:title="@string/allviewactivity_titlename"
+            app:titleTextColor="@color/white">
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -36,20 +36,17 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
-
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allview_rc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/allview_rc"/>
-
+            android:layout_height="wrap_content" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

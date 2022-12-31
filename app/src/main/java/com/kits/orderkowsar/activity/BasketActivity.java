@@ -61,6 +61,41 @@ public class BasketActivity extends AppCompatActivity {
     TextView tv_lottiestatus;
     String State = "0";
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+//***********************************************************************
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +117,6 @@ public class BasketActivity extends AppCompatActivity {
 
 
     }
-
-//***********************************************************************
-
 
     public void init() {
 
@@ -126,11 +158,7 @@ public class BasketActivity extends AppCompatActivity {
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        Call<RetrofitResponse> call = apiInterface.OrderGet(
-                "OrderGet",
-                callMethod.ReadString("AppBasketInfoCode"),
-                "3"
-        );
+        Call<RetrofitResponse> call = apiInterface.OrderGet("OrderGet", callMethod.ReadString("AppBasketInfoCode"), "3");
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
@@ -162,40 +190,32 @@ public class BasketActivity extends AppCompatActivity {
         });
 
 
-        total_delete.setOnClickListener(view -> new AlertDialog.Builder(this)
-                .setTitle(R.string.textvalue_allert)
-                .setMessage(R.string.textvalue_freetablemessage)
-                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+        total_delete.setOnClickListener(view -> new AlertDialog.Builder(this).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_freetablemessage).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
-                    Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll(
-                            "OrderDeleteAll",
-                            callMethod.ReadString("AppBasketInfoCode")
+            Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll("OrderDeleteAll", callMethod.ReadString("AppBasketInfoCode")
 
-                    );
-                    call1.enqueue(new Callback<RetrofitResponse>() {
-                        @Override
-                        public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getText().equals("Done")) {
-                                    callMethod.showToast(getString(R.string.textvalue_deleteorderbasket));
-                                    finish();
-                                }
-                            }
+            );
+            call1.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        if (response.body().getText().equals("Done")) {
+                            callMethod.showToast(getString(R.string.textvalue_deleteorderbasket));
+                            finish();
                         }
+                    }
+                }
 
-                        @Override
-                        public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
-                        }
-                    });
+                @Override
+                public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
+                }
+            });
 
 
-                })
-                .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                })
-                .show());
+        }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
+        }).show());
     }
-
 
     private void callrecycler() {
 
@@ -221,13 +241,9 @@ public class BasketActivity extends AppCompatActivity {
 
     }
 
-
     public void RefreshState() {
 
-        Call<RetrofitResponse> call2 = apiInterface.GetbasketSum(
-                "GetOrderSum",
-                callMethod.ReadString("AppBasketInfoCode")
-        );
+        Call<RetrofitResponse> call2 = apiInterface.GetbasketSum("GetOrderSum", callMethod.ReadString("AppBasketInfoCode"));
         call2.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
@@ -259,7 +275,6 @@ public class BasketActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
     }
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
@@ -269,39 +284,6 @@ public class BasketActivity extends AppCompatActivity {
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

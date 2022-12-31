@@ -146,4 +146,5 @@
     <string name="textvalue_orderagaintag"> (reorder)</string>
     <string name="repprog_refresh">Retest</string>
     <string name="registeractivity_titlename">Settings</string>
+    <string name="menu_cart">Cart</string>
 </resources>

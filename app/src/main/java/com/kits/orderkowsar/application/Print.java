@@ -1,8 +1,5 @@
 package com.kits.orderkowsar.application;
 
-import static com.kits.orderkowsar.R.string.textvalue_tabletag;
-
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -28,20 +26,15 @@ import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.model.AppPrinter;
 import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.DistinctValue;
 import com.kits.orderkowsar.model.Factor;
-import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
-import com.mohamadamin.persianmaterialdatetimepicker.time.TimePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -52,22 +45,21 @@ import retrofit2.Response;
 public class Print {
 
 
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-    public APIInterface apiInterface;
     private final Context mContext;
+    public APIInterface apiInterface;
+    public Call<RetrofitResponse> call;
     CallMethod callMethod;
     DatabaseHelper dbh;
     Intent intent;
     Integer il;
-    public Call<RetrofitResponse> call;
     PersianCalendar persianCalendar;
     Dialog dialog, dialogProg;
     Dialog dialogprint;
     Calendar cldr;
-    int printerconter = 0;
+    int printerconter ;
     ArrayList<Factor> Factor_header = new ArrayList<>();
     ArrayList<Factor> Factor_row = new ArrayList<>();
-    ArrayList<AppPrinter> AppPrinters = new ArrayList<>();
+    ArrayList<AppPrinter> AppPrinters ;
     int width = 500;
     LinearLayoutCompat main_layout;
     Bitmap bitmap_factor;
@@ -277,9 +269,9 @@ public class Print {
 
         title_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         title_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -315,11 +307,11 @@ public class Print {
         total_layout.setOrientation(LinearLayoutCompat.HORIZONTAL);
 
 
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
@@ -350,7 +342,7 @@ public class Print {
         cldr = Calendar.getInstance();
         int hour = cldr.get(Calendar.HOUR_OF_DAY);
         int minutes = cldr.get(Calendar.MINUTE);
-        String thourOfDay, tminute, Time = "";
+        String thourOfDay, tminute, Time;
         thourOfDay = "0" + hour;
         tminute = "0" + minutes;
         Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
@@ -358,7 +350,7 @@ public class Print {
 
 
         TextView factorcode_tv = new TextView(mContext);
-        factorcode_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_factorcodetag) + Factor_header.get(0).getDailyCode() + "             " + Time));
+        factorcode_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_factorcodetag) + Factor_header.get(0).getDailyCode() + "     " + Time));
         factorcode_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         factorcode_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         factorcode_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -407,10 +399,8 @@ public class Print {
         title_layout.addView(ViewPager);
 
 
-        int CounterGood = 0;
         for (Factor FactorRow_detail : Factor_row) {
 
-            CounterGood++;
             LinearLayoutCompat first_layout = new LinearLayoutCompat(mContext);
             first_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
             first_layout.setOrientation(LinearLayoutCompat.VERTICAL);
@@ -420,9 +410,9 @@ public class Print {
             name_detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
             name_detail.setWeightSum(6);
 
-            if ( callMethod.ReadString("LANG").equals("fa")) {
+            if (callMethod.ReadString("LANG").equals("fa")) {
                 name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-            } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            } else if (callMethod.ReadString("LANG").equals("ar")) {
                 name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             } else {
                 name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -442,7 +432,7 @@ public class Print {
             ViewPager_goodname.setBackgroundResource(R.color.colorPrimaryDark);
 
             TextView good_name_tv = new TextView(mContext);
-            String goodname = "";
+            String goodname;
             if (FactorRow_detail.getIsExtra().equals("1")) {
                 goodname = FactorRow_detail.getGoodName() + mContext.getString(R.string.textvalue_orderagaintag);
             } else {
@@ -462,9 +452,9 @@ public class Print {
             detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
             detail.setWeightSum(9);
 
-            if ( callMethod.ReadString("LANG").equals("fa")) {
+            if (callMethod.ReadString("LANG").equals("fa")) {
                 detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-            } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            } else if (callMethod.ReadString("LANG").equals("ar")) {
                 detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             } else {
                 detail.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -537,7 +527,7 @@ public class Print {
 
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
                 assert response.body() != null;
                 if (response.body().getText().equals("Done")) {
                     printerconter++;
@@ -546,7 +536,7 @@ public class Print {
             }
 
             @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
                 printerconter++;
                 GetRow_Data();
             }

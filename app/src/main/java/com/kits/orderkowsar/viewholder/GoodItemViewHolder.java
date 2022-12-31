@@ -5,11 +5,9 @@ import android.content.Context;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -34,18 +32,17 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView img;
     public MaterialCardView rltv;
-    Context mContex;
     public TextView tv_name;
     public TextView tv_price;
     public Call<RetrofitResponse> call;
     public APIInterface apiInterface;
-
+    Context mContex;
     CallMethod callMethod;
     boolean multi_select1;
 
     public GoodItemViewHolder(View itemView, Context context) {
         super(itemView);
-        this.mContex=context;
+        this.mContex = context;
         this.callMethod = new CallMethod(context);
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         img = itemView.findViewById(R.id.good_item_img);
@@ -55,7 +52,7 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void callimage(Good good){
+    public void callimage(Good good) {
 
         if (!good.getGoodImageName().equals("")) {
 
@@ -68,8 +65,7 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
                     .into(img);
 
 
-        }
-        else {
+        } else {
 
             call = apiInterface.GetImage(
                     "getImage",

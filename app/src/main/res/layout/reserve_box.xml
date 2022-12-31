@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5sp"
-    android:layoutDirection="rtl"
-    >
+    android:layoutDirection="rtl">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,15 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/reserve_box_rstmiz"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="5sp"
                 android:gravity="center"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_margin="5sp"/>
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -50,11 +51,11 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.4"
+                    android:autofillHints=""
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
                     android:hint="@string/reservebox_name"
-                    android:autofillHints=""
+                    android:textSize="20sp"
                     tools:ignore="TextFields" />
 
             </LinearLayout>
@@ -63,9 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -84,11 +84,11 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.4"
+                    android:autofillHints=""
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
                     android:hint="@string/reservebox_mobile"
-                    android:autofillHints=""
+                    android:textSize="20sp"
                     tools:ignore="TextFields" />
 
             </LinearLayout>
@@ -98,8 +98,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
 
-                 
-                 
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -118,12 +117,12 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.4"
+                    android:autofillHints=""
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
                     android:hint="@string/reservebox_explain"
-                    tools:ignore="TextFields"
-                    android:autofillHints="" />
+                    android:textSize="20sp"
+                    tools:ignore="TextFields" />
 
             </LinearLayout>
 
@@ -131,9 +130,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -154,8 +152,8 @@
                     android:layout_weight="0.4"
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
-                    android:hint="@string/reservebox_starttime" />
+                    android:hint="@string/reservebox_starttime"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -163,9 +161,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -186,8 +183,8 @@
                     android:layout_weight="0.4"
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
-                    android:hint="@string/reservebox_endtime" />
+                    android:hint="@string/reservebox_endtime"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -195,9 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -218,8 +214,8 @@
                     android:layout_weight="0.4"
                     android:background="@drawable/bg_round_selected"
                     android:gravity="center"
-                    android:textSize="20sp"
-                    android:hint="@string/reservebox_date" />
+                    android:hint="@string/reservebox_date"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -227,15 +223,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                 
-                 
-                 
+
+
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
                 <Button
-                    style="?attr/materialButtonOutlinedStyle"
                     android:id="@+id/reserve_box_btn_send"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -245,7 +240,7 @@
                     android:textStyle="bold"
                     app:backgroundTint="#D7BE9F"
                     app:strokeColor="#B96838"
-                    app:strokeWidth="1dp"/>
+                    app:strokeWidth="1dp" />
 
 
             </LinearLayout>
@@ -255,19 +250,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="5sp"
                 android:background="@color/grey_600"
                 android:gravity="center"
                 android:text="@string/reservebox_tvlisttitle"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_margin="5sp"/>
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/reserve_box_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 
+
                 android:visibility="visible" />
         </LinearLayout>
     </ScrollView>

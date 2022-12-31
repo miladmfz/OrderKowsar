@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aboutusactivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.AboutUsActivity"
-    android:orientation="vertical"
     android:layoutDirection="rtl"
-    android:id="@+id/aboutusactivity">
+    android:orientation="vertical"
+    tools:context=".activity.AboutUsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/BuyActivity_appbar"
@@ -60,20 +60,19 @@
                 android:id="@+id/tv1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aboutus_address"
-                android:gravity="center"
-                android:textSize="20sp"
                 android:layout_marginTop="20sp"
-                />
+                android:gravity="center"
+                android:text="@string/aboutus_address"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aboutus_number"
-                android:gravity="center"
-                android:textSize="20sp"
                 android:layout_marginTop="20sp"
+                android:gravity="center"
+                android:text="@string/aboutus_number"
+                android:textSize="20sp"
 
                 />
 
@@ -81,10 +80,10 @@
                 android:id="@+id/tv3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aboutus_email"
-                android:gravity="center"
-                android:textSize="20sp"
                 android:layout_marginTop="20sp"
+                android:gravity="center"
+                android:text="@string/aboutus_email"
+                android:textSize="20sp"
 
                 />
 

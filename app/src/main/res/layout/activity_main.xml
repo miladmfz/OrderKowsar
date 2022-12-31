@@ -26,16 +26,15 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
-                app:titleTextColor="@color/white"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:title="@string/app_name">
+                app:title="@string/app_name"
+                app:titleTextColor="@color/white">
 
 
             </androidx.appcompat.widget.Toolbar>
 
 
         </com.google.android.material.appbar.AppBarLayout>
-
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -83,11 +82,11 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
+                        android:background="#C55615"
                         android:gravity="center"
                         android:text="@string/mainactivity_btn0"
-                        android:background="#C55615"
-                        android:textSize="42sp"
                         android:textColor="@color/white"
+                        android:textSize="42sp"
                         app:rippleColor="@color/deep_purple_300"
                         app:strokeColor="@color/grey_1000"
                         app:strokeWidth="1dp" />
@@ -98,9 +97,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/bg_round_selected"
+                        android:backgroundTint="#D6BD9E"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:backgroundTint="#D6BD9E"
                         android:weightSum="1">
 
                         <ImageView
@@ -130,9 +129,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/bg_round_selected"
+                        android:backgroundTint="#D6BD9E"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:backgroundTint="#D6BD9E"
                         android:weightSum="1">
 
                         <ImageView
@@ -162,9 +161,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/bg_round_selected"
+                        android:backgroundTint="#D6BD9E"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:backgroundTint="#D6BD9E"
                         android:weightSum="1">
 
                         <ImageView
@@ -194,9 +193,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/bg_round_selected"
+                        android:backgroundTint="#D6BD9E"
                         android:orientation="horizontal"
                         android:visibility="visible"
-                        android:backgroundTint="#D6BD9E"
                         android:weightSum="1">
 
                         <ImageView
@@ -219,8 +218,6 @@
                             android:textSize="42sp" />
 
                     </LinearLayout>
-
-
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>

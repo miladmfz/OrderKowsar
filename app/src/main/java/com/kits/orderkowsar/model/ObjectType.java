@@ -4,9 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class ObjectType {
 
-    @SerializedName("tid") private String tid;
-    @SerializedName("aType") private String aType;
-    @SerializedName("IsDefault") private String IsDefault;
+    @SerializedName("tid")
+    private String tid;
+    @SerializedName("aType")
+    private String aType;
+    @SerializedName("IsDefault")
+    private String IsDefault;
 
     public String getTid() {
         return tid;

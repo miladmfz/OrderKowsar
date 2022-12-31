@@ -26,39 +26,70 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.downloader.BuildConfig;
 import com.google.android.material.navigation.NavigationView;
-import com.kits.orderkowsar.BuildConfig;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
-import java.util.Locale;
 
+import java.util.Locale;
 
 
 public class NavActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     APIInterface apiInterface;
 
     Action action;
-    private boolean doubleBackToExitPressedOnce = false;
-    private Intent intent;
     CallMethod callMethod;
-
     Toolbar toolbar;
     NavigationView navigationView;
     TextView tv_versionname;
     TextView tv_dbname;
     TextView tv_brokercode;
     Button btn_changedb;
-
-
     TextView Getmizlist_btn0;
     TextView Getmizlist_btn1;
     TextView Getmizlist_btn2;
     TextView Getmizlist_btn3;
     TextView Getmizlist_btn4;
+    private boolean doubleBackToExitPressedOnce = false;
+    private Intent intent;
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+    //************************************************************
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +100,6 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
 
     }
-
-    //************************************************************
-
 
     @SuppressLint("WrongViewCast")
     public void Config() {
@@ -86,17 +114,16 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
         DrawerLayout drawer = findViewById(R.id.NavActivity_drawer_layout);
 
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             drawer.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             drawer.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
             drawer.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
-
 
 
         toolbar = findViewById(R.id.MainActivity_toolbar);
@@ -114,15 +141,13 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         btn_changedb = hView.findViewById(R.id.header_changedb);
 
 
-         Getmizlist_btn0 = findViewById(R.id.mainactivity_btn0);
-         Getmizlist_btn1 = findViewById(R.id.mainactivity_btn1);
-         Getmizlist_btn2 = findViewById(R.id.mainactivity_btn2);
-         Getmizlist_btn3 = findViewById(R.id.mainactivity_btn3);
-         Getmizlist_btn4 = findViewById(R.id.mainactivity_btn4);
+        Getmizlist_btn0 = findViewById(R.id.mainactivity_btn0);
+        Getmizlist_btn1 = findViewById(R.id.mainactivity_btn1);
+        Getmizlist_btn2 = findViewById(R.id.mainactivity_btn2);
+        Getmizlist_btn3 = findViewById(R.id.mainactivity_btn3);
+        Getmizlist_btn4 = findViewById(R.id.mainactivity_btn4);
 
     }
-
-
 
     public void init() {
         Config();
@@ -189,7 +214,6 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.NavActivity_drawer_layout);
@@ -226,51 +250,15 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
 
     }
 
-
-
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

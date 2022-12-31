@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/good_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
@@ -11,7 +12,6 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:strokeColor="@color/grey_1000"
-    android:id="@+id/good_item"
     app:strokeWidth="1dp">
 
 
@@ -33,15 +33,15 @@
             android:id="@+id/good_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/good_item_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textSize="18sp" />
 
 
     </LinearLayout>

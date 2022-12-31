@@ -4,12 +4,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class RstMiz {
 
-    @SerializedName("RstMizCode") private String RstMizCode;
-    @SerializedName("RstMizName") private String RstMizName;
-    @SerializedName("Explain") private String Explain;
-    @SerializedName("MizPrice") private String MizPrice;
-    @SerializedName("Active") private String Active;
-    @SerializedName("PlaceCount") private String PlaceCount;
+    @SerializedName("RstMizCode")
+    private String RstMizCode;
+    @SerializedName("RstMizName")
+    private String RstMizName;
+    @SerializedName("Explain")
+    private String Explain;
+    @SerializedName("MizPrice")
+    private String MizPrice;
+    @SerializedName("Active")
+    private String Active;
+    @SerializedName("PlaceCount")
+    private String PlaceCount;
 
     public String getRstMizCode() {
         return RstMizCode;

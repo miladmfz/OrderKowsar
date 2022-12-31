@@ -62,6 +62,39 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
     ActivityChoiceDatabaseBinding binding;
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,7 +235,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
     }
 
-
     @SuppressLint("SetTextI18n")
     public void CreateView(Activation singleactive) {
 
@@ -335,7 +367,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         binding.activitionLine.addView(ll_main, margin_10);
     }
 
-
     @Override
     protected void onDestroy() {
         if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
@@ -344,7 +375,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -355,39 +385,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

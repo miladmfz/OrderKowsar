@@ -2,9 +2,6 @@ package com.kits.orderkowsar.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.model.layer.BaseLayer;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.BasketActivity;
-import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.application.ImageInfo;
-import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
-import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.viewholder.GoodBasketViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
@@ -32,7 +22,6 @@ import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -41,14 +30,10 @@ import retrofit2.Response;
 
 
 public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder> {
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
     private final APIInterface apiInterface;
-    private final ImageInfo image_info;
     private final Context mContext;
-    CallMethod callMethod;
     private final ArrayList<Good> goods;
-    private final DatabaseHelper dbh;
-    Intent intent;
+    CallMethod callMethod;
     Action action;
     Call<RetrofitResponse> call;
 
@@ -56,8 +41,6 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
         this.mContext = mContext;
         this.goods = goods;
         this.callMethod = new CallMethod(mContext);
-        this.image_info = new ImageInfo(mContext);
-        this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         action = new Action(mContext);
     }
@@ -66,9 +49,9 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     @Override
     public GoodBasketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.good_basket_item_cardview, parent, false);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -112,6 +95,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
                             goods.get(position).getAppBasketInfoRef()
                     );
                     call.enqueue(new Callback<RetrofitResponse>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                             if (response.isSuccessful()) {

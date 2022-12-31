@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splashactivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash11"
-    android:layoutDirection="rtl"
-    android:gravity="center"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:id="@+id/splashactivity"
-    >
+    android:background="@drawable/splash11"
+    android:gravity="center"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/splash_refresh"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:background="@color/black"
         android:text="@string/splashactivity_trayagin"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:visibility="gone"
         android:textStyle="bold"
-        android:background="@color/black"/>
+        android:visibility="gone" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        app:lottie_rawRes="@raw/waiter"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true" />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/waiter" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

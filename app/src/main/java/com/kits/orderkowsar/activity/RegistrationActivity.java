@@ -28,10 +28,8 @@ import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +46,40 @@ public class RegistrationActivity extends AppCompatActivity {
     ArrayList<String> lang_array = new ArrayList<>();
     Integer lang_position = 0;
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+//*******************************************************
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +95,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-//*******************************************************
 
     public void Config() {
 
@@ -72,9 +103,9 @@ public class RegistrationActivity extends AppCompatActivity {
         action = new Action(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -112,8 +143,7 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.registrDbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
 
 
-        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, lang_array);
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang_array);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.registrSpinnerlang.setAdapter(spinner_adapter);
 
@@ -196,49 +226,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

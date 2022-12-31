@@ -1,6 +1,5 @@
 package com.kits.orderkowsar.viewholder;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -9,11 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
-import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.model.Good;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 
 public class ReserveViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +41,6 @@ public class ReserveViewHolder extends RecyclerView.ViewHolder {
         tv_reservedate = itemView.findViewById(R.id.reserve_item_reservedate);
 
     }
-
 
 
 }

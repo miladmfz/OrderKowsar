@@ -16,17 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:background="@drawable/bg_round_selected"
+        android:orientation="vertical"
         android:padding="5sp">
 
         <TextView
             android:id="@+id/objecttype_item_itype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:gravity="center"
 
             />
     </androidx.appcompat.widget.LinearLayoutCompat>

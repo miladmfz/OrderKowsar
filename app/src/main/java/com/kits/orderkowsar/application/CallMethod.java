@@ -1,40 +1,25 @@
 package com.kits.orderkowsar.application;
 
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kits.orderkowsar.BuildConfig;
-import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.NumberFunctions;
-import com.kits.orderkowsar.model.RetrofitResponse;
-import com.kits.orderkowsar.model.UserInfo;
-import com.kits.orderkowsar.webService.APIClient_kowsar;
-import com.kits.orderkowsar.webService.APIInterface;
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-
 
 public class CallMethod extends Application {
     private final SharedPreferences shPref;
-    private SharedPreferences.Editor sEdit;
     Context context;
-
     Toast toast;
+    private SharedPreferences.Editor sEdit;
 
     public CallMethod(Context mContext) {
         this.context = mContext;

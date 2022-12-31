@@ -1,11 +1,5 @@
 package com.kits.orderkowsar.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -21,6 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
@@ -46,6 +46,9 @@ import retrofit2.Response;
 
 public class TableActivity extends AppCompatActivity {
 
+    public String State = "0";
+    public String EditTable = "0";
+    public String mizType = "";
     CallMethod callMethod;
     APIInterface apiInterface;
     Intent intent;
@@ -53,9 +56,6 @@ public class TableActivity extends AppCompatActivity {
     ArrayList<BasketInfo> basketInfos = new ArrayList<>();
     ArrayList<ObjectType> objectTypes = new ArrayList<>();
     RstMizAdapter adapter;
-    public String State = "0";
-    public String EditTable = "0";
-    public String mizType = "";
     ArrayList<String> InfoState_array = new ArrayList<>();
     Spinner spinner;
 
@@ -64,6 +64,38 @@ public class TableActivity extends AppCompatActivity {
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +127,10 @@ public class TableActivity extends AppCompatActivity {
         callMethod = new CallMethod(App.getContext());
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
-        CoordinatorLayout  ll_activity=findViewById(R.id.tableactivity);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        CoordinatorLayout ll_activity = findViewById(R.id.tableactivity);
+        if (callMethod.ReadString("LANG").equals("fa")) {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -142,8 +174,8 @@ public class TableActivity extends AppCompatActivity {
     }
 
     public void CallSpinner() {
-        if (EditTable.equals("1")){
-            State="3";
+        if (EditTable.equals("1")) {
+            State = "3";
             spinner.setVisibility(View.INVISIBLE);
         }
         if (String.valueOf(spinner.getSelectedItemPosition()).equals(State)) {
@@ -182,13 +214,11 @@ public class TableActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         CallTable();
         super.onWindowFocusChanged(hasFocus);
     }
-
 
     public void init() {
 
@@ -243,49 +273,15 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

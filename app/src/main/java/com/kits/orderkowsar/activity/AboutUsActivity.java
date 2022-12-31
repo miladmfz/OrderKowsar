@@ -21,39 +21,6 @@ import java.util.Locale;
 public class AboutUsActivity extends AppCompatActivity {
     CallMethod callMethod;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        callMethod = new CallMethod(this);
-        ActivityAboutusBinding binding = ActivityAboutusBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        if (callMethod.ReadString("LANG").equals("fa")) {
-            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if (callMethod.ReadString("LANG").equals("ar")) {
-            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else {
-            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
-
-        binding.tv1.setText(callMethod.NumberRegion(binding.tv1.getText().toString()));
-        binding.tv2.setText(callMethod.NumberRegion(binding.tv2.getText().toString()));
-        binding.tv3.setText(callMethod.NumberRegion(binding.tv3.getText().toString()));
-
-
-    }
-
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
-        String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")) {
-            currentLang = getAppLanguage();
-        }
-        Context context = changeLanguage(newBase, currentLang);
-        super.attachBaseContext(context);
-    }
-
     @SuppressLint("ObsoleteSdkInt")
     public static ContextWrapper changeLanguage(Context context, String lang) {
 
@@ -85,6 +52,38 @@ public class AboutUsActivity extends AppCompatActivity {
         }
 
         return new ContextWrapper(context);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        callMethod = new CallMethod(this);
+        ActivityAboutusBinding binding = ActivityAboutusBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        if (callMethod.ReadString("LANG").equals("fa")) {
+            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
+            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            binding.aboutusactivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
+        binding.tv1.setText(callMethod.NumberRegion(binding.tv1.getText().toString()));
+        binding.tv2.setText(callMethod.NumberRegion(binding.tv2.getText().toString()));
+        binding.tv3.setText(callMethod.NumberRegion(binding.tv3.getText().toString()));
+
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
+        String currentLang = preferences.getString("LANG", "");
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
+        }
+        Context context = changeLanguage(newBase, currentLang);
+        super.attachBaseContext(context);
     }
 
     public String getAppLanguage() {

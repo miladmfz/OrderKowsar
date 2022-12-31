@@ -49,7 +49,6 @@ public class Factor {
     private String ReserveStart;
 
 
-
     @SerializedName("InfoPrintCount")
     private String InfoPrintCount;
 
@@ -197,8 +196,8 @@ public class Factor {
     }
 
     public String getFacAmount() {
-        if (FacAmount.indexOf(".")>0){
-            FacAmount=FacAmount.substring(0,FacAmount.indexOf("."));
+        if (FacAmount.indexOf(".") > 0) {
+            FacAmount = FacAmount.substring(0, FacAmount.indexOf("."));
         }
         return FacAmount;
     }

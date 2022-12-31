@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.work.WorkManager;
 
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.InternetConnection;
@@ -42,13 +40,48 @@ import java.util.Locale;
 public class SplashActivity extends AppCompatActivity {
 
 
+    final int PERMISSION_CODE = 1;
+    final int PERMISSION_REQUEST_CODE = 1;
     Intent intent;
     CallMethod callMethod;
     Handler handler;
-    final int PERMISSION_CODE = 1;
     DatabaseHelper dbh, dbhbase;
-    final int PERMISSION_REQUEST_CODE = 1;
 
+    @SuppressLint("ObsoleteSdkInt")
+    public static ContextWrapper changeLanguage(Context context, String lang) {
+
+        Locale currentLocal;
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            currentLocal = conf.getLocales().get(0);
+        } else {
+            currentLocal = conf.locale;
+        }
+
+        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
+            Locale newLocal = new Locale(lang);
+            Locale.setDefault(newLocal);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conf.setLocale(newLocal);
+            } else {
+                conf.locale = newLocal;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context = context.createConfigurationContext(conf);
+            } else {
+                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
+            }
+
+
+        }
+
+        return new ContextWrapper(context);
+    }
+
+
+    //***************************************************************************************
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +90,7 @@ public class SplashActivity extends AppCompatActivity {
         Config();
 
 
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button splash_refresh = findViewById(R.id.splash_refresh);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button splash_refresh = findViewById(R.id.splash_refresh);
         InternetConnection ic = new InternetConnection(this);
         if (ic.has()) {
             try {
@@ -90,23 +122,19 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-
-    //***************************************************************************************
-
-
     public void Config() {
         callMethod = new CallMethod(this);
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
         LinearLayoutCompat ll_activity = findViewById(R.id.splashactivity);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
-    }
 
+    }
 
     @SuppressLint("SdCardPath")
     public void init() {
@@ -259,49 +287,15 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public static ContextWrapper changeLanguage(Context context, String lang) {
-
-        Locale currentLocal;
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            currentLocal = conf.getLocales().get(0);
-        } else {
-            currentLocal = conf.locale;
-        }
-
-        if (!lang.equals("") && !currentLocal.getLanguage().equals(lang)) {
-            Locale newLocal = new Locale(lang);
-            Locale.setDefault(newLocal);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                conf.setLocale(newLocal);
-            } else {
-                conf.locale = newLocal;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context = context.createConfigurationContext(conf);
-            } else {
-                res.updateConfiguration(conf, context.getResources().getDisplayMetrics());
-            }
-
-
-        }
-
-        return new ContextWrapper(context);
     }
 
     public String getAppLanguage() {

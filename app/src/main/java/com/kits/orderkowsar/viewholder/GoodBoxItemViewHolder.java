@@ -2,13 +2,10 @@ package com.kits.orderkowsar.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.kits.orderkowsar.R;
 
 import java.text.DecimalFormat;
@@ -16,7 +13,6 @@ import java.text.DecimalFormat;
 
 public class GoodBoxItemViewHolder extends RecyclerView.ViewHolder {
     private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-
 
 
     public TextView tv_name;

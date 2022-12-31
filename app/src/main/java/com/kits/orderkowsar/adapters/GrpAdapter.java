@@ -56,9 +56,9 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
     @Override
     public GoodGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grp_list, parent, false);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        if (callMethod.ReadString("LANG").equals("fa")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -81,23 +81,12 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
 
         if (!GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName").equals("")) {
 
-            Glide.with(holder.img)
-                    .asBitmap()
-                    .load(Base64.decode(GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName"), Base64.DEFAULT))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
-                    .into(holder.img);
+            Glide.with(holder.img).asBitmap().load(Base64.decode(GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName"), Base64.DEFAULT)).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.img);
 
 
         } else {
 
-            call2 = apiInterface.GetImage(
-                    "getImage",
-                    GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"),
-                    "TGoodsGrp",
-                    "0",
-                    "200"
-            );
+            call2 = apiInterface.GetImage("getImage", GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"), "TGoodsGrp", "0", "200");
             call2.enqueue(new Callback<RetrofitResponse>() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override

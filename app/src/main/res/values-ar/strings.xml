@@ -142,6 +142,7 @@
     <string name="goodbasketitem_explain">وصف</string>
     <string name="reservebox_starttime">وقت البدء</string>
     <string name="registeractivity_titlename">إعدادات</string>
+    <string name="menu_cart">عربة التسوق</string>
 
 
 </resources>

@@ -16,33 +16,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.BasketActivity;
-import com.kits.orderkowsar.activity.NavActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
-import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
 import com.kits.orderkowsar.adapters.ReserveAdapter;
-import com.kits.orderkowsar.adapters.RstMizAdapter;
-import com.kits.orderkowsar.model.AppPrinter;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.DistinctValue;
-import com.kits.orderkowsar.model.Factor;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
-import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -53,9 +45,6 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
-import java.sql.Time;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -65,15 +54,13 @@ import retrofit2.Response;
 
 
 public class Action extends Activity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-    public APIInterface apiInterface;
-
     private final Context mContext;
+    public APIInterface apiInterface;
+    public Call<RetrofitResponse> call;
     CallMethod callMethod;
     DatabaseHelper dbh;
     Intent intent;
     Integer il;
-    public Call<RetrofitResponse> call;
     PersianCalendar persianCalendar;
     String date;
     Dialog dialog, dialogProg;
@@ -84,7 +71,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     TextView tv_date;
     int ehour = 0;
     int eminutes = 0;
-    int printerconter = 0;
+    int printerconter ;
     ArrayList<DistinctValue> values = new ArrayList<>();
     ArrayList<String> values_array = new ArrayList<>();
     ArrayList<Good> Goods;
@@ -122,7 +109,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         );
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
                 assert response.body() != null;
 
                 intent = new Intent(mContext, TableActivity.class);
@@ -135,10 +122,9 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             }
 
             @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
             }
         });
-
 
 
     }
@@ -148,10 +134,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.reserve_box);
-        LinearLayout ll_reservebox= dialog.findViewById(R.id.reserve_box);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        LinearLayout ll_reservebox = dialog.findViewById(R.id.reserve_box);
+        if (callMethod.ReadString("LANG").equals("fa")) {
             ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -170,9 +156,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         Button btn_reserve = dialog.findViewById(R.id.reserve_box_btn_send);
 
 
-        tv_showrecycler.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tvlistoftable)+ basketInfo.getRstMizName()));
+        tv_showrecycler.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tvlistoftable) + basketInfo.getRstMizName()));
         tv_rstmizname.setText(callMethod.NumberRegion(basketInfo.getRstMizName()));
-
 
 
         call = apiInterface.OrderReserveList("OrderReserveList", basketInfo.getRstmizCode());
@@ -200,14 +185,14 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
                 assert response.body() != null;
                 date = response.body().getText();
                 tv_date.setText(callMethod.NumberRegion(date));
             }
 
             @Override
-            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
             }
         });
 
@@ -218,7 +203,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             int minutes = cldr.get(Calendar.MINUTE);
             new TimePickerDialog();
             picker = TimePickerDialog.newInstance((view, hourOfDay, minute) -> {
-                String thourOfDay, tminute, Time = "";
+                String thourOfDay, tminute, Time;
                 thourOfDay = "0" + hourOfDay;
                 tminute = "0" + minute;
                 Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
@@ -231,8 +216,9 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 );
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
-                    public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
-                        String ehourOfDay = "", eminute = "", eTime = "";
+                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                        String ehourOfDay = "", eminute, eTime;
+                        assert response.body() != null;
                         if (minute + Integer.parseInt(response.body().getText()) > 60) {
                             eminute = String.valueOf(minute + Integer.parseInt(response.body().getText()) - 60);
                             if ((hourOfDay + 1) > 23) {
@@ -259,7 +245,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     }
 
                     @Override
-                    public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
 
                     }
                 });
@@ -276,7 +262,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             new TimePickerDialog();
             picker = TimePickerDialog.newInstance((view, ehour, eminutes) -> {
-                String thourOfDay, tminute, Time = "";
+                String thourOfDay, tminute, Time;
                 thourOfDay = "0" + ehour;
                 tminute = "0" + eminutes;
                 Time = thourOfDay.substring(thourOfDay.length() - 2) + ":"
@@ -323,7 +309,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     basketInfo.getRstmizCode(),
                     NumberFunctions.EnglishNumber(ed_personname.getText().toString()),
                     NumberFunctions.EnglishNumber(ed_mobileno.getText().toString()),
-                    NumberFunctions.EnglishNumber(ed_explain.getText().toString())+mContext.getString(R.string.textvalue_tagreserve),
+                    NumberFunctions.EnglishNumber(ed_explain.getText().toString()) + mContext.getString(R.string.textvalue_tagreserve),
                     "0",
                     NumberFunctions.EnglishNumber(tv_reservestart.getText().toString()),
                     NumberFunctions.EnglishNumber(tv_reserveend.getText().toString()),
@@ -334,7 +320,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
             call.enqueue(new Callback<RetrofitResponse>() {
                 @Override
-                public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
                     assert response.body() != null;
                     if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                         callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
@@ -349,7 +335,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                 }
 
                 @Override
-                public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
                 }
             });
 
@@ -365,10 +351,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.order_box_good);
-        LinearLayoutCompat ll_orderboxgood= dialog.findViewById(R.id.orderboxgood);
-        if ( callMethod.ReadString("LANG").equals("fa")) {
+        LinearLayoutCompat ll_orderboxgood = dialog.findViewById(R.id.orderboxgood);
+        if (callMethod.ReadString("LANG").equals("fa")) {
             ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
             ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
             ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -667,7 +653,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-
     public void lottieok() {
 
         Dialog dialog1 = new Dialog(mContext);
@@ -716,7 +701,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
@@ -727,7 +711,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 
     }
-
 
 
 }
