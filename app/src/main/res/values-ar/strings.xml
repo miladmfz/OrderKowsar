@@ -143,6 +143,7 @@
     <string name="reservebox_starttime">وقت البدء</string>
     <string name="registeractivity_titlename">إعدادات</string>
     <string name="menu_cart">عربة التسوق</string>
+    <string name="textvalue_tagall">الجميع</string>
 
 
 </resources>

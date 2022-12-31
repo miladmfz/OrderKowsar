@@ -74,7 +74,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
         holder.rltv.setOnClickListener(v -> {
 
             new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_ordering).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
-                callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName() + " (رزرو) ");
+                callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName() + R.string.textvalue_tagreserve);
                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                 intent = new Intent(mContext, SearchActivity.class);
                 mContext.startActivity(intent);
@@ -87,7 +87,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
             new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_resdel).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
                 action.DeleteReserveDialog(basketInfos.get(position));
             }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-            }).show()
+            }).show();
             return false;
         });
 

@@ -10,7 +10,7 @@
         android:title="@string/menu_cart"
         app:actionLayout="@layout/action_bar_notifitcation_icon"
         app:showAsAction="always"
-        tools:ignore="HardcodedText" />
+         />
 
 
 </menu>

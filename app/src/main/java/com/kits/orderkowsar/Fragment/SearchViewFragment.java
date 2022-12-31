@@ -136,7 +136,6 @@ public class SearchViewFragment extends Fragment {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
 
-                    Log.e("test", response.body().getGroups().size() + "");
                     GrpAdapter adapter = new GrpAdapter(response.body().getGroups(), Parent_GourpCode, fragmentTransaction, requireActivity());
                     rc_grp.setLayoutManager(new LinearLayoutManager(requireActivity()));
                     rc_grp.setAdapter(adapter);
@@ -163,7 +162,6 @@ public class SearchViewFragment extends Fragment {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Log.e("test", response.body().getGoods().size() + "");
 
                     Goods = response.body().getGoods();
                     callrecycler();

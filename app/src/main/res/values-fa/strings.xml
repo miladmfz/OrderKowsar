@@ -143,6 +143,7 @@
     <string name="textvalue_tablelable">" میز "</string>
     <string name="registeractivity_titlename">تنظیمات</string>
     <string name="menu_cart">سبد خرید</string>
+    <string name="textvalue_tagall">همه</string>
 
 
 </resources>

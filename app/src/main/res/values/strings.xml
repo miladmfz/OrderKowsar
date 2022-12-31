@@ -27,7 +27,7 @@
 
     <string name="tableactivity_titlename">list of table</string>
     <string name="mainactivity_btn1">empty tables</string>
-    <string name="mainactivity_btn2">Ordering</string>
+    <string name="mainactivity_btn2">In Order</string>
     <string name="mainactivity_btn3">printed</string>
     <string name="mainactivity_btn4">reserved</string>
     <string name="allviewactivity_titlename">Grouping</string>
@@ -71,22 +71,22 @@
     <string name="reservebox_endtime">end  time</string>
     <string name="reservebox_date">Date</string>
     <string name="reservebox_setreservebtn">Register a reservation</string>
-    <string name="reservebox_tvlisttitle">Table reservation list</string>
+    <string name="reservebox_tvlisttitle">Reservation list</string>
     <string name="reserveitem_until">untile</string>
-    <string name="tableitem_name">Table :</string>
+    <string name="tableitem_name">Table</string>
     <string name="tableitem_setfree">free</string>
     <string name="tableitem_infoexplain">Order details:</string>
     <string name="tableitem_tableexplain">Description:</string>
     <string name="tableitem_usetime">Use Time:</string>
     <string name="tableitem_brokerstate">Host:</string>
     <string name="tableitem_reserve">Reservation:</string>
-    <string name="tableitem_selecttable">Table selection</string>
-    <string name="tableitem_reservetable">reserve table</string>
+    <string name="tableitem_selecttable">Select</string>
+    <string name="tableitem_reservetable">Reserve</string>
     <string name="tableitem_changetable">Change table</string>
     <string name="tableitem_explinbtn">Description</string>
     <string name="tableitem_print">Print order</string>
     <string name="tableemptyitem_name">Table :</string>
-    <string name="tableemptyitem_selecttable">Table selection</string>
+    <string name="tableemptyitem_selecttable">select</string>
     <string name="textvalue_order">" orders "</string>
     <string name="textvalue_allert">Attention</string>
     <string name="textvalue_yes">Yes</string>
@@ -116,8 +116,8 @@
     <string name="toastvalue_permissionresult">permission granted</string>
     <string name="toastvalue_unpermissionresult">permission denied</string>
     <string name="infostatearray_0">All tables</string>
-    <string name="infostatearray_1">Ordering</string>
-    <string name="infostatearray_2">Registered ones</string>
+    <string name="infostatearray_1">In Order</string>
+    <string name="infostatearray_2">Registered</string>
     <string name="infostatearray_3">empty tables</string>
     <string name="infostatearray_4">Reserved</string>
     <string name="textvalue_ifdelete">Be deleted?</string>
@@ -129,7 +129,7 @@
     <string name="textvalue_recorded">Was recorded</string>
     <string name="textvalue_reprinting">Reprint?</string>
     <string name="textvalue_transfertext">(transition from</string>
-    <string name="textvalue_tvlistoftable">Table reservation list</string>
+    <string name="textvalue_tvlistoftable">reservation list</string>
     <string name="textvalue_sendinformation">Sending information</string>
     <string name="textvalue_tagreserve">" (Reservation)  "</string>
     <string name="textvalue_editorder">Modify the order</string>
@@ -147,4 +147,5 @@
     <string name="repprog_refresh">Retest</string>
     <string name="registeractivity_titlename">Settings</string>
     <string name="menu_cart">Cart</string>
+    <string name="textvalue_tagall">All</string>
 </resources>
