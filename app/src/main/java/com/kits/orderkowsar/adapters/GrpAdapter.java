@@ -56,6 +56,13 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
     @Override
     public GoodGroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grp_list, parent, false);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
         return new GoodGroupViewHolder(view);
     }
 

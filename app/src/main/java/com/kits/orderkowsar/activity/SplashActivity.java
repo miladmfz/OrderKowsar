@@ -24,6 +24,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.work.WorkManager;
@@ -75,6 +76,7 @@ public class SplashActivity extends AppCompatActivity {
             dialog1.setContentView(R.layout.connection_fail);
             dialog1.show();
             Button to_setting = dialog1.findViewById(R.id.to_setting);
+
             to_setting.setOnClickListener(view -> startActivity(new Intent(Settings.ACTION_SETTINGS)));
             splash_refresh.setVisibility(View.VISIBLE);
 
@@ -95,6 +97,14 @@ public class SplashActivity extends AppCompatActivity {
     public void Config() {
         callMethod = new CallMethod(this);
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
+        LinearLayoutCompat ll_activity = findViewById(R.id.splashactivity);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
     }
 
 

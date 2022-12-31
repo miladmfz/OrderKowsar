@@ -13,8 +13,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,54 +26,32 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.kits.orderkowsar.BuildConfig;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
-import com.kits.orderkowsar.application.App;
 import com.kits.orderkowsar.application.CallMethod;
-import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.GoodGroup;
-import com.kits.orderkowsar.model.NumberFunctions;
-import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class NavActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     APIInterface apiInterface;
 
-    private Action action;
+    Action action;
     private boolean doubleBackToExitPressedOnce = false;
     private Intent intent;
     CallMethod callMethod;
-    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
-    DatabaseHelper dbh;
-    ArrayList<GoodGroup> menugrp;
-    LinearLayoutCompat llsumfactor;
+
     Toolbar toolbar;
     NavigationView navigationView;
     TextView tv_versionname;
     TextView tv_dbname;
     TextView tv_brokercode;
     Button btn_changedb;
-    TextView customer;
-    TextView sumfac;
+
 
     TextView Getmizlist_btn0;
     TextView Getmizlist_btn1;
@@ -83,9 +59,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
     TextView Getmizlist_btn3;
     TextView Getmizlist_btn4;
 
-    Button btn_test;
-    TextView tv_test;
-    PersianCalendar persianCalendar = new PersianCalendar();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,12 +81,29 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         callMethod = new CallMethod(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
-        toolbar = findViewById(R.id.MainActivity_toolbar);
 
-        setSupportActionBar(toolbar);
+        LinearLayoutCompat ll_activity_main = findViewById(R.id.mainactivity);
+
         DrawerLayout drawer = findViewById(R.id.NavActivity_drawer_layout);
+
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            drawer.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            drawer.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_activity_main.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            drawer.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
+
+
+        toolbar = findViewById(R.id.MainActivity_toolbar);
+        setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+
         toggle.syncState();
         navigationView = findViewById(R.id.NavActivity_nav);
         navigationView.setNavigationItemSelectedListener(this);
@@ -289,7 +280,9 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     protected void onRestart() {
         super.onRestart();
-        recreate();
+        startActivity(getIntent());
+        finish();
+
     }
 }
 

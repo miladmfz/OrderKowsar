@@ -1,24 +1,13 @@
 package com.kits.orderkowsar.application;
 
+
 import android.animation.Animator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Typeface;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -159,7 +148,14 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.reserve_box);
-
+        LinearLayout ll_reservebox= dialog.findViewById(R.id.reserve_box);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_reservebox.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
         EditText ed_personname = dialog.findViewById(R.id.reserve_box_personname);
         EditText ed_mobileno = dialog.findViewById(R.id.reserve_box_mobileno);
         EditText ed_explain = dialog.findViewById(R.id.reserve_box_explain);
@@ -174,8 +170,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         Button btn_reserve = dialog.findViewById(R.id.reserve_box_btn_send);
 
 
-
-        tv_showrecycler.setText(callMethod.NumberRegion(getString(R.string.textvalue_tvlistoftable)+ basketInfo.getRstMizName()));
+        tv_showrecycler.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tvlistoftable)+ basketInfo.getRstMizName()));
         tv_rstmizname.setText(callMethod.NumberRegion(basketInfo.getRstMizName()));
 
 
@@ -328,7 +323,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     basketInfo.getRstmizCode(),
                     NumberFunctions.EnglishNumber(ed_personname.getText().toString()),
                     NumberFunctions.EnglishNumber(ed_mobileno.getText().toString()),
-                    NumberFunctions.EnglishNumber(ed_explain.getText().toString())+getString(R.string.textvalue_tagreserve),
+                    NumberFunctions.EnglishNumber(ed_explain.getText().toString())+mContext.getString(R.string.textvalue_tagreserve),
                     "0",
                     NumberFunctions.EnglishNumber(tv_reservestart.getText().toString()),
                     NumberFunctions.EnglishNumber(tv_reserveend.getText().toString()),
@@ -370,6 +365,14 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.order_box_good);
+        LinearLayoutCompat ll_orderboxgood= dialog.findViewById(R.id.orderboxgood);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_orderboxgood.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
 
         TextView ed_orderbox_goodname = dialog.findViewById(R.id.orderboxgood_goodname);
         EditText ed_orderbox_amount = dialog.findViewById(R.id.orderboxgood_amount);
@@ -521,7 +524,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                                 dialogProg.dismiss();
                             } else {
                                 if (Flag.equals("0")) {
-                                    callMethod.showToast(String.valueOf(R.string.textvalue_recorded));
+                                    callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
                                     dialog.dismiss();
                                     dialogProg.dismiss();
                                     SearchActivity activity = (SearchActivity) mContext;
@@ -552,10 +555,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         }
                     });
                 } else {
-                    callMethod.showToast(getString(R.string.textvalue_inserttruenumber));
+                    callMethod.showToast(mContext.getString(R.string.textvalue_inserttruenumber));
                 }
             } else {
-                callMethod.showToast(getString(R.string.textvalue_insertnumber));
+                callMethod.showToast(mContext.getString(R.string.textvalue_insertnumber));
             }
         });
         dialog.show();
@@ -645,7 +648,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                             } else {
                                 dialog.dismiss();
                                 dialogProg.dismiss();
-                                callMethod.showToast(String.valueOf(R.string.textvalue_recorded));
+                                callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
                             }
                         }
                     }

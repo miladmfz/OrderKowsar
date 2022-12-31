@@ -66,6 +66,13 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
     @Override
     public GoodBasketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.good_basket_item_cardview, parent, false);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
         return new GoodBasketViewHolder(view);
     }
 

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    tools:context=".activity.TableActivity">
+    tools:context=".activity.TableActivity"
+    android:id="@+id/tableactivity">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

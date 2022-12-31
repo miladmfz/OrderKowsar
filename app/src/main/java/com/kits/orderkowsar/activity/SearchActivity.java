@@ -92,6 +92,13 @@ public class SearchActivity extends AppCompatActivity {
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
 
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            binding.searchactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            binding.searchactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            binding.searchactivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         width = metrics.widthPixels;

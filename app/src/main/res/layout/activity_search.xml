@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.SearchActivity"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:id="@+id/searchactivity">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

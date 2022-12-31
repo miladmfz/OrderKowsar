@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.AboutUsActivity"
     android:orientation="vertical"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:id="@+id/aboutusactivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/BuyActivity_appbar"

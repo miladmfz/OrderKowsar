@@ -36,6 +36,13 @@ public class ObjectTypeAdapter extends RecyclerView.Adapter<ObjectTypeViewHolder
     @Override
     public ObjectTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.objecttype_item_cardview, parent, false);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
         return new ObjectTypeViewHolder(view);
     }
 

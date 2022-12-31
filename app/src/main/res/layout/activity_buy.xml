@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activity.BasketActivity"
     android:orientation="vertical"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:id="@+id/buyactivity">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

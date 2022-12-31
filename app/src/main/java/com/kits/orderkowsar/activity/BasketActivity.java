@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +36,6 @@ import com.kits.orderkowsar.webService.APIInterface;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -47,9 +46,9 @@ import retrofit2.Response;
 public class BasketActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    APIInterface apiInterface ;
+    APIInterface apiInterface;
     CallMethod callMethod;
-    TextView Buy_row,Buy_amount;
+    TextView Buy_row, Buy_amount;
     Intent intent;
     GoodBasketAdapter adapter;
     Action action;
@@ -60,7 +59,7 @@ public class BasketActivity extends AppCompatActivity {
     LottieAnimationView prog;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
-    String State="0";
+    String State = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +67,14 @@ public class BasketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buy);
 
 
-        InternetConnection ic =new  InternetConnection(this);
-        if(ic.has()){
+        InternetConnection ic = new InternetConnection(this);
+        if (ic.has()) {
             try {
                 init();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else{
+        } else {
             intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
             finish();
@@ -95,6 +94,16 @@ public class BasketActivity extends AppCompatActivity {
         print = new Print(BasketActivity.this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
+        CoordinatorLayout ll_activity = findViewById(R.id.buyactivity);
+        if (callMethod.ReadString("LANG").equals("fa")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
+
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
         total_delete = findViewById(R.id.BuyActivity_total_delete);
@@ -107,7 +116,7 @@ public class BasketActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.BuyActivity_toolbar);
 
-        toolbar.setTitle(callMethod.NumberRegion( getString(R.string.textvalue_order)+ callMethod.ReadString("RstMizName")));
+        toolbar.setTitle(callMethod.NumberRegion(getString(R.string.textvalue_order) + callMethod.ReadString("RstMizName")));
 
         setSupportActionBar(toolbar);
 
@@ -127,7 +136,7 @@ public class BasketActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    goods=response.body().getGoods();
+                    goods = response.body().getGoods();
                     callrecycler();
                     prog.setVisibility(View.GONE);
 
@@ -145,9 +154,9 @@ public class BasketActivity extends AppCompatActivity {
 
         final_buy_test.setOnClickListener(view -> {
 
-            if (State.equals("4")){
+            if (State.equals("4")) {
                 print.GetHeader_Data("");
-            }else{
+            } else {
                 action.OrderToFactor();
             }
         });
@@ -165,7 +174,7 @@ public class BasketActivity extends AppCompatActivity {
                     );
                     call1.enqueue(new Callback<RetrofitResponse>() {
                         @Override
-                        public void onResponse(@NotNull  Call<RetrofitResponse> call1, @NotNull  Response<RetrofitResponse> response) {
+                        public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
                             if (response.isSuccessful()) {
                                 assert response.body() != null;
                                 if (response.body().getText().equals("Done")) {
@@ -174,8 +183,9 @@ public class BasketActivity extends AppCompatActivity {
                                 }
                             }
                         }
+
                         @Override
-                        public void onFailure(@NotNull Call<RetrofitResponse> call1,@NotNull  Throwable t) {
+                        public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
                         }
                     });
 
@@ -187,7 +197,6 @@ public class BasketActivity extends AppCompatActivity {
     }
 
 
-
     private void callrecycler() {
 
         adapter = new GoodBasketAdapter(goods, this);
@@ -197,8 +206,8 @@ public class BasketActivity extends AppCompatActivity {
             img_lottiestatus.setVisibility(View.VISIBLE);
             tv_lottiestatus.setVisibility(View.VISIBLE);
         } else {
-            for(Good good:goods){
-                if (good.getFactorCode()==null){
+            for (Good good : goods) {
+                if (good.getFactorCode() == null) {
                     final_buy_test.setVisibility(View.VISIBLE);
                     total_delete.setVisibility(View.VISIBLE);
                 }
@@ -215,30 +224,31 @@ public class BasketActivity extends AppCompatActivity {
 
     public void RefreshState() {
 
-            Call<RetrofitResponse> call2 = apiInterface.GetbasketSum(
-                    "GetOrderSum",
-                    callMethod.ReadString("AppBasketInfoCode")
-            );
-            call2.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        State=response.body().getGoods().get(0).getInfoState();
+        Call<RetrofitResponse> call2 = apiInterface.GetbasketSum(
+                "GetOrderSum",
+                callMethod.ReadString("AppBasketInfoCode")
+        );
+        call2.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    State = response.body().getGoods().get(0).getInfoState();
 
-                        Buy_row.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getCountGood()));
-                        Buy_amount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
-                        if (State.equals("4")){
-                            final_buy_test.setText(R.string.textvalue_setreserveorder);
-                        }
+                    Buy_row.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getCountGood()));
+                    Buy_amount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
+                    if (State.equals("4")) {
+                        final_buy_test.setText(R.string.textvalue_setreserveorder);
                     }
                 }
-                @Override
-                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                    goods.clear();
-                    callrecycler();
-                }
-            });
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                goods.clear();
+                callrecycler();
+            }
+        });
 
     }
 
@@ -250,13 +260,12 @@ public class BasketActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);

@@ -109,6 +109,13 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tableempty_item_cardview, parent, false);
         }
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
 
         return new RstMizViewHolder(view);
     }
@@ -334,7 +341,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                     } else {
                                         TableActivity activity = (TableActivity) mContext;
                                         activity.CallSpinner();
-                                        callMethod.showToast(activity.getString(textvalue_recorded));
+                                        callMethod.showToast(activity.getString(R.string.textvalue_recorded));
                                     }
 
                                 }
@@ -395,7 +402,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_changemiz.setOnClickListener(v -> {
-                String extraexplain = mContext.getString(textvalue_transfertext) + basketInfos.get(position).getRstMizName() + ") ";
+                String extraexplain = mContext.getString(R.string.textvalue_transfertext) + basketInfos.get(position).getRstMizName() + ") ";
                 call = apiInterface.OrderInfoInsert(
                         "OrderInfoInsert",
                         basketInfos.get(position).getBrokerRef(),

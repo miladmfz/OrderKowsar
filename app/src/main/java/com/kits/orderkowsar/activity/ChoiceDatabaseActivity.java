@@ -1,7 +1,5 @@
 package com.kits.orderkowsar.activity;
 
-import static com.kits.orderkowsar.R.string.textvalue_downloading;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
@@ -34,7 +32,6 @@ import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityChoiceDatabaseBinding;
 import com.kits.orderkowsar.model.Activation;
 import com.kits.orderkowsar.model.DatabaseHelper;
-import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient_kowsar;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -91,6 +88,14 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         dbhbase = new DatabaseHelper(App.getContext(), "/data/data/com.kits.orderkowsar/databases/KowsarDb.sqlite");
         dbhbase.CreateActivationDb();
 
+        if (callMethod.ReadString("LANG").equals("fa")) {
+            binding.activitionactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if (callMethod.ReadString("LANG").equals("ar")) {
+            binding.activitionactivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            binding.activitionactivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
         dialog.setContentView(R.layout.rep_prog);
         tv_rep = dialog.findViewById(R.id.rep_prog_text);
         tv_step = dialog.findViewById(R.id.rep_prog_step);
@@ -135,45 +140,31 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     public void DownloadRequest(Activation activation) {
         btn_prog.setOnClickListener(view -> DownloadRequest(activation));
 
-        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
-                .setDatabaseEnabled(true)
-                .build();
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder().setDatabaseEnabled(true).build();
 
         PRDownloader.initialize(getApplicationContext(), config);
 
         // Setting timeout globally for the download network requests:
-        PRDownloaderConfig config1 = PRDownloaderConfig.newBuilder()
-                .setReadTimeout(30_000)
-                .setConnectTimeout(30_000)
-                .build();
+        PRDownloaderConfig config1 = PRDownloaderConfig.newBuilder().setReadTimeout(30_000).setConnectTimeout(30_000).build();
         PRDownloader.initialize(getApplicationContext(), config1);
 
-        downloadId = PRDownloader.download(
-                        activation.getSQLiteURL(),
-                        activation.getDatabaseFolderPath(),
-                        "KowsarDbTemp.sqlite"
-                )
+        downloadId = PRDownloader.download(activation.getSQLiteURL(), activation.getDatabaseFolderPath(), "KowsarDbTemp.sqlite")
 
-                .build()
-                .setOnStartOrResumeListener(() -> {
+                .build().setOnStartOrResumeListener(() -> {
                     dialog.show();
                     dialog.setCancelable(false);
-                })
-                .setOnPauseListener(() -> {
+                }).setOnPauseListener(() -> {
 
-                })
-                .setOnCancelListener(() -> {
+                }).setOnCancelListener(() -> {
                     File DownloadTemp = new File(activation.getDatabaseFolderPath() + "/KowsarDbTemp.sqlite");
                     DownloadTemp.delete();
                 })
 
                 .setOnProgressListener(progress -> {
-                    tv_rep.setText(textvalue_downloading);
+                    tv_rep.setText(getString(R.string.textvalue_downloading));
                     tv_step.setVisibility(View.VISIBLE);
                     tv_step.setText(callMethod.NumberRegion((((progress.currentBytes) * 100) / progress.totalBytes) + "/100"));
                 })
-
-
 
 
                 .start(new OnDownloadListener() {
@@ -212,7 +203,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint({"SetTextI18n", "SdCardPath"})
+    @SuppressLint("SetTextI18n")
     public void CreateView(Activation singleactive) {
 
         String serverip = singleactive.getServerURL().substring(singleactive.getServerURL().indexOf("//") + 2, singleactive.getServerURL().indexOf("/login") - 6);
@@ -241,9 +232,10 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         btn_update.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, (float) 0.3));
         btn_gap.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, (float) 0.4));
 
-        tv_PersianCompanyName.setTextColor(getResources().getColor(R.color.grey_800));
-        tv_EnglishCompanyName.setTextColor(getResources().getColor(R.color.grey_800));
-        tv_ServerURL.setTextColor(getResources().getColor(R.color.grey_800));
+        tv_PersianCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
+        tv_PersianCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
+        tv_EnglishCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
+        tv_ServerURL.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
 
 
         ll_main.setOrientation(LinearLayoutCompat.HORIZONTAL);
@@ -305,10 +297,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
         btn_update.setOnClickListener(v -> {
 
-            Call<RetrofitResponse> call1 = apiInterface.Activation(
-                    "ActivationCode",
-                    singleactive.getActivationCode()
-            );
+            Call<RetrofitResponse> call1 = apiInterface.Activation("ActivationCode", singleactive.getActivationCode());
             call1.enqueue(new Callback<RetrofitResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull retrofit2.Response<RetrofitResponse> response) {
@@ -324,7 +313,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
-                     
+
                 }
             });
         });
@@ -349,7 +338,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(PRDownloader.getStatus(downloadId)== Status.RUNNING){
+        if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
             PRDownloader.cancel(downloadId);
         }
         super.onDestroy();
@@ -357,13 +346,12 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         SharedPreferences preferences = newBase.getSharedPreferences("profile", Context.MODE_PRIVATE);
         String currentLang = preferences.getString("LANG", "");
-        if (currentLang.equals("")){
-            currentLang=getAppLanguage();
+        if (currentLang.equals("")) {
+            currentLang = getAppLanguage();
         }
         Context context = changeLanguage(newBase, currentLang);
         super.attachBaseContext(context);

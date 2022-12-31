@@ -224,7 +224,7 @@ public class Print {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
                         if (response.body().getText().equals("Done")) {
-                            callMethod.showToast(String.valueOf(R.string.textvalue_recorded));
+                            callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
                             ((Activity) mContext).finish();
                             dialogProg.dismiss();
                             intent = new Intent(mContext, TableActivity.class);
@@ -277,8 +277,13 @@ public class Print {
 
         title_layout.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         title_layout.setOrientation(LinearLayoutCompat.VERTICAL);
-        title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            title_layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
 
         TextView tv_printCount = new TextView(mContext);
         tv_printCount.setText(R.string.textvalue_printagain);
@@ -309,10 +314,20 @@ public class Print {
         boby_good_layout.setOrientation(LinearLayoutCompat.VERTICAL);
         total_layout.setOrientation(LinearLayoutCompat.HORIZONTAL);
 
-        good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            boby_good_layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            total_layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
 
         ViewPager.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, 4));
         ViewPager.setBackgroundResource(R.color.colorPrimaryDark);
@@ -323,7 +338,7 @@ public class Print {
 
 
         TextView customername_tv = new TextView(mContext);
-        customername_tv.setText(callMethod.NumberRegion(mContext.getString(textvalue_tabletag) + Factor_header.get(0).getRstMizName()));
+        customername_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag) + Factor_header.get(0).getRstMizName()));
         customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -404,8 +419,14 @@ public class Print {
             name_detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
             name_detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
             name_detail.setWeightSum(6);
-            name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
+            if ( callMethod.ReadString("LANG").equals("fa")) {
+                name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            } else if ( callMethod.ReadString("LANG").equals("ar")) {
+                name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            } else {
+                name_detail.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            }
 
             TextView good_amount_tv = new TextView(mContext);
             good_amount_tv.setText(callMethod.NumberRegion(FactorRow_detail.getFacAmount()));
@@ -440,8 +461,14 @@ public class Print {
             detail.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
             detail.setOrientation(LinearLayoutCompat.HORIZONTAL);
             detail.setWeightSum(9);
-            detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
+            if ( callMethod.ReadString("LANG").equals("fa")) {
+                detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            } else if ( callMethod.ReadString("LANG").equals("ar")) {
+                detail.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            } else {
+                detail.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            }
             TextView good_RowExplain_tv = new TextView(mContext);
             good_RowExplain_tv.setText(callMethod.NumberRegion(FactorRow_detail.getRowExplain()));
             good_RowExplain_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));

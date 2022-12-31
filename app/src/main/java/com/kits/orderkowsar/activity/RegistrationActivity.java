@@ -4,15 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +23,6 @@ import com.kits.orderkowsar.databinding.ActivityRegistrationBinding;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
-import com.kits.orderkowsar.model.UserInfo;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
@@ -77,6 +72,15 @@ public class RegistrationActivity extends AppCompatActivity {
         action = new Action(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
 
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
+
         lang_array.add(getString(R.string.textvalue_langdefult));
         lang_array.add(getString(R.string.textvalue_langenglish));
         lang_array.add(getString(R.string.textvalue_langpersian));
@@ -117,7 +121,6 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.registrSpinnerlang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                callMethod.ReadString("LANG");
                 switch (position) {
                     case 0:
                         callMethod.EditString("LANG", "");
@@ -132,11 +135,12 @@ public class RegistrationActivity extends AppCompatActivity {
                         callMethod.EditString("LANG", "ar");
                         break;
                 }
-                callMethod.ReadString("LANG");
 
                 if (!(lang_position == position)) {
-                    recreate();
+                    startActivity(getIntent());
+                    finish();
                 }
+
             }
 
             @Override

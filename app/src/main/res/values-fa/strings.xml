@@ -141,6 +141,7 @@
     <string name="textvalue_langdefult">تنظیمات پیش فرض</string>
     <string name="textvalue_langenglish">English</string>
     <string name="textvalue_tablelable">" میز "</string>
+    <string name="registeractivity_titlename">تنظیمات</string>
 
 
 </resources>

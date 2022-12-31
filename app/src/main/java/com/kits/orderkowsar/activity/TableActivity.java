@@ -1,6 +1,7 @@
 package com.kits.orderkowsar.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,6 +94,17 @@ public class TableActivity extends AppCompatActivity {
 
         callMethod = new CallMethod(App.getContext());
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
+
+        CoordinatorLayout  ll_activity=findViewById(R.id.tableactivity);
+        if ( callMethod.ReadString("LANG").equals("fa")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else if ( callMethod.ReadString("LANG").equals("ar")) {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            ll_activity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+
+
         spinner = findViewById(R.id.tableactivity_spinner);
 
         init_ll = findViewById(R.id.tableactivity_miztype_ll);
