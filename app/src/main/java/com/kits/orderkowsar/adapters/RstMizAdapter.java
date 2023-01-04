@@ -4,11 +4,14 @@ package com.kits.orderkowsar.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -95,11 +98,14 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final RstMizViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         holder.tv_name.setText(callMethod.NumberRegion(basketInfos.get(position).getRstMizName()));
+        Log.e("test",holder.itemView.getWidth()+"");
+        Log.e("test",Integer.toString(holder.tv_name.getWidth())+"");
         if (changeTable.equals("0")) {
             holder.tv_placecount.setText(callMethod.NumberRegion(basketInfos.get(position).getPlaceCount()));
 

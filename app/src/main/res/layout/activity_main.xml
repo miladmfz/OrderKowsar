@@ -86,10 +86,10 @@
                         android:gravity="center"
                         android:text="@string/mainactivity_btn0"
                         android:textColor="@color/white"
-                        android:textSize="42sp"
                         app:rippleColor="@color/deep_purple_300"
                         app:strokeColor="@color/grey_1000"
-                        app:strokeWidth="1dp" />
+                        app:strokeWidth="1dp"
+                        android:autoSizeTextType="uniform" />
 
 
                     <LinearLayout
