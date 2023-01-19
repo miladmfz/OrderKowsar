@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 
 public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
+
     private final Context mContext;
     private final ArrayList<Good> goods;
     DecimalFormat decimalFormat = new DecimalFormat("0,000");
