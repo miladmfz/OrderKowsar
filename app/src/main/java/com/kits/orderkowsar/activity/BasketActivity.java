@@ -190,7 +190,7 @@ public class BasketActivity extends AppCompatActivity {
 
 
                 action.BasketInfoExplainBeforOrder();
-                action.OrderToFactor();
+
 
 
             }

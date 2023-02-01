@@ -172,6 +172,7 @@ public class SplashActivity extends AppCompatActivity {
         callMethod.EditString("BodySize", "8");
         callMethod.EditString("AppBasketInfoCode", "0");
         callMethod.EditString("MizType", "");
+        callMethod.EditString("InfoState", "");
         callMethod.EditString("RstMizName", "");
         requestPermission();
 

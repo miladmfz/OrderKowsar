@@ -2,6 +2,7 @@ package com.kits.orderkowsar.adapters;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -104,8 +105,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     public void onBindViewHolder(@NonNull final RstMizViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         holder.tv_name.setText(callMethod.NumberRegion(basketInfos.get(position).getRstMizName()));
-        Log.e("test",holder.itemView.getWidth()+"");
-        Log.e("test",Integer.toString(holder.tv_name.getWidth())+"");
+
         if (changeTable.equals("0")) {
             holder.tv_placecount.setText(callMethod.NumberRegion(basketInfos.get(position).getPlaceCount()));
 
@@ -152,6 +152,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     holder.tv_brokername.setText(callMethod.NumberRegion(basketInfos.get(position).getBrokerName()));
                     break;
                 case "2":
+                    holder.btn_cleartable.setVisibility(View.GONE);
                     holder.btn_print.setText(R.string.rstmiz_reprint);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
@@ -175,7 +176,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
             holder.btn_select.setOnClickListener(v -> {
-                callMethod.EditString("MizType", basketInfos.get(position).getMizType());
 
                 if (call.isExecuted()) {
                     call.cancel();
@@ -193,8 +193,23 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                     callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                                 } else {
 
-                                    callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                                     callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
+                                    callMethod.EditString("MizType", basketInfos.get(position).getMizType());
+
+                                    callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
+                                    callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
+                                    callMethod.EditString("MobileNo", basketInfos.get(position).getMobileNo());
+                                    callMethod.EditString("InfoExplain", basketInfos.get(position).getInfoExplain());
+                                    callMethod.EditString("Prepayed", basketInfos.get(position).getPrepayed());
+                                    callMethod.EditString("ReserveStart", basketInfos.get(position).getReserveStart());
+                                    callMethod.EditString("ReserveEnd", basketInfos.get(position).getReserveEnd());
+                                    callMethod.EditString("Today", basketInfos.get(position).getToday());
+                                    callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
+                                    callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getInfoState());
+
+
+
+
                                     intent = new Intent(mContext, SearchActivity.class);
                                     mContext.startActivity(intent);
                                 }
@@ -315,31 +330,27 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_changemiz.setOnClickListener(v -> {
-                String extraexplain = mContext.getString(R.string.textvalue_transfertext) + basketInfos.get(position).getRstMizName() + ") ";
 
-                call = apiInterface.OrderInfoInsert("OrderInfoInsert", basketInfos.get(position).getBrokerRef(), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getInfoExplain() + extraexplain, basketInfos.get(position).getPrepayed(), basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), basketInfos.get(position).getInfoState(), basketInfos.get(position).getAppBasketInfoCode());
-                call.enqueue(new Callback<RetrofitResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                        if (response.isSuccessful()) {
-                            assert response.body() != null;
-                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                                callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
-                            } else {
-                                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
-                                intent = new Intent(mContext, TableActivity.class);
-                                intent.putExtra("State", "3");
-                                intent.putExtra("EditTable", "1");
-                                mContext.startActivity(intent);
-                            }
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
 
-                    }
-                });
+                callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
+                callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
+                callMethod.EditString("MobileNo", basketInfos.get(position).getMobileNo());
+                callMethod.EditString("InfoExplain", basketInfos.get(position).getInfoExplain());
+                callMethod.EditString("Prepayed", "0");
+
+                callMethod.EditString("ReserveStart", basketInfos.get(position).getReserveStart());
+                callMethod.EditString("ReserveEnd", basketInfos.get(position).getReserveEnd());
+                callMethod.EditString("Today", basketInfos.get(position).getToday());
+                callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
+                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+
+                intent = new Intent(mContext, TableActivity.class);
+                intent.putExtra("State", "3");
+                intent.putExtra("EditTable", "1");
+                mContext.startActivity(intent);
+
 
 
             });
@@ -347,57 +358,98 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
         } else {
             holder.btn_select.setOnClickListener(v -> {
+                String extraexplain = mContext.getString(R.string.textvalue_transfertext) + callMethod.ReadString("RstMizName") + ") ";
+                Log.e("test",extraexplain);
 
-                if (!basketInfos.get(position).getMizType().equals(callMethod.ReadString("MizType"))){
-                    print.GetHeader_Data("MizType");
-                }
                 call = apiInterface.OrderInfoInsert("OrderInfoInsert",
                         dbh.ReadConfig("BrokerCode"),
-                        basketInfos.get(position).getRstmizCode(),
-                        basketInfos.get(position).getPersonName(),
-                        basketInfos.get(position).getMobileNo(),
-                        basketInfos.get(position).getExplain(),
+                        callMethod.ReadString("RstmizCode"),
+                        callMethod.ReadString("PersonName"),
+                        callMethod.ReadString("MobileNo"),
+                        callMethod.ReadString("InfoExplain")+extraexplain,
                         "0",
-                        basketInfos.get(position).getReserveStart(),
-                        basketInfos.get(position).getReserveEnd(),
-                        basketInfos.get(position).getToday(),
-                        basketInfos.get(position).getInfoState(),
+                        callMethod.ReadString("ReserveStart"),
+                        callMethod.ReadString("ReserveEnd"),
+                        callMethod.ReadString("Today"),
+                        callMethod.ReadString("InfoState"),
                         callMethod.ReadString("AppBasketInfoCode")
                 );
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
-                        assert response.body() != null;
-                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                            callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
-                        } else {
-                            call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
-                            call.enqueue(new Callback<RetrofitResponse>() {
-                                @Override
-                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                                    if (response.isSuccessful()) {
+                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            Log.e("test","doneeee");
+                            assert response.body() != null;
+                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                            } else {
+                                call = apiInterface.OrderInfoInsert("OrderInfoInsert",
+                                        dbh.ReadConfig("BrokerCode"),
+                                        basketInfos.get(position).getRstmizCode(),
+                                        basketInfos.get(position).getPersonName(),
+                                        basketInfos.get(position).getMobileNo(),
+                                        basketInfos.get(position).getExplain(),
+                                        "0",
+                                        basketInfos.get(position).getReserveStart(),
+                                        basketInfos.get(position).getReserveEnd(),
+                                        basketInfos.get(position).getToday(),
+                                        basketInfos.get(position).getInfoState(),
+                                        callMethod.ReadString("AppBasketInfoCode")
+                                );
+
+                                call.enqueue(new Callback<RetrofitResponse>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
                                         assert response.body() != null;
-                                        if (response.body().getText().equals("Done")) {
-                                            print.GetHeader_Data("MizType");
+                                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                            callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                        } else {
+                                            call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
+                                            call.enqueue(new Callback<RetrofitResponse>() {
+                                                @Override
+                                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                                    if (response.isSuccessful()) {
+                                                        assert response.body() != null;
+                                                        if (response.body().getText().equals("Done")) {
+                                                            ((Activity) mContext).finish();
+                                                            //print.GetHeader_Data("MizType");
+                                                        }
+
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                                                }
+                                            });
+
                                         }
 
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
-                                }
-                            });
-
+                                    @Override
+                                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                                    }
+                                });
+                            }
                         }
-
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                        Log.e("test",t.getMessage());
+
                     }
                 });
+
+
+
+
+
+
+
+
 
             });
         }

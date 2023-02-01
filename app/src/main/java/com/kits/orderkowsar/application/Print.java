@@ -330,7 +330,7 @@ public class Print {
 
 
         TextView Rstmiz_tv = new TextView(mContext);
-        Rstmiz_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag)+ Factor_header.get(0).getRstMizName()+"  " + Factor_header.get(0).getRstMizName()));
+        Rstmiz_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag)+ Factor_header.get(0).getMizType()+"  " + Factor_header.get(0).getRstMizName()));
         Rstmiz_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         Rstmiz_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         Rstmiz_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
