@@ -26,6 +26,7 @@ import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GrpAdapter;
 import com.kits.orderkowsar.application.CallMethod;
+import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
@@ -59,7 +60,7 @@ public class SearchViewFragment extends Fragment {
     LottieAnimationView progressBar;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
-
+    DatabaseHelper dbh;
     String Parent_GourpCode;
     String good_GourpCode;
 
@@ -94,6 +95,7 @@ public class SearchViewFragment extends Fragment {
 
         callMethod = new CallMethod(requireActivity());
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
+        dbh = new DatabaseHelper(requireActivity(), callMethod.ReadString("DatabaseName"));
 
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -156,7 +158,7 @@ public class SearchViewFragment extends Fragment {
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        call = apiInterface.GetGoodFromGroup("GetOrderGoodList", Where, good_GourpCode, callMethod.ReadString("AppBasketInfoCode"));
+        call = apiInterface.GetGoodFromGroup("GetOrderGoodList", Where, dbh.ReadConfig("GroupCodeDefult"), callMethod.ReadString("AppBasketInfoCode"));
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {

@@ -40,6 +40,9 @@ public class Factor {
     @SerializedName("ErrDesc")
     private String ErrDesc;
 
+    @SerializedName("MizType")
+    private String MizType;
+
 
     @SerializedName("InfoState")
     private String InfoState;
@@ -58,6 +61,14 @@ public class Factor {
 
     @SerializedName("InfoExplain")
     private String InfoExplain;
+
+    public String getMizType() {
+        return MizType;
+    }
+
+    public void setMizType(String mizType) {
+        MizType = mizType;
+    }
 
     public String getInfoExplain() {
         return InfoExplain;

@@ -653,6 +653,60 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     }
 
 
+    public void BasketInfoExplainBeforOrder() {
+
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.basketinfo_explain);
+        Button explain_btn = dialog.findViewById(R.id.basketinfo_explain_btn);
+        explain_btn.setText(R.string.textvalue_setexplain);
+        final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
+
+        dialog.show();
+        explain_tv.requestFocus();
+        explain_tv.postDelayed(() -> {
+            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(explain_tv, InputMethodManager.SHOW_IMPLICIT);
+        }, 500);
+
+        explain_btn.setOnClickListener(view -> {
+
+            dialogProg();
+            tv_rep.setText(R.string.textvalue_sendinformation);
+            call = apiInterface.OrderEditInfoExplain(
+                    "OrderEditInfoExplain",
+                    callMethod.ReadString("AppBasketInfoCode"),NumberFunctions.EnglishNumber(explain_tv.getText().toString())
+            );
+
+                call.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                OrderToFactor();
+                                dialogProg.dismiss();
+                            } else {
+                                dialog.dismiss();
+                                dialogProg.dismiss();
+                                callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                        dialog.dismiss();
+                        dialogProg.dismiss();
+                    }
+                });
+
+        });
+
+    }
+
+
     public void lottieok() {
 
         Dialog dialog1 = new Dialog(mContext);

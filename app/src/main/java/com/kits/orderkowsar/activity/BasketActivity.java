@@ -183,9 +183,16 @@ public class BasketActivity extends AppCompatActivity {
         final_buy_test.setOnClickListener(view -> {
 
             if (State.equals("4")) {
+
                 print.GetHeader_Data("");
+
             } else {
+
+
+                action.BasketInfoExplainBeforOrder();
                 action.OrderToFactor();
+
+
             }
         });
 

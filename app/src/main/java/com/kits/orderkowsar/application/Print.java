@@ -329,14 +329,14 @@ public class Print {
         ViewPager_chap.setBackgroundResource(R.color.colorPrimaryDark);
 
 
-        TextView customername_tv = new TextView(mContext);
-        customername_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag) + Factor_header.get(0).getRstMizName()));
-        customername_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        customername_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
-        customername_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
-        customername_tv.setGravity(Gravity.RIGHT);
-        customername_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        customername_tv.setPadding(0, 0, 0, 15);
+        TextView Rstmiz_tv = new TextView(mContext);
+        Rstmiz_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag)+ Factor_header.get(0).getRstMizName()+"  " + Factor_header.get(0).getRstMizName()));
+        Rstmiz_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+        Rstmiz_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
+        Rstmiz_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
+        Rstmiz_tv.setGravity(Gravity.RIGHT);
+        Rstmiz_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        Rstmiz_tv.setPadding(0, 0, 0, 15);
 
 
         cldr = Calendar.getInstance();
@@ -389,13 +389,10 @@ public class Print {
         title_layout.addView(company_tv);
         title_layout.addView(factordate_tv);
         title_layout.addView(factorcode_tv);
-        title_layout.addView(customername_tv);
-
-
         if (Factor_header.get(0).getInfoExplain().length() > 0) {
             title_layout.addView(explain_tv);
         }
-
+        title_layout.addView(Rstmiz_tv);
         title_layout.addView(ViewPager);
 
 
@@ -467,6 +464,13 @@ public class Print {
             good_RowExplain_tv.setPadding(0, 0, 0, 10);
             good_RowExplain_tv.setGravity(Gravity.CENTER);
             good_RowExplain_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+
+            if (FactorRow_detail.getRowExplain().length()>0){
+                good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 2);
+                good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
+
+            }
 
             androidx.viewpager.widget.ViewPager ViewPager_sell2 = new ViewPager(mContext);
             ViewPager_sell2.setLayoutParams(new LinearLayoutCompat.LayoutParams(1, LinearLayoutCompat.LayoutParams.MATCH_PARENT));

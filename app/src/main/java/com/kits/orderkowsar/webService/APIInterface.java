@@ -115,6 +115,10 @@ public interface APIInterface {
     @FormUrlEncoded
     Call<RetrofitResponse> OrderInfoReserveDelete(@Field("tag") String tag, @Field("AppBasketInfoRef") String AppBasketInfoRef);
 
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderEditInfoExplain(@Field("tag") String tag, @Field("AppBasketInfoCode") String AppBasketInfoCode, @Field("Explain") String Explain);
+
 
 }
 

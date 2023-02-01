@@ -154,7 +154,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 case "2":
                     holder.btn_print.setText(R.string.rstmiz_reprint);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
-                    holder.btn_cleartable.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
                     Calendar time_now = Calendar.getInstance();
                     Calendar time_factor = Calendar.getInstance();
@@ -176,6 +175,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
             holder.btn_select.setOnClickListener(v -> {
+                callMethod.EditString("MizType", basketInfos.get(position).getMizType());
 
                 if (call.isExecuted()) {
                     call.cancel();
@@ -316,6 +316,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
             holder.btn_changemiz.setOnClickListener(v -> {
                 String extraexplain = mContext.getString(R.string.textvalue_transfertext) + basketInfos.get(position).getRstMizName() + ") ";
+
                 call = apiInterface.OrderInfoInsert("OrderInfoInsert", basketInfos.get(position).getBrokerRef(), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getInfoExplain() + extraexplain, basketInfos.get(position).getPrepayed(), basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), basketInfos.get(position).getInfoState(), basketInfos.get(position).getAppBasketInfoCode());
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
@@ -347,7 +348,22 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         } else {
             holder.btn_select.setOnClickListener(v -> {
 
-                call = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), basketInfos.get(position).getInfoState(), callMethod.ReadString("AppBasketInfoCode"));
+                if (!basketInfos.get(position).getMizType().equals(callMethod.ReadString("MizType"))){
+                    print.GetHeader_Data("MizType");
+                }
+                call = apiInterface.OrderInfoInsert("OrderInfoInsert",
+                        dbh.ReadConfig("BrokerCode"),
+                        basketInfos.get(position).getRstmizCode(),
+                        basketInfos.get(position).getPersonName(),
+                        basketInfos.get(position).getMobileNo(),
+                        basketInfos.get(position).getExplain(),
+                        "0",
+                        basketInfos.get(position).getReserveStart(),
+                        basketInfos.get(position).getReserveEnd(),
+                        basketInfos.get(position).getToday(),
+                        basketInfos.get(position).getInfoState(),
+                        callMethod.ReadString("AppBasketInfoCode")
+                );
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
@@ -382,6 +398,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
                     }
                 });
+
             });
         }
 

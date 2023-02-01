@@ -95,7 +95,7 @@
     <string name="textvalue_ipserver">\"آدرس سرور : \"</string>
     <string name="textvalue_edit">اصلاح</string>
     <string name="repprog_refresh">امتحان مجدد</string>
-    <string name="tableitem_brokerstate">مهماندار:</string>
+    <string name="tableitem_brokerstate">ویتر :</string>
     <string name="tableitem_reserve">رزرو:</string>
     <string name="tableemptyitem_selecttable">انتخاب میز</string>
     <string name="textvalue_login">ورود</string>
