@@ -117,6 +117,7 @@ public class SearchViewFragment extends Fragment {
                 handler.postDelayed(() -> {
                     searchtarget = NumberFunctions.EnglishNumber(ed_search.getText().toString());
                     Where = "GoodName Like N''%" + searchtarget.replaceAll(" ", "%") + "%'' ";
+                    good_GourpCode=dbh.ReadConfig("GroupCodeDefult");
                     allgood();
                 }, Integer.parseInt(callMethod.ReadString("Delay")));
             }
@@ -158,7 +159,11 @@ public class SearchViewFragment extends Fragment {
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        call = apiInterface.GetGoodFromGroup("GetOrderGoodList", Where, dbh.ReadConfig("GroupCodeDefult"), callMethod.ReadString("AppBasketInfoCode"));
+
+        call = apiInterface.GetGoodFromGroup("GetOrderGoodList",
+                Where,
+                good_GourpCode,
+                callMethod.ReadString("AppBasketInfoCode"));
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
