@@ -672,12 +672,14 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
         explain_btn.setOnClickListener(view -> {
 
-            dialogProg();
-            tv_rep.setText(R.string.textvalue_sendinformation);
-            call = apiInterface.OrderEditInfoExplain(
-                    "OrderEditInfoExplain",
-                    callMethod.ReadString("AppBasketInfoCode"),NumberFunctions.EnglishNumber(explain_tv.getText().toString())
-            );
+            if(explain_tv.getText().toString().length()>0) {
+                dialogProg();
+                tv_rep.setText(R.string.textvalue_sendinformation);
+                call = apiInterface.OrderEditInfoExplain(
+                        "OrderEditInfoExplain",
+                        callMethod.ReadString("AppBasketInfoCode"),
+                        NumberFunctions.EnglishNumber(explain_tv.getText().toString())
+                );
 
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override
@@ -685,9 +687,10 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         if (response.isSuccessful()) {
                             assert response.body() != null;
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                                OrderToFactor();
+
                                 dialogProg.dismiss();
                             } else {
+                                OrderToFactor();
                                 dialog.dismiss();
                                 dialogProg.dismiss();
                                 callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
@@ -701,7 +704,9 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         dialogProg.dismiss();
                     }
                 });
-
+            }else{
+                OrderToFactor();
+            }
         });
 
     }

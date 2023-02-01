@@ -438,7 +438,7 @@ public class Print {
 
             good_name_tv.setText(callMethod.NumberRegion(goodname));
             good_name_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 1));
-            good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
+            good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 6);
             good_name_tv.setGravity(Gravity.RIGHT);
             good_name_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
             good_name_tv.setPadding(0, 10, 5, 0);
@@ -467,8 +467,8 @@ public class Print {
 
 
             if (FactorRow_detail.getRowExplain().length()>0){
-                good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 2);
-                good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
+                good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 6);
+                good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 3);
 
             }
 

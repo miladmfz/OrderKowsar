@@ -152,7 +152,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     holder.tv_brokername.setText(callMethod.NumberRegion(basketInfos.get(position).getBrokerName()));
                     break;
                 case "2":
-                    holder.btn_cleartable.setVisibility(View.GONE);
                     holder.btn_print.setText(R.string.rstmiz_reprint);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
@@ -411,8 +410,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                                     if (response.isSuccessful()) {
                                                         assert response.body() != null;
                                                         if (response.body().getText().equals("Done")) {
-                                                            ((Activity) mContext).finish();
-                                                            //print.GetHeader_Data("MizType");
+                                                            print.GetHeader_Data("MizType");
                                                         }
 
                                                     }
