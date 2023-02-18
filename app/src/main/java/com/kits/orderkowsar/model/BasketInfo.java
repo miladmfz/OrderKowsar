@@ -66,6 +66,20 @@ public class BasketInfo {
 
     @SerializedName("Prepayed")
     private String Prepayed;
+    @SerializedName("Time")
+    private String Time;
+
+    public String getTime() {
+        if (Time == null) {
+            return "00:00";
+        } else {
+            return Time;
+        }
+    }
+
+    public void setTime(String time) {
+        Time = time;
+    }
 
     public String getPrepayed() {
         return Prepayed;

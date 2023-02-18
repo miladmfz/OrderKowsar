@@ -29,6 +29,9 @@ public class RetrofitResponse {
     @SerializedName("BasketInfos")
     private ArrayList<BasketInfo> BasketInfos;
 
+    @SerializedName("SellBrokers")
+    private ArrayList<SellBroker> SellBrokers;
+
     @SerializedName("Values")
     private ArrayList<DistinctValue> Values;
 
@@ -54,6 +57,14 @@ public class RetrofitResponse {
     private String ErrCode;
     @SerializedName("ErrDesc")
     private String ErrDesc;
+
+    public ArrayList<SellBroker> getSellBrokers() {
+        return SellBrokers;
+    }
+
+    public void setSellBrokers(ArrayList<SellBroker> sellBrokers) {
+        SellBrokers = sellBrokers;
+    }
 
     public ArrayList<AppPrinter> getAppPrinters() {
         return AppPrinters;

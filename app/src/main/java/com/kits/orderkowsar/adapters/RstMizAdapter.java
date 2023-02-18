@@ -3,6 +3,9 @@ package com.kits.orderkowsar.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kits.orderkowsar.R;
@@ -23,6 +27,7 @@ import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.Print;
+import com.kits.orderkowsar.application.PrintChangeTable;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.RetrofitResponse;
@@ -51,7 +56,10 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     Call<RetrofitResponse> call;
     Action action;
     Print print;
-
+    PrintChangeTable printchange;
+    NotificationManager notificationManager;
+    String channel_id = "Kowsarmobile";
+    String channel_name = "home";
     String changeTable;
 
     public RstMizAdapter(ArrayList<BasketInfo> BasketInfos, String changeflag, Context context) {
@@ -60,6 +68,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
         this.callMethod = new CallMethod(mContext);
         this.action = new Action(mContext);
         this.print = new Print(mContext);
+        this.printchange = new PrintChangeTable(mContext);
         this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         call = apiInterface.GetTodeyFromServer("GetTodeyFromServer");
@@ -100,7 +109,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull final RstMizViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
@@ -166,8 +175,14 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     thourOfDay = "0" + (bet / (1000 * 60 * 60));
                     tminute = "0" + ((bet / (1000 * 60)) % 60);
                     Time = thourOfDay.substring(thourOfDay.length() - 2) + ":" + tminute.substring(tminute.length() - 2);
-                    holder.tv_time.setText(callMethod.NumberRegion(Time));
+                    basketInfos.get(position).setTime(Time);
+                    holder.tv_time.setText(callMethod.NumberRegion(basketInfos.get(position).getTime()));
                     holder.tv_brokername.setText(callMethod.NumberRegion(basketInfos.get(position).getBrokerName()));
+                    if (Integer.parseInt(basketInfos.get(position).getTime().substring(0, 2)) > 1) {
+                        noti_Messaging("اتمام زمان ", basketInfos.get(position).getRstMizName());
+                    }
+
+
                     break;
                 default:
                     break;
@@ -175,6 +190,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
             holder.btn_select.setOnClickListener(v -> {
+                callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
+                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
 
                 if (call.isExecuted()) {
                     call.cancel();
@@ -205,8 +222,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                                     callMethod.EditString("Today", basketInfos.get(position).getToday());
                                     callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
                                     callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getInfoState());
-
-
 
 
                                     intent = new Intent(mContext, SearchActivity.class);
@@ -246,11 +261,25 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
                 } else {
-                    callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
 
-                    callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
-                    intent = new Intent(mContext, SearchActivity.class);
-                    mContext.startActivity(intent);
+                    if (Integer.parseInt(basketInfos.get(position).getTime().substring(0, 2)) < 2) {
+
+
+
+                        intent = new Intent(mContext, SearchActivity.class);
+                        mContext.startActivity(intent);
+                    } else {
+                        new AlertDialog.Builder(mContext)
+                                .setTitle(R.string.textvalue_allert)
+                                .setMessage("زمان میز تمام شده است مایل به سفارش می باشید ؟")
+                                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+
+                                    intent = new Intent(mContext, SearchActivity.class);
+                                    mContext.startActivity(intent);
+                                }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
+
+                                }).show();
+                    }
                 }
 
 
@@ -331,7 +360,9 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             holder.btn_changemiz.setOnClickListener(v -> {
 
 
+                Log.e("test",basketInfos.get(position).getMizType());
                 callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
+                callMethod.EditString("MizType", basketInfos.get(position).getMizType());
 
                 callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
                 callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
@@ -351,21 +382,21 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 mContext.startActivity(intent);
 
 
-
             });
 
             holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
         } else {
+
+
             holder.btn_select.setOnClickListener(v -> {
-                String extraexplain = mContext.getString(R.string.textvalue_transfertext) + callMethod.ReadString("RstMizName") + ") ";
-                Log.e("test",extraexplain);
+                String extraexplain = mContext.getString(R.string.textvalue_transfertext) + callMethod.ReadString("RstMizName") + mContext.getString(R.string.textvalue_transfer_to) + basketInfos.get(position).getRstMizName() + ") ";
 
                 call = apiInterface.OrderInfoInsert("OrderInfoInsert",
                         dbh.ReadConfig("BrokerCode"),
                         callMethod.ReadString("RstmizCode"),
                         callMethod.ReadString("PersonName"),
                         callMethod.ReadString("MobileNo"),
-                        callMethod.ReadString("InfoExplain")+extraexplain,
+                        callMethod.ReadString("InfoExplain") + extraexplain,
                         "0",
                         callMethod.ReadString("ReserveStart"),
                         callMethod.ReadString("ReserveEnd"),
@@ -377,76 +408,42 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     @Override
                     public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                         if (response.isSuccessful()) {
-                            Log.e("test","doneeee");
                             assert response.body() != null;
                             if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
                                 callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
                             } else {
-                                call = apiInterface.OrderInfoInsert("OrderInfoInsert",
-                                        dbh.ReadConfig("BrokerCode"),
-                                        basketInfos.get(position).getRstmizCode(),
-                                        basketInfos.get(position).getPersonName(),
-                                        basketInfos.get(position).getMobileNo(),
-                                        basketInfos.get(position).getExplain(),
-                                        "0",
-                                        basketInfos.get(position).getReserveStart(),
-                                        basketInfos.get(position).getReserveEnd(),
-                                        basketInfos.get(position).getToday(),
-                                        basketInfos.get(position).getInfoState(),
-                                        callMethod.ReadString("AppBasketInfoCode")
-                                );
-
+                                callMethod.EditString("InfoExplain", callMethod.ReadString("InfoExplain") + extraexplain);
+                                call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
                                 call.enqueue(new Callback<RetrofitResponse>() {
                                     @Override
-                                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
-                                        assert response.body() != null;
-                                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                                            callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
-                                        } else {
-                                            call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
-                                            call.enqueue(new Callback<RetrofitResponse>() {
-                                                @Override
-                                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                                                    if (response.isSuccessful()) {
-                                                        assert response.body() != null;
-                                                        if (response.body().getText().equals("Done")) {
-                                                            print.GetHeader_Data("MizType");
-                                                        }
+                                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                        if (response.isSuccessful()) {
+                                            assert response.body() != null;
+                                            if (response.body().getText().equals("Done")) {
+                                                printchange.GetHeader_Data("MizType", basketInfos.get(position));
 
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
-                                                }
-                                            });
+                                            }
 
                                         }
-
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
                                     }
                                 });
+
+
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                        Log.e("test",t.getMessage());
+                        Log.e("test", t.getMessage());
 
                     }
                 });
-
-
-
-
-
-
-
 
 
             });
@@ -457,6 +454,28 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     @Override
     public int getItemCount() {
         return basketInfos.size();
+    }
+
+    public void noti_Messaging(String title, String message) {
+
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel Channel = new NotificationChannel(channel_id, channel_name, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(Channel);
+        }
+        Intent notificationIntent = new Intent(mContext, TableActivity.class);
+
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder notcompat = new NotificationCompat.Builder(mContext, channel_id)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setOnlyAlertOnce(false)
+                .setSmallIcon(R.drawable.logo)
+                .setContentIntent(contentIntent);
+
+        notificationManager.notify(1, notcompat.build());
     }
 
 

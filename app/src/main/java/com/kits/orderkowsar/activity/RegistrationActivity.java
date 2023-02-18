@@ -15,14 +15,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.adapters.ObjectTypeAdapter;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityRegistrationBinding;
+import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.NumberFunctions;
+import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.model.RetrofitResponse;
+import com.kits.orderkowsar.model.SellBroker;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
@@ -44,6 +50,9 @@ public class RegistrationActivity extends AppCompatActivity {
     ActivityRegistrationBinding binding;
     APIInterface apiInterface;
     ArrayList<String> lang_array = new ArrayList<>();
+    ArrayList<String> SellBroker_Names = new ArrayList<>();
+    ArrayList<SellBroker> SellBrokers = new ArrayList<>();
+
     Integer lang_position = 0;
 
     @SuppressLint("ObsoleteSdkInt")
@@ -102,7 +111,7 @@ public class RegistrationActivity extends AppCompatActivity {
         dbh = new DatabaseHelper(this, callMethod.ReadString("DatabaseName"));
         action = new Action(this);
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
-
+        SellBroker_Names.clear();
         if (callMethod.ReadString("LANG").equals("fa")) {
             binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else if (callMethod.ReadString("LANG").equals("ar")) {
@@ -110,6 +119,36 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
+
+        Call<RetrofitResponse> call1 = apiInterface.GetSellBroker("GetSellBroker");
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    SellBrokers.clear();
+                    SellBrokers = response.body().getSellBrokers();
+                    SellBroker sellBroker= new SellBroker();
+                    sellBroker.setBrokerCode("0");
+                    sellBroker.setBrokerNameWithoutType("بازاریاب تعریف نشده");
+                    SellBrokers.add(sellBroker);
+                    for (SellBroker sb : SellBrokers) {
+                        SellBroker_Names.add(sb.getBrokerNameWithoutType());
+                    }
+                    brokerViewConfig();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                SellBroker sellBroker= new SellBroker();
+                sellBroker.setBrokerCode("0");
+                sellBroker.setBrokerNameWithoutType("بازاریاب تعریف نشده");
+                SellBrokers.add(sellBroker);
+                brokerViewConfig();
+
+            }
+        });
 
 
         lang_array.add(getString(R.string.textvalue_langdefult));
@@ -131,6 +170,34 @@ public class RegistrationActivity extends AppCompatActivity {
                 lang_position = 3;
                 break;
         }
+
+    }
+
+    public void brokerViewConfig() {
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, SellBroker_Names);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.registrSpinnerbroker.setAdapter(spinner_adapter);
+        int possellbroker=0;
+        for (SellBroker sellBroker:SellBrokers){
+            if (sellBroker.getBrokerCode().equals(dbh.ReadConfig("BrokerCode"))){
+                possellbroker=SellBrokers.indexOf(sellBroker);
+            }
+        }
+
+        binding.registrSpinnerbroker.setSelection(possellbroker);
+        binding.registrSpinnerbroker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                dbh.SaveConfig("BrokerCode",SellBrokers.get(position).getBrokerCode());
+                binding.registrBroker.setText(callMethod.NumberRegion(dbh.ReadConfig("BrokerCode")));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
     }
 

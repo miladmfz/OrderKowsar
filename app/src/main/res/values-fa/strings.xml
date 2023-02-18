@@ -144,6 +144,8 @@
     <string name="registeractivity_titlename">تنظیمات</string>
     <string name="menu_cart">سبد خرید</string>
     <string name="textvalue_tagall">همه</string>
+    <string name="textvalue_transfer_to">" به  "</string>
+    <string name="registeractivity_brokername">نام بازایاب</string>
 
 
 </resources>

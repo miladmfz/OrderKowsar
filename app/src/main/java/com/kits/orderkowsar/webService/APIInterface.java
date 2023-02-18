@@ -117,6 +117,10 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
+    Call<RetrofitResponse> GetSellBroker(@Field("tag") String tag);
+
+    @POST("index.php")
+    @FormUrlEncoded
     Call<RetrofitResponse> OrderEditInfoExplain(@Field("tag") String tag, @Field("AppBasketInfoCode") String AppBasketInfoCode, @Field("Explain") String Explain);
 
 

@@ -26,6 +26,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.model.AppPrinter;
+import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Factor;
 import com.kits.orderkowsar.model.RetrofitResponse;
@@ -43,9 +44,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Print {
+public class PrintChangeTable {
 
-
+    Print print;
     private final Context mContext;
     public APIInterface apiInterface;
     public Call<RetrofitResponse> call;
@@ -57,22 +58,24 @@ public class Print {
     Dialog dialog, dialogProg;
     Dialog dialogprint;
     Calendar cldr;
-    int printerconter ;
+    int printerconter;
     ArrayList<Factor> Factor_header = new ArrayList<>();
     ArrayList<Factor> Factor_row = new ArrayList<>();
-    ArrayList<AppPrinter> AppPrinters ;
+    ArrayList<AppPrinter> AppPrinters;
     int width = 500;
     LinearLayoutCompat main_layout;
     Bitmap bitmap_factor;
+    BasketInfo basketInfo_New;
     String bitmap_factor_base64 = "";
     String Filter_print = "";
     TextView tv_rep;
 
-    public Print(Context mContext) {
+    public PrintChangeTable(Context mContext) {
         this.mContext = mContext;
         this.il = 0;
         this.callMethod = new CallMethod(mContext);
         this.dbh = new DatabaseHelper(mContext, callMethod.ReadString("DatabaseName"));
+        this.print = new Print(mContext);
         this.apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         this.persianCalendar = new PersianCalendar();
         this.dialog = new Dialog(mContext);
@@ -91,46 +94,106 @@ public class Print {
 
     }
 
-    public void GetHeader_Data(String Filter) {
-        Log.e("test","6");
-        Filter_print = Filter;
-        dialogProg();
-        tv_rep.setText(R.string.textvalue_printing);
-        call = apiInterface.OrderGetFactor(
-                "OrderGetFactor",
+    public void DoPrint() {
+
+        call = apiInterface.OrderInfoInsert("OrderInfoInsert",
+                dbh.ReadConfig("BrokerCode"),
+                basketInfo_New.getRstmizCode(),
+                callMethod.ReadString("PersonName"),
+                callMethod.ReadString("MobileNo"),
+                callMethod.ReadString("InfoExplain"),
+                "0",
+                callMethod.ReadString("ReserveStart"),
+                callMethod.ReadString("ReserveEnd"),
+                callMethod.ReadString("Today"),
+                callMethod.ReadString("InfoState"),
                 callMethod.ReadString("AppBasketInfoCode")
         );
+
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.e("test","0");
-                    assert response.body() != null;
-                    Factor_header = response.body().getFactors();
-                    AppPrinters.clear();
-                    GetAppPrinterList();
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                assert response.body() != null;
+                if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                    callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                } else {
+                    call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
+                    call.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
+                                if (response.body().getText().equals("Done")) {
+                                    print.GetHeader_Data("MizType");
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                        }
+                    });
+
                 }
+
             }
 
             @Override
-            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                Log.e("test","1");
-                GetHeader_Data("");
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
             }
         });
 
     }
 
 
+    public void GetHeader_Data(String Filter, BasketInfo basketInfo) {
+        Filter_print = Filter;
+        basketInfo_New = basketInfo;
+        dialogProg();
+        tv_rep.setText(R.string.textvalue_printing);
+
+
+        if (basketInfo.getMizType().equals(callMethod.ReadString("MizType"))) {
+            callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
+            dialogProg.dismiss();
+            DoPrint();
+        } else {
+            call = apiInterface.OrderGetFactor(
+                    "OrderGetFactor",
+                    callMethod.ReadString("AppBasketInfoCode")
+            );
+
+            call.enqueue(new Callback<RetrofitResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        Factor_header = response.body().getFactors();
+                        AppPrinters.clear();
+                        GetAppPrinterList();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                    GetHeader_Data("", basketInfo_New);
+                }
+            });
+
+        }
+
+    }
+
+
     public void GetAppPrinterList() {
-        Log.e("test","2");
         call = apiInterface.OrderGetAppPrinter("OrderGetAppPrinter");
         call.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Log.e("test","3");
                     printerconter = 0;
                     AppPrinters = response.body().getAppPrinters();
                     GetRow_Data();
@@ -139,7 +202,6 @@ public class Print {
 
             @Override
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                Log.e("test","4 eroor");
                 GetAppPrinterList();
 
             }
@@ -148,7 +210,7 @@ public class Print {
 
 
     public void GetRow_Data() {
-        Log.e("test","5");
+
         if (printerconter < (AppPrinters.size())) {
             call = apiInterface.OrderGetFactorRow(
                     "OrderGetFactorRow",
@@ -157,7 +219,7 @@ public class Print {
                     AppPrinters.get(printerconter).getWhereClause()
             );
 
-            Log.e("test","Filter_print="+Filter_print);
+
             if (Filter_print.length() > 0) {
                 if (AppPrinters.get(printerconter).getWhereClause().contains(Filter_print)) {
                     call.enqueue(new Callback<RetrofitResponse>() {
@@ -186,35 +248,10 @@ public class Print {
                     printerconter++;
                     GetRow_Data();
                 }
-            } else {
-                Log.e("test","7 filter print");
-                call.enqueue(new Callback<RetrofitResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                        if (response.isSuccessful()) {
-                            assert response.body() != null;
-                            Factor_row = response.body().getFactors();
-                            if (Factor_row.size() > 0) {
-
-                                printDialogView();
-                            } else {
-                                printerconter++;
-                                GetRow_Data();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                        printerconter++;
-                        GetRow_Data();
-                    }
-                });
             }
 
 
         } else {
-            Log.e("test","6 not size");
             call = apiInterface.Order_CanPrint(
                     "Order_CanPrint",
                     callMethod.ReadString("AppBasketInfoCode"),
@@ -227,12 +264,8 @@ public class Print {
                         assert response.body() != null;
                         if (response.body().getText().equals("Done")) {
                             callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
-                            ((Activity) mContext).finish();
                             dialogProg.dismiss();
-                            intent = new Intent(mContext, TableActivity.class);
-                            intent.putExtra("State", "0");
-                            intent.putExtra("EditTable", "0");
-                            mContext.startActivity(intent);
+                            DoPrint();
                         }
                     }
                 }
@@ -340,7 +373,7 @@ public class Print {
 
 
         TextView Rstmiz_tv = new TextView(mContext);
-        Rstmiz_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag)+ Factor_header.get(0).getMizType()+"  " + Factor_header.get(0).getRstMizName()));
+        Rstmiz_tv.setText(callMethod.NumberRegion(mContext.getString(R.string.textvalue_tabletag) + Factor_header.get(0).getMizType() + "  " + Factor_header.get(0).getRstMizName()));
         Rstmiz_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
         Rstmiz_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
         Rstmiz_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
@@ -476,7 +509,7 @@ public class Print {
             good_RowExplain_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
 
-            if (FactorRow_detail.getRowExplain().length()>0){
+            if (FactorRow_detail.getRowExplain().length() > 0) {
                 good_name_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 6);
                 good_RowExplain_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 3);
 

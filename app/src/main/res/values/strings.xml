@@ -148,4 +148,6 @@
     <string name="registeractivity_titlename">Settings</string>
     <string name="menu_cart">Cart</string>
     <string name="textvalue_tagall">All</string>
+    <string name="textvalue_transfer_to">" to "</string>
+    <string name="registeractivity_brokername">Broker Name</string>
 </resources>
