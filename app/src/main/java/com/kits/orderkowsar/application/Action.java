@@ -2,6 +2,7 @@ package com.kits.orderkowsar.application;
 
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -29,12 +30,14 @@ import com.kits.orderkowsar.activity.BasketActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
+import com.kits.orderkowsar.adapters.ObjectTypeAdapter;
 import com.kits.orderkowsar.adapters.ReserveAdapter;
 import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.DistinctValue;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.NumberFunctions;
+import com.kits.orderkowsar.model.ObjectType;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -76,7 +79,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     ArrayList<String> values_array = new ArrayList<>();
     ArrayList<Good> Goods;
     ArrayList<Good> good_box_items = new ArrayList<>();
-
+    ArrayList<ObjectType> objectTypes = new ArrayList<>();
 
     TextView tv_rep;
     Print print;
@@ -594,7 +597,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         Button explain_btn = dialog.findViewById(R.id.basketinfo_explain_btn);
         explain_btn.setText(R.string.textvalue_setexplain);
         final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
-
+        Spinner spinner_orderbox = dialog.findViewById(R.id.basketinfo_spinnerexplain);
         explain_tv.setText(callMethod.NumberRegion(basketInfo.getInfoExplain()));
         dialog.show();
         explain_tv.requestFocus();
@@ -602,6 +605,55 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(explain_tv, InputMethodManager.SHOW_IMPLICIT);
         }, 500);
+
+        explain_tv.setOnLongClickListener(v -> {
+            explain_tv.selectAll();
+            return  false;
+        });
+
+        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "AppOrder_InfoExplainList");
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    objectTypes.clear();
+                    values_array.clear();
+                    values_array.add(0, "");
+                    objectTypes = response.body().getObjectTypes();
+
+                    for (ObjectType ob : objectTypes) {
+                        values_array.add(callMethod.NumberRegion(ob.getaType()));
+                    }
+
+                    ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(mContext,
+                            android.R.layout.simple_spinner_item, values_array);
+                    spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_orderbox.setAdapter(spinner_adapter);
+
+
+                    spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            explain_tv.setText(explain_tv.getText().toString()+" "+values_array.get(position));
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+            }
+        });
+
+
 
         explain_btn.setOnClickListener(view -> {
 
@@ -662,6 +714,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         Button explain_btn = dialog.findViewById(R.id.basketinfo_explain_btn);
         explain_btn.setText(R.string.textvalue_setexplain);
         final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
+        Spinner spinner_orderbox = dialog.findViewById(R.id.basketinfo_spinnerexplain);
 
         dialog.show();
         explain_tv.requestFocus();
@@ -669,6 +722,58 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
             InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(explain_tv, InputMethodManager.SHOW_IMPLICIT);
         }, 500);
+
+
+        explain_tv.setOnLongClickListener(v -> {
+            explain_tv.selectAll();
+            return  false;
+        });
+
+        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "AppOrder_InfoExplainList");
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    objectTypes.clear();
+                    values_array.clear();
+                    values_array.add(0, "");
+                    objectTypes = response.body().getObjectTypes();
+
+                    for (ObjectType ob : objectTypes) {
+                        values_array.add(callMethod.NumberRegion(ob.getaType()));
+                    }
+
+                    ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(mContext,
+                            android.R.layout.simple_spinner_item, values_array);
+                    spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_orderbox.setAdapter(spinner_adapter);
+
+
+                    spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            explain_tv.setText(explain_tv.getText().toString()+" "+values_array.get(position));
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+            }
+        });
+
+
+
+
 
         explain_btn.setOnClickListener(view -> {
 

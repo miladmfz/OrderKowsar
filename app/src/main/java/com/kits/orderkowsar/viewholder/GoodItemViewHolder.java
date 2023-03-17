@@ -52,6 +52,7 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+
     public void callimage(Good good) {
 
         if (!good.getGoodImageName().equals("")) {
@@ -87,12 +88,14 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
                             good.setGoodImageName(String.valueOf(R.string.no_photo));
 
                         }
-                        Glide.with(img)
-                                .asBitmap()
-                                .load(Base64.decode(good.getGoodImageName(), Base64.DEFAULT))
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .fitCenter()
-                                .into(img);
+                        try {
+                            Glide.with(img)
+                                    .asBitmap()
+                                    .load(Base64.decode(good.getGoodImageName(), Base64.DEFAULT))
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .fitCenter()
+                                    .into(img);
+                        }catch (Exception e){}
 
                     }
                 }

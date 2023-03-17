@@ -147,8 +147,8 @@ public class SplashActivity extends AppCompatActivity {
         if (callMethod.firstStart()) {
             callMethod.EditBoolan("FirstStart", false);
             callMethod.EditString("Delay", "1000");
-            callMethod.EditString("TitleSize", "12");
-            callMethod.EditString("BodySize", "12");
+            callMethod.EditString("TitleSize", "20");
+            callMethod.EditString("BodySize", "20");
             callMethod.EditString("Theme", "Green");
 
             callMethod.EditString("LANG", "");
@@ -168,8 +168,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         }
-        callMethod.EditString("TitleSize", "8");
-        callMethod.EditString("BodySize", "8");
+
         callMethod.EditString("AppBasketInfoCode", "0");
         callMethod.EditString("MizType", "");
         callMethod.EditString("InfoState", "");

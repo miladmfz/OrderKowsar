@@ -208,6 +208,7 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.registrGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));
         binding.registrDelay.setText(callMethod.NumberRegion(callMethod.ReadString("Delay")));
         binding.registrDbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
+        binding.registrTitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
 
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang_array);

@@ -290,7 +290,7 @@ public class Print {
         TextView tv_printCount = new TextView(mContext);
         tv_printCount.setText(R.string.textvalue_printagain);
         tv_printCount.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        tv_printCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
+        tv_printCount.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 6);
         tv_printCount.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
         tv_printCount.setGravity(Gravity.CENTER);
         tv_printCount.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -300,7 +300,7 @@ public class Print {
         TextView company_tv = new TextView(mContext);
         company_tv.setText(callMethod.NumberRegion(AppPrinters.get(printerconter).getPrinterExplain()));
         company_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(width, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-        company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 8);
+        company_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 6);
         company_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
         company_tv.setGravity(Gravity.CENTER);
         company_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));

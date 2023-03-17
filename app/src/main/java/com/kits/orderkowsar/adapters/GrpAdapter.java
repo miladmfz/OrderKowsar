@@ -3,6 +3,7 @@ package com.kits.orderkowsar.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.GoodGroup;
 import com.kits.orderkowsar.model.RetrofitResponse;
+import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
@@ -80,13 +82,15 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
 
 
         if (!GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName").equals("")) {
+            Log.e("test"+position,"0000");
 
+            holder.img.setVisibility(View.VISIBLE);
             Glide.with(holder.img).asBitmap().load(Base64.decode(GoodGroups.get(position).getGoodGroupFieldValue("GoodGroupImageName"), Base64.DEFAULT)).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.img);
 
 
         } else {
 
-            call2 = apiInterface.GetImage("getImage", GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"), "TGoodsGrp", "0", "200");
+            call2 = apiInterface.GetImage("getImage", GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"), "TGoodsGrp", "0", "400");
             call2.enqueue(new Callback<RetrofitResponse>() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
@@ -95,11 +99,13 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
 
                         assert response.body() != null;
                         if (!response.body().getText().equals("no_photo")) {
+                            Log.e("test"+position,response.body().getText());
                             GoodGroups.get(position).setGoodGroupImageName(response.body().getText());
-                        } else {
-                            GoodGroups.get(position).setGoodGroupImageName("no_photo");
+                            notifyItemChanged(position);
+                        }else{
+                            Log.e("test"+position,response.body().getText());
                         }
-                        notifyItemChanged(position);
+
                     }
                 }
 
@@ -129,7 +135,13 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
 
 
     }
-
+    @Override
+    public void onViewDetachedFromWindow(@NonNull GoodGroupViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (call2.isExecuted()) {
+            call2.cancel();
+        }
+    }
     @Override
     public int getItemCount() {
         return GoodGroups.size();

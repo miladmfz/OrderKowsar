@@ -1,5 +1,6 @@
 package com.kits.orderkowsar.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -203,6 +204,31 @@ public class SearchViewFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (call.isExecuted()) {
+            call.cancel();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (call.isExecuted()) {
+            call.cancel();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (call.isExecuted()) {
+            call.cancel();
+        }
+
+    }
 
     @Override
     public void onDestroy() {

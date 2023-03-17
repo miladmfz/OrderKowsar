@@ -3,6 +3,7 @@ package com.kits.orderkowsar.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.Good;
+import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.viewholder.GoodItemViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
@@ -32,6 +40,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
     DatabaseHelper dbh;
     APIInterface apiInterface;
     Action action;
+    public Call<RetrofitResponse> call;
 
 
     public GoodAdapter(ArrayList<Good> goods, Context context) {
@@ -67,6 +76,7 @@ public class GoodAdapter extends RecyclerView.Adapter<GoodItemViewHolder> {
         holder.tv_price.setText(callMethod.NumberRegion(decimalFormat.format(Integer.parseInt(goods.get(position).getMaxSellPrice()))));
         holder.rltv.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "0"));
         holder.callimage(goods.get(position));
+
 
     }
 
