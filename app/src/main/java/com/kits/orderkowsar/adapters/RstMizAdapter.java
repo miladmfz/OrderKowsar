@@ -141,7 +141,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                 holder.ll_table_reserve.setVisibility(View.GONE);
             }
 
-
+            holder.btn_reserve.setVisibility(View.GONE);
             switch (basketInfos.get(position).getInfoState()) {
                 case "0":
                 case "3":
@@ -162,6 +162,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     break;
                 case "2":
                     holder.btn_print.setText(R.string.rstmiz_reprint);
+                    holder.btn_cleartable.setVisibility(View.GONE);
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
                     Calendar time_now = Calendar.getInstance();
@@ -360,7 +361,6 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             holder.btn_changemiz.setOnClickListener(v -> {
 
 
-                Log.e("test",basketInfos.get(position).getMizType());
                 callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
                 callMethod.EditString("MizType", basketInfos.get(position).getMizType());
 
@@ -389,6 +389,17 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
             holder.btn_select.setOnClickListener(v -> {
+
+
+                String explainvalue="";
+
+                if (callMethod.ReadString("InfoExplain").contains("*")) {
+                    int startsub = callMethod.ReadString("InfoExplain").indexOf("*");
+                    String temp = callMethod.ReadString("InfoExplain").substring(startsub);
+                    int endsub = temp.indexOf("*");
+                    explainvalue = temp.substring(0, endsub);
+                }
+
                 String extraexplain = mContext.getString(R.string.textvalue_transfertext) + callMethod.ReadString("RstMizName") + mContext.getString(R.string.textvalue_transfer_to) + basketInfos.get(position).getRstMizName() + ") ";
 
                 call = apiInterface.OrderInfoInsert("OrderInfoInsert",
@@ -396,7 +407,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                         callMethod.ReadString("RstmizCode"),
                         callMethod.ReadString("PersonName"),
                         callMethod.ReadString("MobileNo"),
-                        callMethod.ReadString("InfoExplain") + extraexplain,
+                        explainvalue + extraexplain,
                         "0",
                         callMethod.ReadString("ReserveStart"),
                         callMethod.ReadString("ReserveEnd"),

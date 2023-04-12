@@ -143,7 +143,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
                 SellBroker sellBroker= new SellBroker();
                 sellBroker.setBrokerCode("0");
-                sellBroker.setBrokerNameWithoutType("بازاریاب تعریف نشده");
+                sellBroker.setBrokerNameWithoutType("ویتری تعریف نشده");
                 SellBrokers.add(sellBroker);
                 brokerViewConfig();
 

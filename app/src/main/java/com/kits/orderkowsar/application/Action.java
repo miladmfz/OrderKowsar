@@ -598,7 +598,18 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         explain_btn.setText(R.string.textvalue_setexplain);
         final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
         Spinner spinner_orderbox = dialog.findViewById(R.id.basketinfo_spinnerexplain);
-        explain_tv.setText(callMethod.NumberRegion(basketInfo.getInfoExplain()));
+        String explainvalue="";
+
+        if (basketInfo.getInfoExplain().contains("*")) {
+            int startsub = basketInfo.getInfoExplain().indexOf("*");
+            String temp = basketInfo.getInfoExplain().substring(startsub);
+            int endsub = temp.indexOf("*");
+            explainvalue = temp.substring(0, endsub);
+        }
+        explain_tv.setText(callMethod.NumberRegion(explainvalue));
+
+
+
         dialog.show();
         explain_tv.requestFocus();
         explain_tv.postDelayed(() -> {
@@ -665,7 +676,7 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                     basketInfo.getRstmizCode(),
                     basketInfo.getPersonName(),
                     basketInfo.getMobileNo(),
-                    NumberFunctions.EnglishNumber(explain_tv.getText().toString()),
+                    NumberFunctions.EnglishNumber( " * "+explain_tv.getText().toString())+" * ",
                     basketInfo.getPrepayed(),
                     basketInfo.getReserveStart(),
                     basketInfo.getReserveEnd(),
