@@ -114,10 +114,11 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
     public void onBindViewHolder(@NonNull final RstMizViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
         holder.tv_name.setText(callMethod.NumberRegion(basketInfos.get(position).getRstMizName()));
-        holder.btn_reserve.setVisibility(View.GONE);
+
 
 
         if (changeTable.equals("0")) {
+            holder.btn_reserve.setVisibility(View.GONE);
             holder.tv_placecount.setText(callMethod.NumberRegion(basketInfos.get(position).getPlaceCount()));
 
             if (basketInfos.get(position).getExplain().length() > 0) {

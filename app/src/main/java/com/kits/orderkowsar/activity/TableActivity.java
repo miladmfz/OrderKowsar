@@ -192,7 +192,7 @@ public class TableActivity extends AppCompatActivity {
         img_lottiestatus.setVisibility(View.GONE);
         tv_lottiestatus.setVisibility(View.GONE);
 
-        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State, mizType);
+        Call<RetrofitResponse> call1 = apiInterface.OrderMizList("OrderMizList", State,callMethod.ReadString("ObjectType"));
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {

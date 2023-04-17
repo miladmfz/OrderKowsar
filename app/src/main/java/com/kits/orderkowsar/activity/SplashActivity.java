@@ -160,6 +160,7 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditBoolan("GoodAmount", false);
 
             callMethod.EditString("ServerURLUse", "");
+            callMethod.EditString("ObjectType", "");
             callMethod.EditString("SQLiteURLUse", "");
             callMethod.EditString("PersianCompanyNameUse", "");
             callMethod.EditString("EnglishCompanyNameUse", "");
@@ -168,7 +169,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         }
-
+        callMethod.EditString("ObjectType", "");
         callMethod.EditString("AppBasketInfoCode", "0");
         callMethod.EditString("MizType", "");
         callMethod.EditString("InfoState", "");

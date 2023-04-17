@@ -56,7 +56,8 @@ public class ObjectTypeAdapter extends RecyclerView.Adapter<ObjectTypeViewHolder
         }
         holder.rltv.setOnClickListener(v -> {
             TableActivity activity = (TableActivity) mContext;
-            activity.mizType = objectTypes.get(position).getaType();
+            callMethod.EditString("ObjectType", objectTypes.get(position).getaType());
+
             activity.State = "0";
             activity.CallSpinner();
         });
