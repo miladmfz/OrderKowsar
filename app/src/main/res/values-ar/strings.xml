@@ -146,6 +146,7 @@
     <string name="textvalue_tagall">الجميع</string>
     <string name="textvalue_transfer_to">" به "</string>
     <string name="registeractivity_brokername">نام بازایاب</string>
+    <string name="fragment_good_to_order">لیست سفارشات</string>
 
 
 </resources>

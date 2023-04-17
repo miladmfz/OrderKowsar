@@ -163,6 +163,8 @@
         </LinearLayout>
 
         <LinearLayout
+
+            android:background="@color/red_200"
             android:id="@+id/table_item_ll_timebroker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

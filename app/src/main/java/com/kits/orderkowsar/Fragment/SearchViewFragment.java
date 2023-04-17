@@ -1,6 +1,7 @@
 package com.kits.orderkowsar.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kits.orderkowsar.R;
+import com.kits.orderkowsar.activity.BasketActivity;
 import com.kits.orderkowsar.adapters.GoodAdapter;
 import com.kits.orderkowsar.adapters.GrpAdapter;
 import com.kits.orderkowsar.application.CallMethod;
@@ -61,6 +64,7 @@ public class SearchViewFragment extends Fragment {
     LottieAnimationView progressBar;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
+    Button Btn_GoodToOrder;
     DatabaseHelper dbh;
     String Parent_GourpCode;
     String good_GourpCode;
@@ -81,6 +85,7 @@ public class SearchViewFragment extends Fragment {
         rc_grp = view.findViewById(R.id.fragment_grp_recy);
         rc_good = view.findViewById(R.id.fragment_good_recy);
         ed_search = view.findViewById(R.id.fragment_good_search);
+        Btn_GoodToOrder = view.findViewById(R.id.fragment_good_to_order);
 
         progressBar = view.findViewById(R.id.fragment_good_prog);
         img_lottiestatus = view.findViewById(R.id.fragment_good_lottie);
@@ -125,6 +130,13 @@ public class SearchViewFragment extends Fragment {
         });
 
 
+        Btn_GoodToOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), BasketActivity.class);
+                startActivity(intent);
+            }
+        });
         allgrp();
         allgood();
 

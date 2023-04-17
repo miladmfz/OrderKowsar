@@ -75,6 +75,8 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
         }
 
         holder.ll_amount.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
+        holder.tv_explain.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
+        holder.tv_goodname.setOnClickListener(v -> action.GoodBoxDialog(goods.get(position), "1"));
 
 
         if (goods.get(position).getFactorCode() == null) {

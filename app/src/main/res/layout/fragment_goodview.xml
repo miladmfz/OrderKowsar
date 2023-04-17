@@ -34,6 +34,24 @@
             android:layout_weight="0.25"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/fragment_good_to_order"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="@string/fragment_good_to_order"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="#D5BC9D"
+                app:strokeColor="#B96838"
+                app:strokeWidth="1dp"
+
+                />
+
+
             <EditText
                 android:id="@+id/fragment_good_search"
                 android:layout_width="match_parent"
