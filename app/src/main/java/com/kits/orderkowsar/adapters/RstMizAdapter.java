@@ -362,27 +362,32 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_changemiz.setOnClickListener(v -> {
+                new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.text_doyouchangemiz).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+
+                    callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
+                    callMethod.EditString("MizType", basketInfos.get(position).getMizType());
+
+                    callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
+                    callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
+                    callMethod.EditString("MobileNo", basketInfos.get(position).getMobileNo());
+                    callMethod.EditString("InfoExplain", basketInfos.get(position).getInfoExplain());
+                    callMethod.EditString("Prepayed", "0");
+
+                    callMethod.EditString("ReserveStart", basketInfos.get(position).getReserveStart());
+                    callMethod.EditString("ReserveEnd", basketInfos.get(position).getReserveEnd());
+                    callMethod.EditString("Today", basketInfos.get(position).getToday());
+                    callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
+                    callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
+
+                    intent = new Intent(mContext, TableActivity.class);
+                    intent.putExtra("State", "3");
+                    intent.putExtra("EditTable", "1");
+                    mContext.startActivity(intent);
+
+                }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
+                }).show();
 
 
-                callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
-                callMethod.EditString("MizType", basketInfos.get(position).getMizType());
-
-                callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
-                callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
-                callMethod.EditString("MobileNo", basketInfos.get(position).getMobileNo());
-                callMethod.EditString("InfoExplain", basketInfos.get(position).getInfoExplain());
-                callMethod.EditString("Prepayed", "0");
-
-                callMethod.EditString("ReserveStart", basketInfos.get(position).getReserveStart());
-                callMethod.EditString("ReserveEnd", basketInfos.get(position).getReserveEnd());
-                callMethod.EditString("Today", basketInfos.get(position).getToday());
-                callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
-                callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
-
-                intent = new Intent(mContext, TableActivity.class);
-                intent.putExtra("State", "3");
-                intent.putExtra("EditTable", "1");
-                mContext.startActivity(intent);
 
 
             });

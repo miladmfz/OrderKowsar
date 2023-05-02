@@ -65,7 +65,7 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
 
 
         holder.tv_goodname.setText(callMethod.NumberRegion(goods.get(position).getGoodName()));
-        holder.tv_amount.setText(callMethod.NumberRegion(goods.get(position).getAmount()));
+        holder.tv_amount.setText(goods.get(position).getAmount());
         holder.tv_explain.setText(callMethod.NumberRegion(goods.get(position).getExplain()));
 
         if (goods.get(position).getExplain().length() > 0) {

@@ -459,9 +459,9 @@ public class PrintChangeTable {
             }
 
             TextView good_amount_tv = new TextView(mContext);
-            good_amount_tv.setText(callMethod.NumberRegion(FactorRow_detail.getFacAmount()));
+            good_amount_tv.setText(FactorRow_detail.getFacAmount());
             good_amount_tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, 5));
-            good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 4);
+            good_amount_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, Integer.parseInt(callMethod.ReadString("TitleSize")) + 5);
             good_amount_tv.setTextColor(mContext.getColor(R.color.colorPrimaryDark));
             good_amount_tv.setGravity(Gravity.CENTER);
             good_amount_tv.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));

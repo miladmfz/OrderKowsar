@@ -150,5 +150,6 @@
     <string name="textvalue_tagall">All</string>
     <string name="textvalue_transfer_to">" to "</string>
     <string name="registeractivity_brokername">Broker Name</string>
-    <string name="fragment_good_to_order">لیست سفارشات</string>
+    <string name="fragment_good_to_order">Order List</string>
+    <string name="text_doyouchangemiz">Do You Want Change Table ?</string>
 </resources>

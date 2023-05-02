@@ -89,8 +89,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/red_900"/>
 
             </LinearLayout>
         </LinearLayout>
