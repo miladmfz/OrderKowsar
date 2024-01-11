@@ -197,32 +197,48 @@ public class BasketActivity extends AppCompatActivity {
         });
 
 
-        total_delete.setOnClickListener(view -> new AlertDialog.Builder(this).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_freetablemessage).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
-            Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll("OrderDeleteAll", callMethod.ReadString("AppBasketInfoCode")
 
-            );
-            call1.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        if (response.body().getText().equals("Done")) {
-                            callMethod.showToast(getString(R.string.textvalue_deleteorderbasket));
-                            finish();
+        total_delete.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(BasketActivity.this, R.style.AlertDialogCustom);
+            builder.setTitle(R.string.textvalue_allert);
+            builder.setMessage(R.string.textvalue_freetablemessage);
+
+            builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
+                Call<RetrofitResponse> call1 = apiInterface.OrderDeleteAll("OrderDeleteAll", callMethod.ReadString("AppBasketInfoCode")
+
+                );
+                call1.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getText().equals("Done")) {
+                                callMethod.showToast(getString(R.string.textvalue_deleteorderbasket));
+                                finish();
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
-                }
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
+                    }
+                });
             });
 
+            builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                // code to handle negative button click
+            });
 
-        }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-        }).show());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        });
     }
+
+
+
 
     private void callrecycler() {
 

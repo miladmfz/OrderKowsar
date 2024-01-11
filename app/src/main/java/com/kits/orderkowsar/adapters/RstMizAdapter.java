@@ -229,6 +229,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
                                     intent = new Intent(mContext, SearchActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                                     mContext.startActivity(intent);
                                 }
 
@@ -273,16 +275,25 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                         intent = new Intent(mContext, SearchActivity.class);
                         mContext.startActivity(intent);
                     } else {
-                        new AlertDialog.Builder(mContext)
-                                .setTitle(R.string.textvalue_allert)
-                                .setMessage("زمان میز تمام شده است مایل به سفارش می باشید ؟")
-                                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
-                                    intent = new Intent(mContext, SearchActivity.class);
-                                    mContext.startActivity(intent);
-                                }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                        builder.setTitle(R.string.textvalue_allert);
+                        builder.setMessage("زمان میز تمام شده است مایل به سفارش می باشید ؟");
 
-                                }).show();
+                        builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
+                            intent = new Intent(mContext, SearchActivity.class);
+                            mContext.startActivity(intent);
+                        });
+
+                        builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                            // code to handle negative button click
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+
                     }
                 }
 
@@ -300,7 +311,12 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     call = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), "3", basketInfos.get(position).getAppBasketInfoCode());
                 }
 
-                new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_freetable).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                builder.setTitle(R.string.textvalue_allert);
+                builder.setMessage(R.string.textvalue_freetable);
+
+                builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
 
 
                     call.enqueue(new Callback<RetrofitResponse>() {
@@ -321,8 +337,16 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                         public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
                         }
                     });
-                }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                }).show();
+                });
+
+                builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                    // code to handle negative button click
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
             });
 
             holder.btn_reserve.setOnClickListener(v -> action.ReserveBoxDialog(basketInfos.get(position)));
@@ -331,7 +355,17 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             holder.btn_print.setOnClickListener(v -> {
                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                 if (basketInfos.get(position).getInfoState().equals("2")) {
-                    new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_reprinting).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+                   
+
+
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                    builder.setTitle(R.string.textvalue_allert);
+                    builder.setMessage(R.string.textvalue_reprinting);
+
+                    builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
 
                         call = apiInterface.Order_CanPrint("Order_CanPrint", callMethod.ReadString("AppBasketInfoCode"), "1");
                         call.enqueue(new Callback<RetrofitResponse>() {
@@ -351,10 +385,16 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
                             }
                         });
+                    });
+
+                    builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                        // code to handle negative button click
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
 
-                    }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                    }).show();
                 } else {
                     intent = new Intent(mContext, BasketActivity.class);
                     mContext.startActivity(intent);
@@ -362,31 +402,43 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_changemiz.setOnClickListener(v -> {
-                new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.text_doyouchangemiz).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
 
-                    callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName());
-                    callMethod.EditString("MizType", basketInfos.get(position).getMizType());
 
-                    callMethod.EditString("RstmizCode", basketInfos.get(position).getRstmizCode());
-                    callMethod.EditString("PersonName", basketInfos.get(position).getPersonName());
-                    callMethod.EditString("MobileNo", basketInfos.get(position).getMobileNo());
-                    callMethod.EditString("InfoExplain", basketInfos.get(position).getInfoExplain());
+                BasketInfo basketInfo =basketInfos.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                builder.setTitle(R.string.textvalue_allert);
+                builder.setMessage(R.string.text_doyouchangemiz);
+
+                builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
+                    callMethod.log(basketInfo.getRstMizName()+"");
+
+                    callMethod.EditString("RstMizName", basketInfo.getRstMizName());
+                    callMethod.EditString("MizType", basketInfo.getMizType());
+                    callMethod.EditString("RstmizCode", basketInfo.getRstmizCode());
+                    callMethod.EditString("PersonName", basketInfo.getPersonName());
+                    callMethod.EditString("MobileNo", basketInfo.getMobileNo());
+                    callMethod.EditString("InfoExplain", basketInfo.getInfoExplain());
+                    callMethod.EditString("ReserveStart", basketInfo.getReserveStart());
+                    callMethod.EditString("ReserveEnd", basketInfo.getReserveEnd());
+                    callMethod.EditString("Today", basketInfo.getToday());
+                    callMethod.EditString("InfoState", basketInfo.getInfoState());
+                    callMethod.EditString("AppBasketInfoCode", basketInfo.getAppBasketInfoCode());
                     callMethod.EditString("Prepayed", "0");
-
-                    callMethod.EditString("ReserveStart", basketInfos.get(position).getReserveStart());
-                    callMethod.EditString("ReserveEnd", basketInfos.get(position).getReserveEnd());
-                    callMethod.EditString("Today", basketInfos.get(position).getToday());
-                    callMethod.EditString("InfoState", basketInfos.get(position).getInfoState());
-                    callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
 
                     intent = new Intent(mContext, TableActivity.class);
                     intent.putExtra("State", "3");
                     intent.putExtra("EditTable", "1");
                     mContext.startActivity(intent);
+                });
 
-                }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                }).show();
+                builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                    // code to handle negative button click
+                });
 
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
 
 
@@ -394,7 +446,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
             holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
         } else {
-
+            holder.tv_name.setTextColor(R.color.black);
 
             holder.btn_select.setOnClickListener(v -> {
 

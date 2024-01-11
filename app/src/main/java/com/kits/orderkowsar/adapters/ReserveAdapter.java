@@ -17,11 +17,18 @@ import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.model.BasketInfo;
+import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.viewholder.ReserveViewHolder;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
@@ -73,23 +80,54 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveViewHolder> {
 
         holder.rltv.setOnClickListener(v -> {
 
-            new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_ordering).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+            builder.setTitle(R.string.textvalue_allert);
+            builder.setMessage(R.string.textvalue_ordering);
+
+            builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
                 callMethod.EditString("RstMizName", basketInfos.get(position).getRstMizName() + R.string.textvalue_tagreserve);
                 callMethod.EditString("AppBasketInfoCode", basketInfos.get(position).getAppBasketInfoCode());
                 intent = new Intent(mContext, SearchActivity.class);
                 mContext.startActivity(intent);
-            }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-            }).show();
+
+            });
+
+            builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                // code to handle negative button click
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
         });
+
+           
+
 
         holder.rltv.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+            builder.setTitle(R.string.textvalue_allert);
+            builder.setMessage(R.string.textvalue_resdel);
 
-            new AlertDialog.Builder(mContext).setTitle(R.string.textvalue_allert).setMessage(R.string.textvalue_resdel).setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+            builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
                 action.DeleteReserveDialog(basketInfos.get(position));
-            }).setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-            }).show();
+
+            });
+
+            builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                // code to handle negative button click
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
             return false;
         });
+
+           
+
 
     }
 

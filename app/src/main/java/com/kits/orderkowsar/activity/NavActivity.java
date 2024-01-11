@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -158,6 +159,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         toolbar.setTitle(callMethod.ReadString("PersianCompanyNameUse"));
 
         Getmizlist_btn0.setOnClickListener(v -> {
+
 
             intent = new Intent(NavActivity.this, TableActivity.class);
             intent.putExtra("State", "0");

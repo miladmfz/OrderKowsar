@@ -227,12 +227,14 @@ public class Print {
                         assert response.body() != null;
                         if (response.body().getText().equals("Done")) {
                             callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
-                            ((Activity) mContext).finish();
                             dialogProg.dismiss();
                             intent = new Intent(mContext, TableActivity.class);
                             intent.putExtra("State", "0");
                             intent.putExtra("EditTable", "0");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             mContext.startActivity(intent);
+                            ((Activity) mContext).finish();
+
                         }
                     }
                 }

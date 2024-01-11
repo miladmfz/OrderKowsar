@@ -1,6 +1,7 @@
 package com.kits.orderkowsar.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -167,6 +168,7 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.searchactivity_framelayout, grp_Fragment);
         fragmentTransaction.commit();
 
+
     }
 
     public void GetFirstData() {
@@ -231,6 +233,7 @@ public class SearchActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.basket_menu) {
             intent = new Intent(this, BasketActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;
         }

@@ -86,41 +86,52 @@ public class GoodBasketAdapter extends RecyclerView.Adapter<GoodBasketViewHolder
         }
 
 
-        holder.btn_dlt.setOnClickListener(v -> new AlertDialog.Builder(mContext)
-                .setTitle(R.string.textvalue_allert)
-                .setMessage(R.string.textvalue_ifdelete)
-                .setPositiveButton(R.string.textvalue_yes, (dialogInterface, i) -> {
+        holder.btn_dlt.setOnClickListener(v ->{
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+            builder.setTitle(R.string.textvalue_allert);
+            builder.setMessage(R.string.textvalue_ifdelete);
 
-                    call = apiInterface.DeleteGoodFromBasket(
-                            "DeleteGoodFromBasket",
-                            goods.get(position).getRowCode(),
-                            goods.get(position).getAppBasketInfoRef()
-                    );
-                    call.enqueue(new Callback<RetrofitResponse>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getText().equals("Done")) {
-                                    goods.remove(goods.get(position));
-                                    notifyDataSetChanged();
-                                    BasketActivity activity = (BasketActivity) mContext;
-                                    activity.RefreshState();
-                                }
+            builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+                call = apiInterface.DeleteGoodFromBasket(
+                        "DeleteGoodFromBasket",
+                        goods.get(position).getRowCode(),
+                        goods.get(position).getAppBasketInfoRef()
+                );
+                call.enqueue(new Callback<RetrofitResponse>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getText().equals("Done")) {
+                                goods.remove(goods.get(position));
+                                notifyDataSetChanged();
+                                BasketActivity activity = (BasketActivity) mContext;
+                                activity.RefreshState();
                             }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
 
-                        }
-                    });
+                    }
+                });
+            });
 
-                })
-                .setNegativeButton(R.string.textvalue_no, (dialogInterface, i) -> {
-                })
-                .show());
+            builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                // code to handle negative button click
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
+
+
+        });
+
+
     }
 
     @Override

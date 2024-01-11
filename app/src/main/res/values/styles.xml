@@ -22,6 +22,14 @@
 
 
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:buttonBarButtonStyle">@style/MyButtonBarButtonStyle</item>
+    </style>
+
+    <style name="MyButtonBarButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
 
 
@@ -35,6 +43,8 @@
         <item name="android:layout_width">@dimen/loading</item>
         <item name="android:layout_height">@dimen/loading</item>
     </style>
+
+
 
 
 

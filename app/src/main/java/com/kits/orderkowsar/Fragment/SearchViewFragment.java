@@ -130,12 +130,9 @@ public class SearchViewFragment extends Fragment {
         });
 
 
-        Btn_GoodToOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), BasketActivity.class);
-                startActivity(intent);
-            }
+        Btn_GoodToOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), BasketActivity.class);
+            startActivity(intent);
         });
         allgrp();
         allgood();
@@ -184,7 +181,9 @@ public class SearchViewFragment extends Fragment {
                     assert response.body() != null;
 
                     Goods = response.body().getGoods();
+
                     callrecycler();
+
                 }
             }
 
@@ -192,6 +191,7 @@ public class SearchViewFragment extends Fragment {
             public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
                 Goods.clear();
                 callrecycler();
+
             }
         });
     }
@@ -217,37 +217,25 @@ public class SearchViewFragment extends Fragment {
     }
 
 
-    @Override
+
+
+
+
+    // In your fragment's onCreateView or where you initiate the Retrofit request
+
+
+    // In your fragment's onDestroyView or onDestroy
     public void onDestroyView() {
         super.onDestroyView();
-        if (call.isExecuted()) {
-            call.cancel();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (call.isExecuted()) {
-            call.cancel();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if (call.isExecuted()) {
-            call.cancel();
-        }
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (call.isExecuted()) {
-            call.cancel();
-        }
 
-    }
+
+
+
+
+
+
+
 }
