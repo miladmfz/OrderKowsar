@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -267,6 +268,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
 
+                        Log.e("kowsar",response.body().getText());
                         if (!response.body().getText().equals(dbh.ReadConfig("GroupCodeDefult"))) {
                             dbh.SaveConfig("GroupCodeDefult", response.body().getText());
                             binding.registrGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));

@@ -85,7 +85,7 @@
     <string name="textvalue_notfound">لا توجد نتائج</string>
     <string name="textvalue_setreserveorder">ضع طلب حجز</string>
     <string name="textvalue_versionname">إصدار البرنامج:</string>
-    <string name="textvalue_downloading">تحميل...</string>
+    <string name="textvalue_downloading">تحميل…</string>
     <string name="textvalue_disconnectmessage">مشكلة في الاتصال ، يرجى المحاولة مرة أخرى</string>
     <string name="textvalue_imagefolername">اسم مجلد الصور:</string>
     <string name="textvalue_ipserver">عنوان المستقبل:</string>
@@ -148,6 +148,142 @@
     <string name="registeractivity_brokername">نام بازایاب</string>
     <string name="fragment_good_to_order">لیست سفارشات</string>
     <string name="text_doyouchangemiz">آیا مایل به تغییر میز می بشید؟</string>
+
+
+
+
+
+
+    <string name="Kowsar_log">178.131.31.161:60005</string>
+
+    <string name="new_printer">اتصال به پرینتر</string>
+    <string name="print">پرینت کردن</string>
+    <string name="switch_on_printer">مطمئن شوید چاپگر روشن است. اگر اتصال برقرار نیست ، لطفاً چاپگر را خاموش کرده و دوباره روشن کنید.</string>
+    <string name="connecting">اتصال به چاپگر از طریق بلوتوث</string>
+    <string name="non_paired_printers1">هیچ چاپگر متصلی وجود ندارد</string>
+    <string name="non_paired_printers2">لطفاً چاپگر را روشن کرده و با زدن دکمه آن را به تلفن خود متصل کنید.  چاپگرهای Bixolon رمزشان 0000 است.</string>
+    <string name="printer_ready1">چاپگر آماده است</string>
+    <string name="printer_ready2">برای شروع چاپ روی دکمه " پرینت کردن " ضربه بزنید</string>
+    <string name="good_search">جستجوی کالا</string>
+    <string name="good_new">جدیدترین ها</string>
+    <string name="good_allview">دسته بندی ها</string>
+    <string name="good_bag">سبد خرید</string>
+    <string name="open_prefactor">فاکتورهای باز</string>
+    <string name="all_prefactor">همه فاکتورها</string>
+    <string name="aboutus_localnumber">داخلی : 409 </string>
+    <string name="buy_total">مبلغ نهایی</string>
+    <string name="buy_totalamount">تعداد کل:</string>
+    <string name="buy_rows">تعداد ردیف:</string>
+    <string name="buy_factorname">فاکتور</string>
+    <string name="buy_deletall">حذف</string>
+    <string name="buy_tollbarname">سبد خرید</string>
+    <string name="buy_sendfactor">نهایی کردن سبد خرید</string>
+    <string name="buyhistory_totalprice">مبلغ نهایی</string>
+    <string name="buyhistory_totalamount">تعداد کل</string>
+    <string name="buyhistory_totalrow">تعداد ردیف</string>
+    <string name="config_broker">کد بازاریاب :</string>
+    <string name="config_item">نمایش آیتم:</string>
+    <string name="config_searchitem">کل آیتم ها:</string>
+    <string name="config_off">تغییر درصد فروش :</string>
+    <string name="ArabicText">حروف عربی (ي , ك) :</string>
+    <string name="config_real_amount">نمایش موجودی رزرو نشده:</string>
+    <string name="config_delay">وقفه جستجو :</string>
+    <string name="config_totalprice">جمع مبلغ فروش به ریال :</string>
+    <string name="customer_toolbarname">مشتریان</string>
+    <string name="detail_toolbarname">خصوصیات کالا</string>
+    <string name="totalfactorheader">مبلغ :</string>
+    <string name="customerfactorheader">مشتری :</string>
+    <string name="detail_buy">افزودن ️</string>
+    <string name="detail_price">قیمت</string>
+
+    <string name="detail_good">جزئیات محصول</string>
+    <string name="detail_category">موضوع</string>
+    <string name="deatil_goodcode">کد محصول</string>
+    <string name="detail_goodname">نام محصول</string>
+    <string name="detail_goodexplain1">ناشر</string>
+    <string name="amount">تعداد</string>
+    <string name="Reserveamount">تعداد رزرو</string>
+    <string name="detail_isbn">شابک</string>
+    <string name="detail_tahvildate">تاریخ تحویل</string>
+    <string name="detail_tajdiddate">تاریخ تجدید</string>
+    <string name="detail_nvarchar1">مولف</string>
+    <string name="detail_nvarchar2">مترجم</string>
+    <string name="detail_float1">نوبت چاپ</string>
+    <string name="detail_nvarchar13">نوع جلد</string>
+    <string name="detail_nvarchar20">قطع</string>
+    <string name="detail_float5">تعداد صفحات</string>
+    <string name="detailsetting_name">نام ستون مورد نظر</string>
+    <string name="detailsetting_row">ردیف :</string>
+    <string name="active_activeswitch">فعال</string>
+    <string name="amount_activeswitch">موجود</string>
+    <string name="prosearch_filter">اعمال فیلتر</string>
+    <string name="prosearch_active">جستجوی پیشرفته</string>
+    <string name="prosearch_et4">ناشر :</string>
+    <string name="prosearch_et5">مولف :</string>
+    <string name="prosearch_et6">سال چاپ :</string>
+    <string name="prosearch_et1">نام کتاب :</string>
+    <string name="prosearch_et2">مترجم:</string>
+    <string name="prosearch_et3">نوبت چاپ :</string>
+    <string name="insert_prefactor">ایجاد فاکتور جدید</string>
+    <string name="factor_in_use">کد فاکتور فعلی :</string>
+    <string name="refresh">نوسازی</string>
+    <string name="search_et">جستجو</string>
+    <string name="config_change">تغییر اطلاعات</string>
+    <string name="config_returnhome">بازگشت به صفحه اصلی</string>
+    <string name="open_amountprefactor">تعداد فاکتورهای باز</string>
+    <string name="open_deleteprefactor">پاک کردن فاکتور خالی</string>
+    <string name="reg_save">ثبت اطلاعات</string>
+    <string name="update_comment">در حال بروز رسانی</string>
+    <string name="search_grp">گروه های کالا</string>
+    <string name="scan">اسکن بارکد</string>
+    <string name="last_1_day">یک روز اخیر</string>
+    <string name="last_3_day">سه روز اخیر</string>
+    <string name="last_7_day">هفت روز اخیر</string>
+    <string name="last_30_day">یک ماه اخیر</string>
+    <string name="last_60_day">دو ماه اخیر</string>
+    <string name="last_90_day">سه ماه اخیر</string>
+    <string name="off_for_sale">درصد تخفیف</string>
+    <string name="boxbuy_price">فی</string>
+    <string name="boxbuy_maxprice">فی نا خالص</string>
+    <string name="boxbuy_total">جمع مبلغ</string>
+    <string name="boxbuy_hasamount">تعداد فاکتور شده</string>
+    <string name="customer_code">کد مشتری:</string>
+    <string name="customer_credite">حساب قبلی:</string>
+    <string name="customer_manager">مدیریت :</string>
+    <string name="customer_phone">تلفن :</string>
+    <string name="customer_addres">آدرس :</string>
+    <string name="sell_price">قیمت فروش</string>
+    <string name="explain">توضیحات</string>
+    <string name="prefactor_date">تاریخ :</string>
+    <string name="prefactor_code">فاکتور کد :</string>
+    <string name="prefactor_time">ساعت :</string>
+    <string name="prefactor_explain">توضیحات فاکتور :</string>
+    <string name="prefactor_delete">حذف فاکتور</string>
+    <string name="prefactor_send">ارسال فاکتور</string>
+    <string name="prefactor_editexplain">تغییر توضیحات</string>
+    <string name="prefactor_editcustomer">تغییر مشتری</string>
+    <string name="prefactor_excel">خروجی پرینت</string>
+    <string name="prefactor_report">گزارش اقلام فاکتور</string>
+    <string name="prefactor_editgood">اصلاح اقلام فاکتور</string>
+    <string name="prefactor_select">انتخاب فاکتور</string>
+    <string name="prefactor_kowsardate">تاریخ کوثر :</string>
+    <string name="prefactor_kowsarcode">کد کوثر :</string>
+    <string name="factor_closed">فاکتور بسته می باشد</string>
+    <string name="good_buy_name">نام کالا :</string>
+    <string name="good_buy_sellprice">فی خالص :</string>
+    <string name="good_buy_totalsellprice">جمع خالص :</string>
+    <string name="good_buy_maxsellprice">فی ناخالص :</string>
+    <string name="good_buy_totalmaxsellprice">جمع ناخالص :</string>
+    <string name="good_buy_shortage">کسر موجودی</string>
+    <string name="good_buy_amount">تعداد :</string>
+    <string name="good_buy_imaga_Description">good_buy_imaga_Description</string>
+    <string name="good_buy_offer">offer</string>
+    <string name="good_buy_delete">حذف از سبد</string>
+    <string name="Customer_new"> مشتری جدید</string>
+    <string name="UnitRadio">درصد تخفیف</string>
+
+
+
 
 
 </resources>

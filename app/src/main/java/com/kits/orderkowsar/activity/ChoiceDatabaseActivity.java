@@ -32,6 +32,7 @@ import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityChoiceDatabaseBinding;
 import com.kits.orderkowsar.model.Activation;
 import com.kits.orderkowsar.model.DatabaseHelper;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient_kowsar;
 import com.kits.orderkowsar.webService.APIInterface;
@@ -173,32 +174,47 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     public void DownloadRequest(Activation activation) {
         btn_prog.setOnClickListener(view -> DownloadRequest(activation));
 
-        PRDownloaderConfig config = PRDownloaderConfig.newBuilder().setDatabaseEnabled(true).build();
+
+        String downloadurl="http://178.131.31.161:60005/api/kits/GetDb?Code="+activation.getActivationCode();
+
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .build();
 
         PRDownloader.initialize(getApplicationContext(), config);
 
         // Setting timeout globally for the download network requests:
-        PRDownloaderConfig config1 = PRDownloaderConfig.newBuilder().setReadTimeout(30_000).setConnectTimeout(30_000).build();
+        PRDownloaderConfig config1 = PRDownloaderConfig.newBuilder()
+                .setReadTimeout(30_000)
+                .setConnectTimeout(30_000)
+                .build();
         PRDownloader.initialize(getApplicationContext(), config1);
 
-        downloadId = PRDownloader.download(activation.getSQLiteURL(), activation.getDatabaseFolderPath(), "KowsarDbTemp.sqlite")
 
-                .build().setOnStartOrResumeListener(() -> {
+        downloadId = PRDownloader.download(
+                        downloadurl,
+                        activation.getDatabaseFolderPath(),
+                        "KowsarDbTemp.sqlite"
+                )
+
+                .build()
+                .setOnStartOrResumeListener(() -> {
                     dialog.show();
                     dialog.setCancelable(false);
-                }).setOnPauseListener(() -> {
+                })
+                .setOnPauseListener(() -> {
 
-                }).setOnCancelListener(() -> {
+                })
+                .setOnCancelListener(() -> {
                     File DownloadTemp = new File(activation.getDatabaseFolderPath() + "/KowsarDbTemp.sqlite");
                     DownloadTemp.delete();
                 })
 
                 .setOnProgressListener(progress -> {
-                    tv_rep.setText(getString(R.string.textvalue_downloading));
+                    tv_rep.setText("در حال بارگیری...");
                     tv_step.setVisibility(View.VISIBLE);
-                    tv_step.setText(callMethod.NumberRegion((((progress.currentBytes) * 100) / progress.totalBytes) + "/100"));
+                    tv_step.setText(NumberFunctions.PerisanNumber((((progress.currentBytes) * 100) / progress.totalBytes) + "/100"));
                 })
-
 
                 .start(new OnDownloadListener() {
                     @SuppressLint("SdCardPath")
@@ -206,17 +222,18 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
                     public void onDownloadComplete() {
                         File DownloadTemp = new File(activation.getDatabaseFolderPath() + "/KowsarDbTemp.sqlite");
-
-
                         File CompletefILE = new File(activation.getDatabaseFolderPath() + "/KowsarDb.sqlite");
                         DownloadTemp.renameTo(CompletefILE);
                         callMethod.EditString("DatabaseName", activation.getDatabaseFilePath());
                         dbh = new DatabaseHelper(App.getContext(), callMethod.ReadString("DatabaseName"));
                         dbh.DatabaseCreate();
+                        File tempdb = new File(activation.getDatabaseFolderPath() + "/tempDb");
+
 
                         callMethod.EditString("PersianCompanyNameUse", activation.getPersianCompanyName());
                         callMethod.EditString("EnglishCompanyNameUse", activation.getEnglishCompanyName());
                         callMethod.EditString("ServerURLUse", activation.getServerURL());
+                        callMethod.EditString("ActivationCode", activation.getActivationCode());
                         intent = new Intent(App.getContext(), SplashActivity.class);
                         startActivity(intent);
                         finish();
@@ -229,7 +246,8 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                         btn_prog.setVisibility(View.VISIBLE);
                         File DownloadTemp = new File(activation.getDatabaseFolderPath() + "/KowsarDbTemp.sqlite");
                         DownloadTemp.delete();
-                        tv_step.setText(R.string.textvalue_disconnectmessage);
+                        tv_step.setText("مشکل ارتباطی لطفا دوباره امتحان کنید");
+
                     }
                 });
 
