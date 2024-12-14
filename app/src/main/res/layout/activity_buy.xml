@@ -223,8 +223,8 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:backgroundTint="#D5BC9D"
-            app:strokeColor="#B96838"
+            app:backgroundTint="#e2c846"
+            app:strokeColor="#e2c846"
             app:strokeWidth="1dp" />
 
 

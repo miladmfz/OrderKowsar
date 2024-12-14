@@ -21,6 +21,58 @@ public class Activation {
     private String SQLiteURL;
     @SerializedName("MaxDevice")
     private String MaxDevice;
+    @SerializedName("SecendServerURL")
+    private String SecendServerURL;
+    @SerializedName("DbName")
+    private String DbName;
+    @SerializedName("AppType")
+    private String AppType;
+
+    @SerializedName("ErrCode")
+    private String ErrCode;
+    @SerializedName("ErrDesc")
+    private String ErrDesc;
+
+
+    public String getSecendServerURL() {
+        return SecendServerURL;
+    }
+
+    public void setSecendServerURL(String secendServerURL) {
+        SecendServerURL = secendServerURL;
+    }
+
+    public String getDbName() {
+        return DbName;
+    }
+
+    public void setDbName(String dbName) {
+        DbName = dbName;
+    }
+
+    public String getAppType() {
+        return AppType;
+    }
+
+    public void setAppType(String appType) {
+        AppType = appType;
+    }
+
+    public String getErrCode() {
+        return ErrCode;
+    }
+
+    public void setErrCode(String errCode) {
+        ErrCode = errCode;
+    }
+
+    public String getErrDesc() {
+        return ErrDesc;
+    }
+
+    public void setErrDesc(String errDesc) {
+        ErrDesc = errDesc;
+    }
 
     @SuppressLint("SdCardPath")
     public String getDatabaseFolderPath() {

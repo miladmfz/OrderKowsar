@@ -88,7 +88,7 @@
     <string name="textvalue_deleteorderbasket">سبد خرید حذف گردید</string>
     <string name="textvalue_notfound">موردی یافت نشد</string>
     <string name="textvalue_setreserveorder">ثبت سفارش رزرو</string>
-    <string name="textvalue_versionname">"نسخه نرم افزار : "</string>
+    <string name="textvalue_versionname">"نسخه نرم افزار "</string>
     <string name="textvalue_downloading">در حال بارگیری...</string>
     <string name="textvalue_disconnectmessage">مشکل ارتباطی لطفا دوباره امتحان کنید</string>
     <string name="textvalue_imagefolername">"نام پوشه عکس : "</string>
@@ -163,7 +163,7 @@
 
 
 
-    <string name="Kowsar_log">178.131.31.161:60005</string>
+    <string name="Kowsar_log">5.160.152.173:60005</string>
 
     <string name="new_printer">اتصال به پرینتر</string>
     <string name="print">پرینت کردن</string>

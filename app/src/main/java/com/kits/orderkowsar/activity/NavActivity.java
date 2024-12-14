@@ -1,6 +1,7 @@
 package com.kits.orderkowsar.activity;
 
 
+
 import static com.kits.orderkowsar.R.string.textvalue_exitmessage;
 
 import android.annotation.SuppressLint;
@@ -27,11 +28,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.downloader.BuildConfig;
 import com.google.android.material.navigation.NavigationView;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
+import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.webService.APIClient;
 import com.kits.orderkowsar.webService.APIInterface;
 
@@ -154,7 +155,8 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
         Config();
 
 
-        tv_versionname.setText(callMethod.NumberRegion(BuildConfig.VERSION_NAME));
+        //tv_versionname.setText(NumberFunctions.PerisanNumber(BuildConfig));
+
         tv_dbname.setText(callMethod.ReadString("PersianCompanyNameUse"));
         toolbar.setTitle(callMethod.ReadString("PersianCompanyNameUse"));
 

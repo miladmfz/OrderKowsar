@@ -2,16 +2,25 @@ package com.kits.orderkowsar.webService;
 
 import com.kits.orderkowsar.model.RetrofitResponse;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface APIInterface {
 
-    @POST("index.php")
-    @FormUrlEncoded
-    Call<RetrofitResponse> Activation(@Field("tag") String tag, @Field("ActivationCode") String ActivationCode);
+
+    @POST("kits/LogReport") // Replace with your actual API endpoint
+    Call<RetrofitResponse> LogReport(@Body RequestBody requestBody);
+    @GET("kits/Activation")
+    Call<RetrofitResponse> Activation(
+            @Query("ActivationCode") String ActivationCode,
+            @Query("Flag") String Flag
+    );
 
 
     @POST("index.php")
@@ -122,6 +131,8 @@ public interface APIInterface {
     @POST("index.php")
     @FormUrlEncoded
     Call<RetrofitResponse> OrderEditInfoExplain(@Field("tag") String tag, @Field("AppBasketInfoCode") String AppBasketInfoCode, @Field("Explain") String Explain);
+
+
 
 
 }

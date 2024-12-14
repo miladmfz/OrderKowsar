@@ -10,6 +10,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,14 +38,17 @@ import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient_kowsar;
 import com.kits.orderkowsar.webService.APIInterface;
+import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChoiceDatabaseActivity extends AppCompatActivity {
 
@@ -148,34 +153,64 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
 
         binding.activitionBtn.setOnClickListener(v -> {
-            Call<RetrofitResponse> call1 = apiInterface.Activation("ActivationCode", Objects.requireNonNull(binding.activitionEdittext.getText()).toString());
-            call1.enqueue(new Callback<RetrofitResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull retrofit2.Response<RetrofitResponse> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        activation = response.body().getActivations().get(0);
-                        dbhbase.InsertActivation(activation);
-                        finish();
-                        startActivity(getIntent());
-                    }
-                }
+            int exist=0;
 
-                @Override
-                public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+            for (Activation singleactive : activations) {
+                if (Objects.requireNonNull(binding.activitionEdittext.getText()).toString().equals(singleactive.getActivationCode())){
+                    exist=exist+1;
                 }
-            });
+            }
+            if (exist<1){
+
+
+                Call<RetrofitResponse> call1 = apiInterface.Activation(
+                        Objects.requireNonNull(binding.activitionEdittext.getText()).toString(),"1");
+                call1.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull retrofit2.Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+
+
+
+                            activation = response.body().getActivations().get(0);
+                            Log.e("kowsar",""+activation.getErrCode());
+                            if (Integer.parseInt(activation.getErrCode())>0){
+                                callMethod.showToast(activation.getErrDesc());
+                            }else{
+                                FirstActivation(activation);
+                                dbhbase.InsertActivation(activation);
+                                finish();
+                                startActivity(getIntent());
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                    }
+                });
+
+
+            }else{
+                callMethod.showToast("این کد وارد شده است");
+            }
+
+
+
 
         });
 
 
     }
 
+
     public void DownloadRequest(Activation activation) {
         btn_prog.setOnClickListener(view -> DownloadRequest(activation));
 
 
-        String downloadurl="http://178.131.31.161:60005/api/kits/GetDb?Code="+activation.getActivationCode();
+        String downloadurl="http://5.160.152.173:60005/api/kits/GetDb?Code="+activation.getActivationCode();
 
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
                 .setDatabaseEnabled(true)
@@ -227,7 +262,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                         callMethod.EditString("DatabaseName", activation.getDatabaseFilePath());
                         dbh = new DatabaseHelper(App.getContext(), callMethod.ReadString("DatabaseName"));
                         dbh.DatabaseCreate();
-                        File tempdb = new File(activation.getDatabaseFolderPath() + "/tempDb");
+
 
 
                         callMethod.EditString("PersianCompanyNameUse", activation.getPersianCompanyName());
@@ -253,10 +288,9 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "SdCardPath"})
     public void CreateView(Activation singleactive) {
-
-        String serverip = singleactive.getServerURL().substring(singleactive.getServerURL().indexOf("//") + 2, singleactive.getServerURL().indexOf("/login") - 6);
+        String serverip = singleactive.getServerURL().substring(singleactive.getServerURL().indexOf("//") + 2);
 
 
         LinearLayoutCompat ll_main = new LinearLayoutCompat(this);
@@ -268,7 +302,6 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         MaterialButton btn_login = new MaterialButton(this);
         MaterialButton btn_update = new MaterialButton(this);
         MaterialButton btn_gap = new MaterialButton(this);
-
         LinearLayoutCompat.LayoutParams margin_10 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
         LinearLayoutCompat.LayoutParams margin_5 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
 
@@ -282,11 +315,9 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         btn_update.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, (float) 0.3));
         btn_gap.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT, (float) 0.4));
 
-        tv_PersianCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
-        tv_PersianCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
-        tv_EnglishCompanyName.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
-        tv_ServerURL.setTextColor(ContextCompat.getColor(this, R.color.grey_800));
-
+        tv_PersianCompanyName.setTextColor(getResources().getColor(R.color.grey_800));
+        tv_EnglishCompanyName.setTextColor(getResources().getColor(R.color.grey_800));
+        tv_ServerURL.setTextColor(getResources().getColor(R.color.grey_800));
 
         ll_main.setOrientation(LinearLayoutCompat.HORIZONTAL);
         ll_tv.setOrientation(LinearLayoutCompat.VERTICAL);
@@ -301,10 +332,8 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
         tv_PersianCompanyName.setBackgroundResource(R.color.grey_20);
         tv_EnglishCompanyName.setBackgroundResource(R.color.grey_20);
         tv_ServerURL.setBackgroundResource(R.color.grey_20);
-        btn_login.setBackgroundResource(R.color.white);
-        btn_update.setBackgroundResource(R.color.white);
-        btn_gap.setBackgroundResource(R.color.white);
 
+        btn_gap.setBackgroundResource(R.color.white);
 
         tv_PersianCompanyName.setTextSize(26);
         tv_EnglishCompanyName.setTextSize(16);
@@ -320,12 +349,11 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
         btn_gap.setVisibility(View.INVISIBLE);
 
-
-        tv_PersianCompanyName.setText(callMethod.NumberRegion(singleactive.getPersianCompanyName()));
-        tv_EnglishCompanyName.setText(getString(R.string.textvalue_imagefolername) + singleactive.getEnglishCompanyName());
-        tv_ServerURL.setText(getString(R.string.textvalue_ipserver) + serverip);
-        btn_login.setText(R.string.textvalue_login);
-        btn_update.setText(R.string.textvalue_edit);
+        tv_PersianCompanyName.setText(NumberFunctions.PerisanNumber(singleactive.getPersianCompanyName()));
+        tv_EnglishCompanyName.setText("نام پوشه عکس : " + singleactive.getEnglishCompanyName());
+        tv_ServerURL.setText("آدرس سرور : " + serverip);
+        btn_login.setText("ورود");
+        btn_update.setText("اصلاح");
 
 
         btn_login.setOnClickListener(v -> {
@@ -338,6 +366,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                 callMethod.EditString("EnglishCompanyNameUse", singleactive.getEnglishCompanyName());
                 callMethod.EditString("ServerURLUse", singleactive.getServerURL());
                 callMethod.EditString("DatabaseName", singleactive.getDatabaseFilePath());
+                callMethod.EditString("ActivationCode", singleactive.getActivationCode());
                 intent = new Intent(this, SplashActivity.class);
                 startActivity(intent);
                 finish();
@@ -347,7 +376,10 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
         btn_update.setOnClickListener(v -> {
 
-            Call<RetrofitResponse> call1 = apiInterface.Activation("ActivationCode", singleactive.getActivationCode());
+            Call<RetrofitResponse> call1 = apiInterface.Activation(
+
+                    singleactive.getActivationCode(),"0"
+            );
             call1.enqueue(new Callback<RetrofitResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull retrofit2.Response<RetrofitResponse> response) {
@@ -364,10 +396,10 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
 
+//                    callMethod.ErrorLog(t.getMessage());
                 }
             });
         });
-
 
         ll_btn.addView(btn_login);
         ll_btn.addView(btn_gap);
@@ -381,9 +413,80 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
 
         ll_main.addView(ll_tv);
 
-
         binding.activitionLine.addView(ll_main, margin_10);
     }
+
+    @SuppressLint("HardwareIds")
+    public void FirstActivation(Activation activation) {
+
+
+        Log.e("Debug Build.VERSION.SDK_INT =", Build.VERSION.SDK_INT+"");
+
+
+        @SuppressLint("HardwareIds") String android_id = BuildConfig.BUILD_TYPE.equals("release") ?
+                Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID) :
+                "debug";
+        PersianCalendar calendar1 = new PersianCalendar();
+        calendar1.setTimeZone(TimeZone.getDefault());
+        String version = BuildConfig.VERSION_NAME;
+
+
+
+        APIInterface apiInterface = APIClient_kowsar.getCleint_log().create(APIInterface.class);
+//        Call<RetrofitResponse> call = apiInterface.Kowsar_log("Kowsar_log", android_id
+//                , url
+//                , callMethod.ReadString("PersianCompanyNameUse")
+//                , callMethod.ReadString("PreFactorCode")
+//                , calendar1.getPersianShortDateTime()
+//                , dbh.ReadConfig("BrokerCode")
+//                , version);
+//
+//
+
+        String Body_str  = "";
+        Body_str =callMethod.CreateJson("Device_Id", android_id, Body_str);
+        Body_str =callMethod.CreateJson("Address_Ip", activation.getServerURL(), Body_str);
+        Body_str =callMethod.CreateJson("Server_Name", activation.getPersianCompanyName(), Body_str);
+        Body_str =callMethod.CreateJson("Factor_Code", "0", Body_str);
+        Body_str =callMethod.CreateJson("StrDate", calendar1.getPersianShortDateTime(), Body_str);
+        Body_str =callMethod.CreateJson("Broker",  "0", Body_str);
+        Body_str =callMethod.CreateJson("Explain", version, Body_str);
+        Body_str =callMethod.CreateJson("DeviceAgant", Build.BRAND+" / "+Build.MODEL+" / "+Build.HARDWARE, Body_str);
+        Body_str =callMethod.CreateJson("SdkVersion", Build.VERSION.SDK_INT+"", Body_str);
+        Body_str =callMethod.CreateJson("DeviceIp", "---- / -----", Body_str);
+
+        Log.e("e=",""+Body_str);
+        Call<RetrofitResponse> call = apiInterface.LogReport(callMethod.RetrofitBody(Body_str));
+        Log.e("ec=",""+call.request().url());
+        Log.e("ec=",""+call.request().body());
+
+
+        call.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> response) {
+                Log.e("res=",""+response.body().toString());
+
+                if (response.isSuccessful()) {
+                    // Handle successful response
+                } else {
+                    // Handle unsuccessful response
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
+                // Handle failure
+            }
+        });
+
+
+
+
+
+
+    }
+
 
     @Override
     protected void onDestroy() {

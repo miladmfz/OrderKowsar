@@ -364,11 +364,13 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         }
 
         TextView ed_orderbox_goodname = dialog.findViewById(R.id.orderboxgood_goodname);
+        TextView ed_orderbox_rstmizname = dialog.findViewById(R.id.orderboxgood_rstmizname);
         EditText ed_orderbox_amount = dialog.findViewById(R.id.orderboxgood_amount);
         EditText ed_orderbox_explain = dialog.findViewById(R.id.orderboxgood_explain);
         Spinner spinner_orderbox = dialog.findViewById(R.id.orderboxgood_spinnerexplain);
         RecyclerView rc_orderbox = dialog.findViewById(R.id.orderboxgood_rc);
         Button btn_orderbox = dialog.findViewById(R.id.orderboxgood_btn);
+        ed_orderbox_rstmizname.setText(callMethod.ReadString("RstMizName"));
 
         if (Flag.equals("1")) {
             ed_orderbox_amount.setText(callMethod.NumberRegion(good.getAmount()));
@@ -796,6 +798,9 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         callMethod.ReadString("AppBasketInfoCode"),
                         NumberFunctions.EnglishNumber(explain_tv.getText().toString())
                 );
+
+
+
 
                 call.enqueue(new Callback<RetrofitResponse>() {
                     @Override

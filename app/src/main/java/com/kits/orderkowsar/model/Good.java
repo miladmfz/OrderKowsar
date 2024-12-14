@@ -200,9 +200,7 @@ public class Good implements Serializable {
     }
 
     public String getMaxSellPrice() {
-        if (MaxSellPrice.indexOf(".")>0){
-            MaxSellPrice=MaxSellPrice.substring(0,MaxSellPrice.indexOf("."));
-        }
+
         return MaxSellPrice;
     }
 

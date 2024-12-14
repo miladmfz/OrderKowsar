@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:layoutDirection="rtl"
     tools:context=".Fragment.SearchViewFragment">
 
@@ -45,8 +44,8 @@
                 android:text="@string/fragment_good_to_order"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="#D5BC9D"
-                app:strokeColor="#B96838"
+                app:backgroundTint="#e2c846"
+                app:strokeColor="#e2c846"
                 app:strokeWidth="1dp"
 
                 />

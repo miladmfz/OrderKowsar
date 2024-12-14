@@ -16,15 +16,29 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="vertical">
-
         <TextView
-            android:id="@+id/orderboxgood_goodname"
+            android:background="@drawable/bg_round_selected"
+
+            android:id="@+id/orderboxgood_rstmizname"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-
+            android:text="ترقی"
             android:gravity="center"
             android:textSize="20sp"
+            android:textStyle="bold">
+
+
+        </TextView>
+        <TextView
+            android:id="@+id/orderboxgood_goodname"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:text="اسپرسو"
+
             android:textStyle="bold">
 
 
@@ -143,10 +157,10 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:backgroundTint="#D7BE9F"
+            app:backgroundTint="#e2c846"
             app:icon="@drawable/ic_add_shopping_black"
             app:iconTint="@color/black"
-            app:strokeColor="#B96838"
+            app:strokeColor="#e2c846"
             app:strokeWidth="1dp" />
 
         <androidx.recyclerview.widget.RecyclerView

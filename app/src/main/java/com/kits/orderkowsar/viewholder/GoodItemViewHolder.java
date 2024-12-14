@@ -66,7 +66,8 @@ public class GoodItemViewHolder extends RecyclerView.ViewHolder {
                     .into(img);
 
 
-        } else {
+        } else
+        {
 
             call = apiInterface.GetImage(
                     "getImage",

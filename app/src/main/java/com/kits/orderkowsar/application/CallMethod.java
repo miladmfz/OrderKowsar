@@ -11,8 +11,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kits.orderkowsar.model.NumberFunctions;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 public class CallMethod extends Application {
@@ -78,6 +83,30 @@ public class CallMethod extends Application {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         EditString(key, json);
+    }
+    public String CreateJson(String key, String value, String existingJson) {
+
+        JSONObject jsonObject = null;
+        try {
+            if (existingJson != null && !existingJson.isEmpty()) {
+                jsonObject = new JSONObject(existingJson);
+            } else {
+                jsonObject = new JSONObject();
+            }
+            jsonObject.put(key, value);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject.toString()+"";
+    }
+    public RequestBody RetrofitBody(String jsonRequestBody) {
+
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonRequestBody);
+
+        return requestBody;
     }
 
     public void log(String key) {
