@@ -183,14 +183,14 @@ public class SearchActivity extends AppCompatActivity {
             if (textCartItemCount.getVisibility() != View.GONE) {
                 textCartItemCount.setVisibility(View.GONE);
             }
-            Call<RetrofitResponse> call2 = apiInterface.GetbasketSum("GetOrderSum", callMethod.ReadString("AppBasketInfoCode"));
+            Call<RetrofitResponse> call2 = apiInterface.OrderGetSummmary("OrderGetSummmary", callMethod.ReadString("AppBasketInfoCode"));
             call2.enqueue(new Callback<RetrofitResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        textCartItemCount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
-                        if (Integer.parseInt(response.body().getGoods().get(0).getSumFacAmount()) > 0) {
+                        textCartItemCount.setText(callMethod.NumberRegion(response.body().getBasketInfos().get(0).getSumFacAmount()));
+                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getSumFacAmount()) > 0) {
                             if (textCartItemCount.getVisibility() != View.VISIBLE) {
                                 textCartItemCount.setVisibility(View.VISIBLE);
                             }

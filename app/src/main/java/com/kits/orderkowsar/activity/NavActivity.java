@@ -243,8 +243,7 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
 
         } else if (id == R.id.nav_cfg) {
-            intent = new Intent(this, RegistrationActivity.class);
-            startActivity(intent);
+            action.LoginSetting();
         }
         DrawerLayout drawer = findViewById(R.id.NavActivity_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -81,7 +81,7 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
-    Call<RetrofitResponse> GetbasketSum(@Field("tag") String tag, @Field("AppBasketInfoRef") String AppBasketInfoRef);
+    Call<RetrofitResponse> OrderGetSummmary(@Field("tag") String tag, @Field("AppBasketInfoRef") String AppBasketInfoRef);
 
 
     @POST("index.php")

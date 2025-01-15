@@ -114,11 +114,11 @@ public class RegistrationActivity extends AppCompatActivity {
         apiInterface = APIClient.getCleint(callMethod.ReadString("ServerURLUse")).create(APIInterface.class);
         SellBroker_Names.clear();
         if (callMethod.ReadString("LANG").equals("fa")) {
-            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            binding.orderRegistrActivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else if (callMethod.ReadString("LANG").equals("ar")) {
-            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            binding.orderRegistrActivity.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         } else {
-            binding.registractivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            binding.orderRegistrActivity.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
 
         Call<RetrofitResponse> call1 = apiInterface.GetSellBroker("GetSellBroker");
@@ -177,7 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public void brokerViewConfig() {
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, SellBroker_Names);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.registrSpinnerbroker.setAdapter(spinner_adapter);
+        binding.ordRegistrASpinnerbroker.setAdapter(spinner_adapter);
         int possellbroker=0;
         for (SellBroker sellBroker:SellBrokers){
             if (sellBroker.getBrokerCode().equals(dbh.ReadConfig("BrokerCode"))){
@@ -185,13 +185,13 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
 
-        binding.registrSpinnerbroker.setSelection(possellbroker);
-        binding.registrSpinnerbroker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.ordRegistrASpinnerbroker.setSelection(possellbroker);
+        binding.ordRegistrASpinnerbroker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 dbh.SaveConfig("BrokerCode",SellBrokers.get(position).getBrokerCode());
-                binding.registrBroker.setText(callMethod.NumberRegion(dbh.ReadConfig("BrokerCode")));
+                binding.ordRegistrABroker.setText(callMethod.NumberRegion(dbh.ReadConfig("BrokerCode")));
 
             }
 
@@ -205,19 +205,44 @@ public class RegistrationActivity extends AppCompatActivity {
     public void init() {
 
 
-        binding.registrBroker.setText(callMethod.NumberRegion(dbh.ReadConfig("BrokerCode")));
-        binding.registrGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));
-        binding.registrDelay.setText(callMethod.NumberRegion(callMethod.ReadString("Delay")));
-        binding.registrDbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
-        binding.registrTitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
+        binding.ordRegistrABroker.setText(callMethod.NumberRegion(dbh.ReadConfig("BrokerCode")));
+        binding.ordRegistrAGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));
+        binding.ordRegistrADelay.setText(callMethod.NumberRegion(callMethod.ReadString("Delay")));
+        binding.ordRegistrADbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
+        binding.ordRegistrATitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
+
+        binding.ordRegistrAActivereserv.setChecked(callMethod.ReadBoolan("ReserveActive"));
+        binding.ordRegistrACanfreetable.setChecked(callMethod.ReadBoolan("CanFreeTable"));
+
+
+        binding.ordRegistrACanfreetable.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (callMethod.ReadBoolan("CanFreeTable")) {
+                callMethod.EditBoolan("CanFreeTable", false);
+                callMethod.showToast("خیر");
+            } else {
+                callMethod.EditBoolan("CanFreeTable", true);
+                callMethod.showToast("بله");
+            }
+        });
+
+        binding.ordRegistrAActivereserv.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (callMethod.ReadBoolan("ReserveActive")) {
+                callMethod.EditBoolan("ReserveActive", false);
+                callMethod.showToast("خیر");
+            } else {
+                callMethod.EditBoolan("ReserveActive", true);
+                callMethod.showToast("بله");
+            }
+        });
+
 
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lang_array);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.registrSpinnerlang.setAdapter(spinner_adapter);
+        binding.ordRegistrASpinnerlang.setAdapter(spinner_adapter);
 
-        binding.registrSpinnerlang.setSelection(lang_position);
-        binding.registrSpinnerlang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.ordRegistrASpinnerlang.setSelection(lang_position);
+        binding.ordRegistrASpinnerlang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -255,7 +280,9 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        binding.registrGroupcodeRefresh.setOnClickListener(v -> {
+
+        binding.ordRegistrADefultsetting.setOnClickListener(v -> {
+
             Dialog dialogProg = new Dialog(this);
             dialogProg.setContentView(R.layout.rep_prog);
             TextView tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
@@ -271,8 +298,27 @@ public class RegistrationActivity extends AppCompatActivity {
                         Log.e("kowsar",response.body().getText());
                         if (!response.body().getText().equals(dbh.ReadConfig("GroupCodeDefult"))) {
                             dbh.SaveConfig("GroupCodeDefult", response.body().getText());
-                            binding.registrGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));
-                            callMethod.showToast(getString(R.string.textvalue_resived));
+                            binding.ordRegistrAGroupcode.setText(callMethod.NumberRegion(dbh.ReadConfig("GroupCodeDefult")));
+
+                            Call<RetrofitResponse> call2 = apiInterface.kowsar_info("kowsar_info", "AppOrder_CanFree_FromTablet");
+                            call2.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        assert response.body() != null;
+
+                                        Log.e("kowsar",response.body().getText());
+                                        callMethod.EditBoolan("CanFreeTable", !response.body().getText().equals("0"));
+                                        binding.ordRegistrACanfreetable.setChecked(callMethod.ReadBoolan("CanFreeTable"));
+                                        callMethod.showToast(getString(R.string.textvalue_resived));
+                                        dialogProg.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                                }
+                            });
                         }
                         dialogProg.dismiss();
                     }
@@ -285,17 +331,17 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
 
-        binding.registrBtn.setOnClickListener(view -> {
+        binding.ordRegistrABtn.setOnClickListener(view -> {
 
-            callMethod.EditString("TitleSize", NumberFunctions.EnglishNumber(binding.registrTitlesize.getText().toString()));
-            callMethod.EditString("BodySize", NumberFunctions.EnglishNumber(binding.registrBodysize.getText().toString()));
-            callMethod.EditString("Delay", NumberFunctions.EnglishNumber(binding.registrDelay.getText().toString()));
+            callMethod.EditString("TitleSize", NumberFunctions.EnglishNumber(binding.ordRegistrATitlesize.getText().toString()));
+            callMethod.EditString("BodySize", NumberFunctions.EnglishNumber(binding.ordRegistrABodysize.getText().toString()));
+            callMethod.EditString("Delay", NumberFunctions.EnglishNumber(binding.ordRegistrADelay.getText().toString()));
 
-            if (!dbh.ReadConfig("BrokerCode").equals(NumberFunctions.EnglishNumber(binding.registrBroker.getText().toString()))) {
-                dbh.SaveConfig("BrokerCode", NumberFunctions.EnglishNumber(binding.registrBroker.getText().toString()));
+            if (!dbh.ReadConfig("BrokerCode").equals(NumberFunctions.EnglishNumber(binding.ordRegistrABroker.getText().toString()))) {
+                dbh.SaveConfig("BrokerCode", NumberFunctions.EnglishNumber(binding.ordRegistrABroker.getText().toString()));
             }
-            if (!dbh.ReadConfig("GroupCodeDefult").equals(NumberFunctions.EnglishNumber(binding.registrGroupcode.getText().toString()))) {
-                dbh.SaveConfig("GroupCodeDefult", NumberFunctions.EnglishNumber(binding.registrGroupcode.getText().toString()));
+            if (!dbh.ReadConfig("GroupCodeDefult").equals(NumberFunctions.EnglishNumber(binding.ordRegistrAGroupcode.getText().toString()))) {
+                dbh.SaveConfig("GroupCodeDefult", NumberFunctions.EnglishNumber(binding.ordRegistrAGroupcode.getText().toString()));
             }
             finish();
 

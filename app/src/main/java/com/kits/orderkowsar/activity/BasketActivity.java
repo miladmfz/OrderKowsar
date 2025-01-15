@@ -29,6 +29,7 @@ import com.kits.orderkowsar.adapters.InternetConnection;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.application.Print;
+import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.Good;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.webService.APIClient;
@@ -53,9 +54,11 @@ public class BasketActivity extends AppCompatActivity {
     GoodBasketAdapter adapter;
     Action action;
     Print print;
+    BasketInfo basketInfo;
     ArrayList<Good> goods = new ArrayList<>();
     Button total_delete;
-    Button final_buy_test;
+
+    Button btn_ordertofactor,btn_peyment;
     LottieAnimationView prog;
     LottieAnimationView img_lottiestatus;
     TextView tv_lottiestatus;
@@ -139,7 +142,8 @@ public class BasketActivity extends AppCompatActivity {
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
         total_delete = findViewById(R.id.BuyActivity_total_delete);
-        final_buy_test = findViewById(R.id.BuyActivity_test);
+        btn_ordertofactor  = findViewById(R.id.BuyActivity_ordertofactor);
+        btn_peyment  = findViewById(R.id.BuyActivity_payment);
         recyclerView = findViewById(R.id.BuyActivity_R1);
 
         prog = findViewById(R.id.BuyActivity_prog);
@@ -180,19 +184,12 @@ public class BasketActivity extends AppCompatActivity {
         });
 
 
-        final_buy_test.setOnClickListener(view -> {
+        btn_ordertofactor.setOnClickListener(view -> {
 
             if (State.equals("4")) {
-
                 print.GetHeader_Data("");
-
             } else {
-
-
                 action.BasketInfoExplainBeforOrder();
-
-
-
             }
         });
 
@@ -238,7 +235,24 @@ public class BasketActivity extends AppCompatActivity {
     }
 
 
+    public void setupbasketview(){
+        State = basketInfo.getInfoState();
+        Buy_row.setText(callMethod.NumberRegion(basketInfo.getCountGood()));
+        Buy_amount.setText(callMethod.NumberRegion(basketInfo.getSumFacAmount()));
 
+        if (Integer.parseInt(basketInfo.getFactorCode())>0){
+            if (Integer.parseInt(basketInfo.getNotReceived())>0){
+                btn_peyment.setVisibility(View.VISIBLE);
+            }
+        }else{
+            btn_peyment.setVisibility(View.GONE);
+        }
+
+
+        if (State.equals("4")) {
+            btn_ordertofactor.setText(R.string.textvalue_setreserveorder);
+        }
+    }
 
     private void callrecycler() {
 
@@ -251,7 +265,7 @@ public class BasketActivity extends AppCompatActivity {
         } else {
             for (Good good : goods) {
                 if (good.getFactorCode() == null) {
-                    final_buy_test.setVisibility(View.VISIBLE);
+                    btn_ordertofactor.setVisibility(View.VISIBLE);
                     total_delete.setVisibility(View.VISIBLE);
                 }
             }
@@ -266,19 +280,14 @@ public class BasketActivity extends AppCompatActivity {
 
     public void RefreshState() {
 
-        Call<RetrofitResponse> call2 = apiInterface.GetbasketSum("GetOrderSum", callMethod.ReadString("AppBasketInfoCode"));
+        Call<RetrofitResponse> call2 = apiInterface.OrderGetSummmary("OrderGetSummmary", callMethod.ReadString("AppBasketInfoCode"));
         call2.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    State = response.body().getGoods().get(0).getInfoState();
-
-                    Buy_row.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getCountGood()));
-                    Buy_amount.setText(callMethod.NumberRegion(response.body().getGoods().get(0).getSumFacAmount()));
-                    if (State.equals("4")) {
-                        final_buy_test.setText(R.string.textvalue_setreserveorder);
-                    }
+                    basketInfo = response.body().getBasketInfos().get(0);
+                    setupbasketview();
                 }
             }
 
@@ -290,6 +299,7 @@ public class BasketActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registractivity"
+    android:id="@+id/order_registr_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
@@ -11,7 +11,7 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/BuyActivity_appbar"
+        android:id="@+id/ord_registr_a_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -34,8 +34,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="7dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="7dp">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -49,233 +49,414 @@
 
 
                 <Button
-                    android:id="@+id/registr_btn"
-                    style="?attr/materialButtonOutlinedStyle"
+                    android:id="@+id/ord_registr_a_btn"
+                    android:text="@string/registeractivity_save"
+                    android:layout_margin="5dp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"
+                    app:backgroundTint="@color/green_600"
+                    app:strokeColor="@color/grey_1000"
+                    app:strokeWidth="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/green_500"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_edit_config"
+                    app:iconGravity="start"
+                    app:iconSize="24dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="0.5"
-                    android:text="@string/registeractivity_save"
-                    android:textColor="#ffffff"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="#DF5D10"
-                    app:strokeColor="@color/grey_1000"
-                    app:strokeWidth="1dp" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/companyname" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:text="@string/companyname"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
 
                     <TextView
-                        android:id="@+id/registr_dbname"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/bg_round_selected"
+                        android:id="@+id/ord_registr_a_dbname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_round"
+                        android:padding="8dp"
                         android:gravity="center"
-                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         tools:ignore="LabelFor" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
-
-                    <TextView
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_brokername" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
 
-                    <Spinner
-                        android:id="@+id/registr_spinnerbroker"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        <Button
+                            android:id="@+id/ord_registr_a_defultsetting"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="تنظیمات پیشفرض"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            app:cornerRadius="12dp"
+                            app:backgroundTint="@color/cyan_500"
+                            android:layout_marginEnd="4dp"
+                            />
 
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
 
-                    <TextView
+                    <!-- Row 1: Config Broker -->
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_brokercode" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
-                    <EditText
-                        android:id="@+id/registr_broker"
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_brokercode"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <EditText
+                            android:id="@+id/ord_registr_a_broker"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center_vertical"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!-- Row 2: Name Selector -->
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/bg_round_selected"
-                        android:gravity="center"
-                        android:inputType="numberDecimal"
-                        android:textStyle="bold"
-                        tools:ignore="Autofill,LabelFor" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_brokername"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
 
+                        <!-- Spinner -->
+                        <Spinner
+                            android:id="@+id/ord_registr_a_spinnerbroker"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_groupcode"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <EditText
+                            android:id="@+id/ord_registr_a_groupcode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center_vertical"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_lng"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <Spinner
+                            android:id="@+id/ord_registr_a_spinnerlang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
 
-                    <TextView
+                    <!-- Row 1: Config Delay and Config Item -->
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_delay" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
-                    <TextView
-                        android:id="@+id/registr_delay"
+                        <!-- Label: Config Delay -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_delay"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp"
+                            android:layout_weight="1"
+                            />
+
+                        <!-- Input: Config Delay -->
+                        <EditText
+                            android:id="@+id/ord_registr_a_delay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:layout_weight="2"
+                            />
+
+                        <!-- Label: Config Item -->
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!-- Row 2: Title Size and Body Size -->
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/bg_round_selected"
-                        android:gravity="center"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp"
+                        >
 
+                        <!-- Label: Title Size -->
 
+                        <!-- Label: Body Size -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_bodysize"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- Input: Body Size -->
+                        <EditText
+                            android:id="@+id/ord_registr_a_bodysize"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:gravity="center" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp"
+                        >
+
+                        <!-- Label: Title Size -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/registeractivity_titlesize"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- Input: Title Size -->
+                        <EditText
+                            android:id="@+id/ord_registr_a_titlesize"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:gravity="center" />
+
+                        <!-- Label: Body Size -->
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_groupcode" />
 
-                    <TextView
-                        android:id="@+id/registr_groupcode"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/bg_round_selected"
-                        android:gravity="center"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:text="امکان رزرو  "
 
-                    <TextView
-                        android:id="@+id/registr_groupcode_refresh"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_updatebtn"
-                        android:textSize="14sp"
-                        tools:ignore="LabelFor" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"  />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/ord_registr_a_activereserv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:enabled="true"
+                        android:layout_gravity="center"/>
+
+
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_lng" />
 
-                    <Spinner
-                        android:id="@+id/registr_spinnerlang"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:text="خالی کردن میز "
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"  />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/ord_registr_a_canfreetable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:enabled="true"
+                        android:layout_gravity="center" />
+
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:padding="5dp"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_titlesize" />
-
-                    <EditText
-                        android:id="@+id/registr_titlesize"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:autofillHints=""
-                        android:background="@drawable/edittest1"
-                        android:gravity="center"
-                        tools:ignore="LabelFor,TextFields" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:gravity="center"
-                        android:text="@string/registeractivity_bodysize" />
-
-                    <EditText
-                        android:id="@+id/registr_bodysize"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:autofillHints=""
-                        android:background="@drawable/edittest1"
-                        android:gravity="center"
-                        tools:ignore="LabelFor,TextFields" />
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>

@@ -118,7 +118,11 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
 
         if (changeTable.equals("0")) {
-            holder.btn_reserve.setVisibility(View.GONE);
+            if (callMethod.ReadBoolan("ReserveActive")) {
+                holder.btn_reserve.setVisibility(View.VISIBLE);
+            }else{
+                holder.btn_reserve.setVisibility(View.GONE);
+            }
             holder.tv_placecount.setText(callMethod.NumberRegion(basketInfos.get(position).getPlaceCount()));
 
             if (basketInfos.get(position).getExplain().length() > 0) {
@@ -165,7 +169,11 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     break;
                 case "2":
                     holder.btn_print.setText(R.string.rstmiz_reprint);
-                    holder.btn_cleartable.setVisibility(View.GONE);
+                    if (callMethod.ReadBoolan("CanFreeTable")){
+                        holder.btn_cleartable.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.btn_cleartable.setVisibility(View.GONE);
+                    }
                     holder.ll_table_print_change.setVisibility(View.VISIBLE);
                     holder.ll_table_timebroker.setVisibility(View.VISIBLE);
                     Calendar time_now = Calendar.getInstance();

@@ -151,13 +151,18 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditString("BodySize", "20");
             callMethod.EditString("Theme", "Green");
 
-            callMethod.EditString("LANG", "");
+            callMethod.EditString("LANG", "fa");
 
             callMethod.EditString("AppBasketInfoCode", "0");
 
             callMethod.EditBoolan("RealAmount", false);
             callMethod.EditBoolan("ActiveStack", false);
             callMethod.EditBoolan("GoodAmount", false);
+
+            callMethod.EditBoolan("ReserveActive", false);
+            callMethod.EditBoolan("CanFreeTable", false);
+
+
 
             callMethod.EditString("ServerURLUse", "");
             callMethod.EditString("ObjectType", "");

@@ -25,8 +25,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.button.MaterialButton;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.activity.BasketActivity;
+import com.kits.orderkowsar.activity.RegistrationActivity;
 import com.kits.orderkowsar.activity.SearchActivity;
 import com.kits.orderkowsar.activity.TableActivity;
 import com.kits.orderkowsar.adapters.GoodBoxItemAdapter;
@@ -130,6 +132,22 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         });
 
 
+    }
+    public void LoginSetting() {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.default_loginconfig);
+        EditText ed_password = dialog.findViewById(R.id.d_loginconfig_ed);
+        MaterialButton btn_login = dialog.findViewById(R.id.d_loginconfig_btn);
+        btn_login.setOnClickListener(v -> {
+            if (NumberFunctions.EnglishNumber(ed_password.getText().toString()).equals(callMethod.ReadString("ActivationCode"))) {
+                Intent intent = new Intent(mContext, RegistrationActivity.class);
+                mContext.startActivity(intent);
+            }else {
+                callMethod.showToast("رمز عبور صیحیح نیست");
+            }
+        });
+        dialog.show();
     }
 
     public void ReserveBoxDialog(BasketInfo basketInfo) {
@@ -717,6 +735,119 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     }
 
+    public void BasketInfopayment(BasketInfo basketInfo) {
+
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.basketinfo_explain);
+        Button explain_btn = dialog.findViewById(R.id.basketinfo_explain_btn);
+        explain_btn.setText(R.string.textvalue_setexplain);
+        final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
+        Spinner spinner_orderbox = dialog.findViewById(R.id.basketinfo_spinnerexplain);
+
+        dialog.show();
+        explain_tv.requestFocus();
+        explain_tv.postDelayed(() -> {
+            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(explain_tv, InputMethodManager.SHOW_IMPLICIT);
+        }, 500);
+
+
+        explain_tv.setOnLongClickListener(v -> {
+            explain_tv.selectAll();
+            return  false;
+        });
+
+        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "AppOrder_InfoExplainList");
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    objectTypes.clear();
+                    values_array.clear();
+                    values_array.add(0, "");
+                    objectTypes = response.body().getObjectTypes();
+
+                    for (ObjectType ob : objectTypes) {
+                        values_array.add(callMethod.NumberRegion(ob.getaType()));
+                    }
+
+                    ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(mContext,
+                            android.R.layout.simple_spinner_item, values_array);
+                    spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner_orderbox.setAdapter(spinner_adapter);
+
+
+                    spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            explain_tv.setText(explain_tv.getText().toString()+" "+values_array.get(position));
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+            }
+        });
+
+
+
+
+
+        explain_btn.setOnClickListener(view -> {
+
+            if(explain_tv.getText().toString().length()>0) {
+                dialogProg();
+                tv_rep.setText(R.string.textvalue_sendinformation);
+                call = apiInterface.OrderEditInfoExplain(
+                        "OrderEditInfoExplain",
+                        callMethod.ReadString("AppBasketInfoCode"),
+                        NumberFunctions.EnglishNumber(explain_tv.getText().toString())
+                );
+
+
+
+
+                call.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+
+                                dialogProg.dismiss();
+                            } else {
+                                OrderToFactor();
+                                dialog.dismiss();
+                                dialogProg.dismiss();
+                                callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                        dialog.dismiss();
+                        dialogProg.dismiss();
+                    }
+                });
+            }else{
+                OrderToFactor();
+            }
+        });
+
+    }
 
     public void BasketInfoExplainBeforOrder() {
 

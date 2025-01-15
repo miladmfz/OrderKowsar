@@ -69,6 +69,63 @@ public class BasketInfo {
     @SerializedName("Time")
     private String Time;
 
+
+    @SerializedName("SumFacAmount")    private String SumFacAmount;
+    @SerializedName("SumPrice")    private String SumPrice;
+    @SerializedName("CountGood")    private String CountGood;
+    @SerializedName("NewSumPrice")    private String NewSumPrice;
+    @SerializedName("Received")    private String Received;
+    @SerializedName("NotReceived")    private String NotReceived;
+
+
+    public String getSumFacAmount() {
+        return SumFacAmount;
+    }
+
+    public void setSumFacAmount(String sumFacAmount) {
+        SumFacAmount = sumFacAmount;
+    }
+
+    public String getSumPrice() {
+        return SumPrice;
+    }
+
+    public void setSumPrice(String sumPrice) {
+        SumPrice = sumPrice;
+    }
+
+    public String getCountGood() {
+        return CountGood;
+    }
+
+    public void setCountGood(String countGood) {
+        CountGood = countGood;
+    }
+
+    public String getNewSumPrice() {
+        return NewSumPrice;
+    }
+
+    public void setNewSumPrice(String newSumPrice) {
+        NewSumPrice = newSumPrice;
+    }
+
+    public String getReceived() {
+        return Received;
+    }
+
+    public void setReceived(String received) {
+        Received = received;
+    }
+
+    public String getNotReceived() {
+        return NotReceived;
+    }
+
+    public void setNotReceived(String notReceived) {
+        NotReceived = notReceived;
+    }
+
     public String getTime() {
         if (Time == null) {
             return "00:00";

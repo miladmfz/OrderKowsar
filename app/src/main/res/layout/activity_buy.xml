@@ -207,14 +207,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:weightSum="2"
 
         >
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/BuyActivity_test"
-            android:layout_width="match_parent"
+            android:id="@+id/BuyActivity_ordertofactor"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:layout_margin="5dp"
             android:gravity="center"
@@ -222,10 +223,28 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
             app:backgroundTint="#e2c846"
             app:strokeColor="#e2c846"
-            app:strokeWidth="1dp" />
+            app:strokeWidth="1dp"
+            android:layout_weight="1"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BuyActivity_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="پرداخت"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:backgroundTint="#e2c846"
+            app:strokeColor="#e2c846"
+            app:strokeWidth="1dp"
+            android:layout_weight="1"/>
+
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
