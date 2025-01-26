@@ -20,6 +20,11 @@ public class RetrofitResponse {
     @SerializedName("ObjectType")
     private ObjectType objectType;
 
+    @SerializedName("PosDriver")
+    private PosDriver posDriver;
+    @SerializedName("PosDrivers")
+    private ArrayList<PosDriver> posDrivers;
+
     @SerializedName("Goods")
     private ArrayList<Good> Goods;
     @SerializedName("Activations")
@@ -57,6 +62,22 @@ public class RetrofitResponse {
     private String ErrCode;
     @SerializedName("ErrDesc")
     private String ErrDesc;
+
+    public PosDriver getPosDriver() {
+        return posDriver;
+    }
+
+    public void setPosDriver(PosDriver posDriver) {
+        this.posDriver = posDriver;
+    }
+
+    public ArrayList<PosDriver> getPosDrivers() {
+        return posDrivers;
+    }
+
+    public void setPosDrivers(ArrayList<PosDriver> posDrivers) {
+        this.posDrivers = posDrivers;
+    }
 
     public ArrayList<SellBroker> getSellBrokers() {
         return SellBrokers;

@@ -113,6 +113,32 @@ public interface APIInterface {
 
     @POST("index.php")
     @FormUrlEncoded
+    Call<RetrofitResponse> Factor_Payment_Pos(@Field("tag") String tag
+            , @Field("FactorRef") String FactorRef
+            , @Field("PosRef") String PosRef
+            , @Field("Mablagh") String Mablagh
+    );
+
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> Factor_Payment_Cash(@Field("tag") String tag
+            , @Field("FactorRef") String FactorRef
+            , @Field("Mablagh") String Mablagh
+            , @Field("Increment") String Increment
+            , @Field("Decrement") String Decrement
+    );
+
+
+
+
+    @POST("index.php")
+    @FormUrlEncoded
+    Call<RetrofitResponse> OrderGetPosDriver(@Field("tag") String tag);
+
+    @POST("index.php")
+    @FormUrlEncoded
     Call<RetrofitResponse> Order_CanPrint(@Field("tag") String tag, @Field("AppBasketInfoRef") String AppBasketInfoRef, @Field("CanPrint") String CanPrint);
 
     @POST("index.php")

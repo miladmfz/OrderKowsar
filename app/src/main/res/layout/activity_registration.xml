@@ -280,6 +280,113 @@
                     android:background="@drawable/bg_card"
                     android:elevation="4dp">
 
+                    <!-- Row 1: Config Broker -->
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="کد پوز"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <TextView
+                            android:id="@+id/ord_registr_a_pozcode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center_vertical"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="نام پوز"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <TextView
+                            android:id="@+id/ord_registr_a_pozname"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center_vertical"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="لیست پوز"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <!-- EditText -->
+                        <Spinner
+                            android:id="@+id/ord_registr_a_spinnerpoz"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/bg_round"
+                            android:padding="8dp"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
+
                     <!-- Row 1: Config Delay and Config Item -->
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -403,6 +510,39 @@
 
                     <TextView
 
+                        android:text="پرداخت با پوز پیش فرض "
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"  />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/ord_registr_a_pospayment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:enabled="true"
+                        android:layout_gravity="center"/>
+
+
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="4dp">
+
+                    <TextView
+
                         android:text="امکان رزرو  "
 
                         android:layout_width="0dp"
@@ -421,10 +561,9 @@
                         android:enabled="true"
                         android:layout_gravity="center"/>
 
-
-
-
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

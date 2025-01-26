@@ -4,6 +4,83 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF3030</color>
 
+    <color name="blue_primary">#2196F3</color>
+    <color name="blue_primary_variant">#1976D2</color>
+    <color name="blue_secondary">#03A9F4</color>
+    <color name="blue_secondary_variant">#0288D1</color>
+    <color name="blue_background">#E3F2FD</color>
+    <color name="blue_text">#1976D2</color>
+    <color name="blue_surface">#FFFFFF</color>
+    <color name="blue_error">#0172AF</color>
+
+    <!-- رنگ‌های قرمز -->
+    <color name="red_primary">#F44336</color>
+    <color name="red_primary_variant">#D32F2F</color>
+    <color name="red_secondary">#FFCDD2</color>
+    <color name="red_secondary_variant">#EF5350</color>
+    <color name="red_background">#FFEBEE</color>
+    <color name="red_text">#D32F2F</color>
+    <color name="red_surface">#FFFFFF</color>
+    <color name="red_error">#B00020</color>
+
+    <!-- رنگ‌های تم پیش‌فرض -->
+    <color name="default_primary">#6200EE</color>
+    <color name="default_primary_variant">#3700B3</color>
+    <color name="default_secondary">#03DAC6</color>
+    <color name="default_secondary_variant">#018786</color>
+    <color name="default_text">#000000</color>
+    <color name="default_surface">#FFFFFF</color>
+    <color name="default_error">#B00020</color>
+
+    <!-- رنگ‌های تم خاکستری -->
+    <color name="gray_primary">#808080</color>
+    <color name="gray_primary_variant">#696969</color>
+    <color name="gray_secondary">#A9A9A9</color>
+    <color name="gray_secondary_variant">#707070</color>
+    <color name="gray_text">#FFFFFF</color>
+    <color name="gray_surface">#C0C0C0</color>
+    <color name="gray_error">#D32F2F</color>
+
+    <!-- رنگ‌های تم سبز -->
+    <color name="green_primary">#388E3C</color>
+    <color name="green_primary_variant">#2E7D32</color>
+    <color name="green_secondary">#81C784</color>
+    <color name="green_secondary_variant">#4CAF50</color>
+    <color name="green_text">#FFFFFF</color>
+    <color name="green_surface">#A5D6A7</color>
+    <color name="green_error">#C62828</color>
+
+    <!-- رنگ‌های تم زرد -->
+    <color name="yellow_primary">#FFEB3B</color>
+    <color name="yellow_primary_variant">#FBC02D</color>
+    <color name="yellow_secondary">#FFF176</color>
+    <color name="yellow_secondary_variant">#FFD54F</color>
+    <color name="yellow_text">#000000</color>
+    <color name="yellow_surface">#FFF9C4</color>
+    <color name="yellow_error">#D32F2F</color>
+    <!-- Pink Theme Colors -->
+    <color name="pink_primary">#E91E63</color>
+    <color name="pink_primary_variant">#C2185B</color>
+    <color name="pink_secondary">#F06292</color>
+    <color name="pink_secondary_variant">#EC407A</color>
+    <color name="pink_surface">#FCE4EC</color>
+    <color name="pink_text">#880E4F</color>
+    <color name="pink_error">#D81B60</color>
+
+    <!-- Purple Theme Colors -->
+    <color name="purple_primary">#9C27B0</color>
+    <color name="purple_primary_variant">#7B1FA2</color>
+    <color name="purple_secondary">#BA68C8</color>
+    <color name="purple_secondary_variant">#AB47BC</color>
+    <color name="purple_surface">#F3E5F5</color>
+    <color name="purple_text">#4A148C</color>
+    <color name="purple_error">#8E24AA</color>
+
+
+
+
+
+
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -40,7 +117,6 @@
     <color name="grey_100_">#0d0d0d</color>
 
 
-    <!--Material color list from https://material.io/guidelines/style/color.html-->
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>

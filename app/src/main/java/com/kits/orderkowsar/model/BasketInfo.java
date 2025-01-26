@@ -64,6 +64,8 @@ public class BasketInfo {
     @SerializedName("FactorCode")
     private String FactorCode;
 
+    @SerializedName("SumTaxAndMayor")
+    private String SumTaxAndMayor;
     @SerializedName("Prepayed")
     private String Prepayed;
     @SerializedName("Time")
@@ -76,7 +78,33 @@ public class BasketInfo {
     @SerializedName("NewSumPrice")    private String NewSumPrice;
     @SerializedName("Received")    private String Received;
     @SerializedName("NotReceived")    private String NotReceived;
+    @SerializedName("DecrementValue")    private String DecrementValue;
+    @SerializedName("ShopNaghdReceive")    private String ShopNaghdReceive;
 
+
+    public String getShopNaghdReceive() {
+        return ShopNaghdReceive;
+    }
+
+    public void setShopNaghdReceive(String shopNaghdReceive) {
+        ShopNaghdReceive = shopNaghdReceive;
+    }
+
+    public String getDecrementValue() {
+        return DecrementValue;
+    }
+
+    public void setDecrementValue(String decrementValue) {
+        DecrementValue = decrementValue;
+    }
+
+    public String getSumTaxAndMayor() {
+        return SumTaxAndMayor;
+    }
+
+    public void setSumTaxAndMayor(String sumTaxAndMayor) {
+        SumTaxAndMayor = sumTaxAndMayor;
+    }
 
     public String getSumFacAmount() {
         return SumFacAmount;

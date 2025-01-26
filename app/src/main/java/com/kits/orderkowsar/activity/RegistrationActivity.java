@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,6 +29,7 @@ import com.kits.orderkowsar.model.BasketInfo;
 import com.kits.orderkowsar.model.DatabaseHelper;
 import com.kits.orderkowsar.model.NumberFunctions;
 import com.kits.orderkowsar.model.ObjectType;
+import com.kits.orderkowsar.model.PosDriver;
 import com.kits.orderkowsar.model.RetrofitResponse;
 import com.kits.orderkowsar.model.SellBroker;
 import com.kits.orderkowsar.webService.APIClient;
@@ -53,6 +55,8 @@ public class RegistrationActivity extends AppCompatActivity {
     ArrayList<String> lang_array = new ArrayList<>();
     ArrayList<String> SellBroker_Names = new ArrayList<>();
     ArrayList<SellBroker> SellBrokers = new ArrayList<>();
+    ArrayList<PosDriver> posDrivers = new ArrayList<>();
+    ArrayList<String> pos_list=new ArrayList<>();
 
     Integer lang_position = 0;
 
@@ -211,8 +215,35 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.ordRegistrADbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
         binding.ordRegistrATitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
 
+        binding.ordRegistrAPozcode.setText(callMethod.NumberRegion(callMethod.ReadString("PosCode")));
+        binding.ordRegistrAPozname.setText(callMethod.NumberRegion(callMethod.ReadString("PosName")));
+
+
         binding.ordRegistrAActivereserv.setChecked(callMethod.ReadBoolan("ReserveActive"));
         binding.ordRegistrACanfreetable.setChecked(callMethod.ReadBoolan("CanFreeTable"));
+        binding.ordRegistrAPospayment.setChecked(callMethod.ReadBoolan("PosPayment"));
+
+
+        binding.ordRegistrAPospayment.setOnCheckedChangeListener((compoundButton, b) -> {
+
+            if ((callMethod.ReadString("PosCode").equals("0"))||(callMethod.ReadString("PosName").equals(""))){
+                binding.ordRegistrAPospayment.setChecked(false);
+                callMethod.showToast("دستگاه پوز امتخاب نشده");
+            }else {
+                if (callMethod.ReadBoolan("PosPayment")) {
+
+                    callMethod.EditBoolan("PosPayment", false);
+                    callMethod.showToast("خیر");
+
+                } else {
+
+                    callMethod.EditBoolan("PosPayment", true);
+                    callMethod.showToast("بله");
+
+                }
+            }
+
+        });
 
 
         binding.ordRegistrACanfreetable.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -234,6 +265,70 @@ public class RegistrationActivity extends AppCompatActivity {
                 callMethod.showToast("بله");
             }
         });
+
+
+
+
+        Call<RetrofitResponse> call1;
+        call1=apiInterface.OrderGetPosDriver("OrderGetPosDriver");
+
+
+        call1.enqueue(new Callback<RetrofitResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                pos_list.add("بدون پرینتر");
+
+                if(response.isSuccessful()) {
+                    assert response.body() != null;
+                    posDrivers=response.body().getPosDrivers();
+                    for ( PosDriver posDriver: posDrivers) {
+                        pos_list.add(posDriver.getPosName());
+                    }
+                    ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(RegistrationActivity.this,
+                            android.R.layout.simple_spinner_item, pos_list);
+                    spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    binding.ordRegistrASpinnerpoz.setAdapter(spinner_adapter);
+                    int targetIndex = 0;
+                    for (int i = 0; i < pos_list.size(); i++) {
+                        if (pos_list.get(i).equals(callMethod.ReadString("PosName"))) {
+                            targetIndex = i;
+                            break;
+                        }
+                    }
+                    binding.ordRegistrASpinnerpoz.setSelection(targetIndex); // Set selection baraye item ke matnash "همه" ast
+
+                }
+
+            }
+            @Override
+            public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                Log.e("kowsar_onFailure",t.getMessage());
+            }
+        });
+
+        binding.ordRegistrASpinnerpoz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                for ( PosDriver posDriver: posDrivers) {
+                    if(posDriver.getPosName().equals(pos_list.get(position))){
+                        callMethod.EditString("PosName",posDriver.getPosName());
+                        callMethod.EditString("PosCode",posDriver.getPosDriverCode());
+                        binding.ordRegistrAPozcode.setText(callMethod.ReadString("PosName"));
+                        binding.ordRegistrAPozname.setText(callMethod.ReadString("PosCode"));
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
 
 
 
@@ -288,8 +383,8 @@ public class RegistrationActivity extends AppCompatActivity {
             TextView tv_rep = dialogProg.findViewById(R.id.rep_prog_text);
             tv_rep.setText(R.string.textvalue_receiveinformation);
             dialogProg.show();
-            Call<RetrofitResponse> call1 = apiInterface.kowsar_info("kowsar_info", "AppOrder_DefaultGroupCode");
-            call1.enqueue(new Callback<RetrofitResponse>() {
+            Call<RetrofitResponse> call2 = apiInterface.kowsar_info("kowsar_info", "AppOrder_DefaultGroupCode");
+            call2.enqueue(new Callback<RetrofitResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
                     if (response.isSuccessful()) {

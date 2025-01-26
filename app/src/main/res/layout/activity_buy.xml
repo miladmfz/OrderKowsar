@@ -215,7 +215,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BuyActivity_ordertofactor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="5dp"
             android:gravity="center"
@@ -223,27 +223,29 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="visible"
+            android:visibility="gone"
             app:backgroundTint="#e2c846"
             app:strokeColor="#e2c846"
             app:strokeWidth="1dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BuyActivity_payment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="پرداخت"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="visible"
-            app:backgroundTint="#e2c846"
-            app:strokeColor="#e2c846"
+            android:visibility="gone"
+            app:backgroundTint="#4CAF50"
+            app:strokeColor="#009688"
             app:strokeWidth="1dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
 
 

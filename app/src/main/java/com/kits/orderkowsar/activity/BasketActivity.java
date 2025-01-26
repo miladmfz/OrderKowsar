@@ -194,6 +194,13 @@ public class BasketActivity extends AppCompatActivity {
         });
 
 
+        btn_peyment.setOnClickListener(view -> {
+
+            action.BasketInfopayment(basketInfo);
+        });
+
+
+
 
 
         total_delete.setOnClickListener(v -> {
@@ -243,6 +250,8 @@ public class BasketActivity extends AppCompatActivity {
         if (Integer.parseInt(basketInfo.getFactorCode())>0){
             if (Integer.parseInt(basketInfo.getNotReceived())>0){
                 btn_peyment.setVisibility(View.VISIBLE);
+            }else{
+                btn_peyment.setVisibility(View.GONE);
             }
         }else{
             btn_peyment.setVisibility(View.GONE);

@@ -2,6 +2,9 @@
 <resources>
 
 
+
+
+
     <style name="GrayDefault" parent="Theme.Default"/>
     <style name="Theme.Default" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->

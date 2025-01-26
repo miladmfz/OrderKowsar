@@ -58,6 +58,10 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
     private boolean doubleBackToExitPressedOnce = false;
     private Intent intent;
 
+
+    private static final String PREFERENCES_NAME = "profile";
+    private static final String SELECTED_THEME = "selected_theme";
+
     @SuppressLint("ObsoleteSdkInt")
     public static ContextWrapper changeLanguage(Context context, String lang) {
 
@@ -215,6 +219,8 @@ public class NavActivity extends AppCompatActivity implements NavigationView.OnN
             finish();
             startActivity(intent);
         });
+
+
 
     }
 

@@ -139,6 +139,7 @@ public class SplashActivity extends AppCompatActivity {
     @SuppressLint("SdCardPath")
     public void init() {
 
+        callMethod.EditString("app_theme", "BlueTheme");
 
         if (callMethod.ReadString("ServerURLUse").equals("")) {
             callMethod.EditString("DatabaseName", "");
@@ -146,6 +147,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (callMethod.firstStart()) {
             callMethod.EditBoolan("FirstStart", false);
+            callMethod.EditString("app_theme", "BlueTheme");
             callMethod.EditString("Delay", "1000");
             callMethod.EditString("TitleSize", "20");
             callMethod.EditString("BodySize", "20");
@@ -154,6 +156,12 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditString("LANG", "fa");
 
             callMethod.EditString("AppBasketInfoCode", "0");
+
+            callMethod.EditString("PosName", "");
+            callMethod.EditString("PosCode", "0");
+
+            callMethod.EditBoolan("PosPayment", false);
+
 
             callMethod.EditBoolan("RealAmount", false);
             callMethod.EditBoolan("ActiveStack", false);

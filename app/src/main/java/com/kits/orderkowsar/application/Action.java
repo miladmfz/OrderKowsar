@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,6 +53,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -62,6 +66,8 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
     private final Context mContext;
     public APIInterface apiInterface;
     public Call<RetrofitResponse> call;
+    private final DecimalFormat decimalFormat = new DecimalFormat("0,000");
+
     CallMethod callMethod;
     DatabaseHelper dbh;
     Intent intent;
@@ -85,6 +91,11 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
 
     TextView tv_rep;
     Print print;
+    String payment_type="";
+    String totalprice="0";
+    String payment_mablagh_tosend="0";
+    String payment_mablagh_incrise="0";
+    String payment_mablagh_decrise="0";
 
     public Action(Context mContext) {
         this.mContext = mContext;
@@ -149,7 +160,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         });
         dialog.show();
     }
-
     public void ReserveBoxDialog(BasketInfo basketInfo) {
 
         dialog = new Dialog(mContext);
@@ -365,8 +375,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog.show();
 
     }
-
-
     public void GoodBoxDialog(Good good, String Flag) {
 
         dialog = new Dialog(mContext);
@@ -572,8 +580,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         });
         dialog.show();
     }
-
-
     public void OrderToFactor() {
         dialogProg();
         tv_rep.setText(R.string.textvalue_sendinformation);
@@ -606,8 +612,6 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         });
 
     }
-
-
     public void EditBasketInfoExplain(BasketInfo basketInfo) {
 
 
@@ -734,117 +738,302 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         });
 
     }
-
     public void BasketInfopayment(BasketInfo basketInfo) {
 
+        payment_type="cash";
+        payment_mablagh_tosend="0";
+        payment_mablagh_incrise="0";
+        payment_mablagh_decrise="0";
+        totalprice="0";
 
-        final Dialog dialog = new Dialog(mContext);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.basketinfo_explain);
-        Button explain_btn = dialog.findViewById(R.id.basketinfo_explain_btn);
-        explain_btn.setText(R.string.textvalue_setexplain);
-        final EditText explain_tv = dialog.findViewById(R.id.basketinfo_explain_tv);
-        Spinner spinner_orderbox = dialog.findViewById(R.id.basketinfo_spinnerexplain);
+        final Dialog dialog_payment = new Dialog(mContext);
 
-        dialog.show();
-        explain_tv.requestFocus();
-        explain_tv.postDelayed(() -> {
-            InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(explain_tv, InputMethodManager.SHOW_IMPLICIT);
-        }, 500);
+        dialog_payment.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_payment.setContentView(R.layout.basketinfo_payment);
+
+        Button btn_payment = dialog_payment.findViewById(R.id.payment_btn_final);
+        Button btn_tocash = dialog_payment.findViewById(R.id.payment_btn_cash);
+        Button btn_topos = dialog_payment.findViewById(R.id.payment_btn_pos);
+
+        LinearLayoutCompat ll_edpay = dialog_payment.findViewById(R.id.payment_ll_edpay);
+        LinearLayoutCompat ll_edlable = dialog_payment.findViewById(R.id.payment_ll_edlable);
+        LinearLayoutCompat ll_notreceived = dialog_payment.findViewById(R.id.payment_ll_notreceived);
+        LinearLayoutCompat ll_received = dialog_payment.findViewById(R.id.payment_ll_received);
+        LinearLayoutCompat ll_cashtopay = dialog_payment.findViewById(R.id.payment_ll_cashtopay);
+        LinearLayoutCompat ll_decrement = dialog_payment.findViewById(R.id.payment_ll_decrement);
+
+        TextView tv_payment_sumprice = dialog_payment.findViewById(R.id.payment_sumprice);
+        TextView tv_payment_sumtaxmayor = dialog_payment.findViewById(R.id.payment_sumtaxmayor);
+        TextView tv_payment_totalprice = dialog_payment.findViewById(R.id.payment_totalprice);
+        TextView tv_payment_received = dialog_payment.findViewById(R.id.payment_received);
+        TextView tv_payment_notreceived = dialog_payment.findViewById(R.id.payment_notreceived);
+        TextView tv_payment_decrement = dialog_payment.findViewById(R.id.payment_decrement);
+
+        EditText ed_payment_mablagh = dialog_payment.findViewById(R.id.payment_mablagh);
+        EditText ed_payment_selloff = dialog_payment.findViewById(R.id.payment_selloff);
+        EditText ed_payment_cashtopay = dialog_payment.findViewById(R.id.payment_cashtopay);
+
+        dialog_payment.show();
 
 
-        explain_tv.setOnLongClickListener(v -> {
-            explain_tv.selectAll();
-            return  false;
+        if (callMethod.ReadBoolan("PosPayment")){
+            payment_type="pos";
+            btn_topos.setBackgroundColor(mContext.getResources().getColor(R.color.blue_500));
+            btn_tocash.setBackgroundColor(mContext.getResources().getColor(R.color.gray_secondary));
+        }
+
+        if (Integer.parseInt(basketInfo.getDecrementValue().replace("-",""))>0){
+            ll_decrement.setVisibility(View.VISIBLE);
+        }else{
+            ll_decrement.setVisibility(View.GONE);
+        }
+
+
+        if (Integer.parseInt(basketInfo.getReceived())>0){
+            ll_edpay.setVisibility(View.GONE);
+            ll_edlable.setVisibility(View.GONE);
+            ll_cashtopay.setVisibility(View.GONE);
+            ll_notreceived.setVisibility(View.VISIBLE);
+            ll_received.setVisibility(View.VISIBLE);
+        }else{
+            ll_edpay.setVisibility(View.VISIBLE);
+            ll_edlable.setVisibility(View.VISIBLE);
+            ll_notreceived.setVisibility(View.GONE);
+            ll_received.setVisibility(View.GONE);
+        }
+
+
+        btn_tocash.setOnClickListener(v -> {
+            payment_type="cash";
+            btn_tocash.setBackgroundColor(mContext.getResources().getColor(R.color.blue_500));
+            btn_topos.setBackgroundColor(mContext.getResources().getColor(R.color.gray_secondary));
+
+            if (Integer.parseInt(basketInfo.getReceived())==0){
+                ll_cashtopay.setVisibility(View.VISIBLE);
+            }else{
+                ll_cashtopay.setVisibility(View.GONE);
+            }
         });
 
-        Call<RetrofitResponse> call1 = apiInterface.GetObjectTypeFromDbSetup("GetObjectTypeFromDbSetup", "AppOrder_InfoExplainList");
-        call1.enqueue(new Callback<RetrofitResponse>() {
+        btn_topos.setOnClickListener(v -> {
+            ll_cashtopay.setVisibility(View.GONE);
+            if (callMethod.ReadString("PosName").length()>1){
+                payment_type="pos";
+                btn_topos.setBackgroundColor(mContext.getResources().getColor(R.color.blue_500));
+                btn_tocash.setBackgroundColor(mContext.getResources().getColor(R.color.gray_secondary));
+            }else{
+                btn_tocash.callOnClick();
+                callMethod.showToast("پوزی انتخاب نشده است");
+            }
+
+        });
+
+
+
+        totalprice =String.valueOf(Integer.parseInt(basketInfo.getSumPrice())+Integer.parseInt(basketInfo.getSumTaxAndMayor()));
+
+
+
+        tv_payment_sumprice.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(basketInfo.getSumPrice()))));
+        tv_payment_sumtaxmayor.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(basketInfo.getSumTaxAndMayor()))));
+
+        tv_payment_totalprice.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(totalprice))));
+
+        tv_payment_received.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(basketInfo.getReceived()))));
+        tv_payment_notreceived.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(basketInfo.getNotReceived()))));
+        tv_payment_decrement.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(basketInfo.getDecrementValue()))));
+
+        ed_payment_mablagh.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(totalprice))));
+        ed_payment_cashtopay.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(totalprice))));
+
+        ed_payment_selloff.setText(NumberFunctions.PerisanNumber("0"));
+
+        ed_payment_mablagh.setOnClickListener(v -> ed_payment_mablagh.selectAll());
+        ed_payment_selloff.setOnClickListener(v -> ed_payment_selloff.selectAll());
+        ed_payment_cashtopay.setOnClickListener(v -> ed_payment_cashtopay.selectAll());
+
+
+
+        ed_payment_mablagh.addTextChangedListener(new TextWatcher() {
+            @Override  public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override  public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    objectTypes.clear();
-                    values_array.clear();
-                    values_array.add(0, "");
-                    objectTypes = response.body().getObjectTypes();
+            public void afterTextChanged(Editable editable) {
+                if (ed_payment_mablagh.hasFocus()) {
+                    try {
+                        String NewPrice = NumberFunctions.EnglishNumber(ed_payment_mablagh.getText().toString());
+                        ed_payment_selloff.setText(NumberFunctions.PerisanNumber("" + (100 - (100 * Long.parseLong(NewPrice) / Integer.parseInt(totalprice)))));
+                        ed_payment_cashtopay.setText(NewPrice);
 
-                    for (ObjectType ob : objectTypes) {
-                        values_array.add(callMethod.NumberRegion(ob.getaType()));
+                    } catch (Exception e) {
+                        ed_payment_mablagh.setText(totalprice);
+                        ed_payment_cashtopay.setText(totalprice);
                     }
-
-                    ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(mContext,
-                            android.R.layout.simple_spinner_item, values_array);
-                    spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner_orderbox.setAdapter(spinner_adapter);
+                }
+            }
+        });
 
 
-                    spinner_orderbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            explain_tv.setText(explain_tv.getText().toString()+" "+values_array.get(position));
+
+        ed_payment_selloff.addTextChangedListener(new TextWatcher() {
+            @Override  public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override  public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (ed_payment_selloff.hasFocus()) {
+                    long selloff;
+                    try {
+
+                        selloff = Integer.parseInt(NumberFunctions.EnglishNumber(ed_payment_selloff.getText().toString()));
+
+
+                        if (selloff > 100) {
+                            selloff = 100;
+                            ed_payment_selloff.setText(NumberFunctions.PerisanNumber(String.valueOf(selloff)));
+                            ed_payment_selloff.setError("حداکثر تخفیف");
                         }
 
+                        long sellpricenew = (long) (Integer.parseInt(totalprice) - ((Integer.parseInt(totalprice) * selloff / 100)));
+
+                        ed_payment_mablagh.setText(NumberFunctions.PerisanNumber(decimalFormat.format(sellpricenew)));
+                        ed_payment_cashtopay.setText(NumberFunctions.PerisanNumber(decimalFormat.format(sellpricenew)));
+                    } catch (Exception e) {
+                        ed_payment_mablagh.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(totalprice))));
+                        ed_payment_cashtopay.setText(NumberFunctions.PerisanNumber(decimalFormat.format(Integer.parseInt(totalprice))));
+
+                    }
+
+                }
+
+            }
+        });
+
+
+        btn_payment.setOnClickListener(v -> {
+
+
+            Call<RetrofitResponse> call_payment = null;
+            Call<RetrofitResponse> call_payment_inc_dec= null;
+
+            if (Integer.parseInt(basketInfo.getReceived())>0){ // Received >0
+
+                if (payment_type.equals("cash")){
+
+                    String DecrementValue_str= basketInfo.getDecrementValue().replace("-","");
+
+                    call_payment = apiInterface.Factor_Payment_Cash(
+                            "Factor_Payment_Cash"
+                            ,basketInfo.getFactorCode()
+                            ,String.valueOf(Integer.parseInt(basketInfo.getNotReceived())+Integer.parseInt(basketInfo.getShopNaghdReceive()))
+                            ,"0"
+                            ,DecrementValue_str
+                    );
+                }else{
+                    call_payment = apiInterface.Factor_Payment_Pos(
+                            "Factor_Payment_Pos"
+                            ,basketInfo.getFactorCode()
+                            ,callMethod.ReadString("PosCode")
+                            ,basketInfo.getNotReceived()
+                    );
+                }
+
+                dialogProg();
+                call_payment.enqueue(new Callback<RetrofitResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            dialog_payment.dismiss();
+                            dialogProg.dismiss();
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
+                        callMethod.log("kowsar_______"+t.getMessage());
+                    }
+                });
+            }else{ // Received == 0
+
+
+                int mablagh = (Integer.parseInt(totalprice) - ((Integer.parseInt(totalprice) * (Integer.parseInt(NumberFunctions.EnglishNumber(ed_payment_selloff.getText().toString()))) / 100)));
+
+                if (mablagh>Integer.parseInt(totalprice)){
+                    payment_mablagh_incrise=String.valueOf(mablagh-Integer.parseInt(totalprice));
+                }else{
+                    payment_mablagh_decrise=String.valueOf(Integer.parseInt(totalprice)-mablagh);
+                }
+
+                if ((!payment_mablagh_incrise.equals("0"))||(!payment_mablagh_decrise.equals("0"))){
+
+                    call_payment_inc_dec = apiInterface.Factor_Payment_Cash(
+                            "Factor_Payment_Cash"
+                            ,basketInfo.getFactorCode()
+                            ,NumberFunctions.EnglishNumber(ed_payment_cashtopay.getText().toString().replace(",", ""))
+                            ,payment_mablagh_incrise
+                            ,payment_mablagh_decrise
+                    );
+
+
+                }else{
+
+                    if (payment_type.equals("cash")){
+                        call_payment = apiInterface.Factor_Payment_Cash(
+                                "Factor_Payment_Cash"
+                                ,basketInfo.getFactorCode()
+                                ,NumberFunctions.EnglishNumber(ed_payment_cashtopay.getText().toString().replace(",", ""))
+                                ,"0"
+                                ,"0"
+                        );
+                    }else{
+                        call_payment = apiInterface.Factor_Payment_Pos(
+                                "Factor_Payment_Pos"
+                                ,basketInfo.getFactorCode()
+                                ,callMethod.ReadString("PosCode")
+                                ,basketInfo.getNotReceived()
+                        );
+                    }
+
+                }
+
+
+                if ((!payment_mablagh_incrise.equals("0"))||(!payment_mablagh_decrise.equals("0"))){
+                    dialogProg();
+                    Call<RetrofitResponse> finalCall_payment = call_payment;
+                    call_payment_inc_dec.enqueue(new Callback<RetrofitResponse>() {
                         @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
+                        public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
+                            if (response.isSuccessful()) {
+                                dialog_payment.dismiss();
+                                dialogProg.dismiss();
+                            }
+                        }
+                        @Override
+                        public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
+                            callMethod.log("kowsar_______"+t.getMessage());
                         }
                     });
 
+                }else{
+                    dialogProg();
+                    call_payment.enqueue(new Callback<RetrofitResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<RetrofitResponse> call1, @NotNull Response<RetrofitResponse> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
+                                dialog_payment.dismiss();
+                                dialogProg.dismiss();
+                            }
+                        }
+                        @Override
+                        public void onFailure(@NotNull Call<RetrofitResponse> call1, @NotNull Throwable t) {
+                            callMethod.log("kowsar_______"+t.getMessage());
+                        }
+                    });
                 }
             }
 
-            @Override
-            public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-
-            }
-        });
-
-
-
-
-
-        explain_btn.setOnClickListener(view -> {
-
-            if(explain_tv.getText().toString().length()>0) {
-                dialogProg();
-                tv_rep.setText(R.string.textvalue_sendinformation);
-                call = apiInterface.OrderEditInfoExplain(
-                        "OrderEditInfoExplain",
-                        callMethod.ReadString("AppBasketInfoCode"),
-                        NumberFunctions.EnglishNumber(explain_tv.getText().toString())
-                );
-
-
-
-
-                call.enqueue(new Callback<RetrofitResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                        if (response.isSuccessful()) {
-                            assert response.body() != null;
-                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-
-                                dialogProg.dismiss();
-                            } else {
-                                OrderToFactor();
-                                dialog.dismiss();
-                                dialogProg.dismiss();
-                                callMethod.showToast(mContext.getString(R.string.textvalue_recorded));
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
-                        dialog.dismiss();
-                        dialogProg.dismiss();
-                    }
-                });
-            }else{
-                OrderToFactor();
-            }
         });
 
     }

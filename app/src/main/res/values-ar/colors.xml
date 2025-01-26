@@ -5,6 +5,37 @@
     <color name="colorAccent">#FF3030</color>
 
 
+
+    <color name="blue_background">#E3F2FD</color>
+    <color name="blue_text">#1976D2</color>
+    <color name="blue_button_background">#1976D2</color>
+    <color name="blue_button_border">#004BA0</color>
+    <color name="blue_edit_background">#FFFFFF</color>
+    <color name="blue_edit_border">#004BA0</color>
+
+    <!-- رنگ‌های تم قرمز -->
+    <color name="red_background">#FFEBEE</color>
+    <color name="red_text">#D32F2F</color>
+    <color name="red_button_background">#D32F2F</color>
+    <color name="red_button_border">#9A0007</color>
+    <color name="red_edit_background">#FFFFFF</color>
+    <color name="red_edit_border">#9A0007</color>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
 
@@ -40,7 +71,6 @@
     <color name="grey_100_">#0d0d0d</color>
 
 
-    <!--Material color list from https://material.io/guidelines/style/color.html-->
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
