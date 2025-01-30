@@ -104,6 +104,7 @@ public class ChoiceDatabaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(getSharedPreferences("ThemePrefs", MODE_PRIVATE).getInt("selectedTheme", R.style.DefaultTheme));
 
         binding = ActivityChoiceDatabaseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

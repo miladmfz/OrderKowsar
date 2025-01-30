@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.CallMethod;
 import com.kits.orderkowsar.databinding.ActivityAboutusBinding;
 
@@ -57,6 +58,8 @@ public class AboutUsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(getSharedPreferences("ThemePrefs", MODE_PRIVATE).getInt("selectedTheme", R.style.DefaultTheme));
+
         callMethod = new CallMethod(this);
         ActivityAboutusBinding binding = ActivityAboutusBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -280,4 +280,34 @@
     <string name="textvalue_yes">بله</string>
     <string name="textvalue_no">خیر</string>
 
+    <string-array name="themes_array">
+        <item>Default</item>
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Gray</item>
+        <item>Yellow</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>BlueOcean</item>
+        <item>SunsetOrange</item>
+        <item>ForestGreen</item>
+        <item>RoyalPurple</item>
+        <item>SweetPink</item>
+        <item>GoldenYellow</item>
+        <item>EarthyBrown</item>
+        <item>SkyBlue</item>
+        <item>FieryRed</item>
+        <item>CalmGray</item>
+        <item>VibrantCyan</item>
+        <item>TropicalTeal</item>
+        <item>CoralPeach</item>
+        <item>LemonLime</item>
+        <item>BoldIndigo</item>
+        <item>RichAmber</item>
+        <item>MidnightBlue</item>
+        <item>SoftLavender</item>
+        <item>WarmBeige</item>
+        <item>NeonGreen</item>
+    </string-array>
 </resources>

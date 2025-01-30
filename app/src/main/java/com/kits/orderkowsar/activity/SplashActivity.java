@@ -39,7 +39,6 @@ import java.util.Locale;
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
-
     final int PERMISSION_CODE = 1;
     final int PERMISSION_REQUEST_CODE = 1;
     Intent intent;
@@ -86,6 +85,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_splash);
         Config();
 

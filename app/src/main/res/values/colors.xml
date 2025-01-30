@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
     <color name="colorPrimary">#393939</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF3030</color>
@@ -78,13 +83,6 @@
 
 
 
-
-
-
-
-    <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-
     <color name="overlay_dark_10">#1A000000</color>
     <color name="overlay_dark_20">#33000000</color>
     <color name="overlay_dark_30">#4D000000</color>
@@ -104,6 +102,35 @@
     <color name="overlay_light_70">#B3FFFFFF</color>
     <color name="overlay_light_80">#CCFFFFFF</color>
     <color name="overlay_light_90">#E6FFFFFF</color>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <color name="grey_3">#f7f7f7</color>
     <color name="grey_5">#f2f2f2</color>

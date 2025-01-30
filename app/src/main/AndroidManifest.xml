@@ -33,7 +33,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/GrayDefault"
+        android:theme="@style/DefaultTheme"
         tools:ignore="AllowBackup"
         tools:targetApi="n">
 
