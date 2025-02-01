@@ -150,6 +150,37 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         dialog.setContentView(R.layout.default_loginconfig);
         EditText ed_password = dialog.findViewById(R.id.d_loginconfig_ed);
         MaterialButton btn_login = dialog.findViewById(R.id.d_loginconfig_btn);
+
+        ed_password.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(final Editable editable) {
+
+                        if(NumberFunctions.EnglishNumber(ed_password.getText().toString()).length()>5) {
+                            if (NumberFunctions.EnglishNumber(ed_password.getText().toString()).equals(callMethod.ReadString("ActivationCode"))) {
+
+                                Intent intent = new Intent(mContext, RegistrationActivity.class);
+                                startActivity(intent);
+                            } else {
+                                callMethod.showToast("رمز عبور صیحیح نیست");
+                            }
+
+                        }
+                    }
+                });
+
+
+
+
+
         btn_login.setOnClickListener(v -> {
             if (NumberFunctions.EnglishNumber(ed_password.getText().toString()).equals(callMethod.ReadString("ActivationCode"))) {
                 Intent intent = new Intent(mContext, RegistrationActivity.class);

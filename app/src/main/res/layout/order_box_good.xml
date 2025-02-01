@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg_round_selected"
+    android:background="@drawable/bg_overlay"
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
@@ -14,10 +14,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:background="@drawable/bg_card"
         android:orientation="vertical">
         <TextView
-            android:background="@drawable/bg_round_selected"
+            android:background="@drawable/bg_editbox"
 
             android:id="@+id/orderboxgood_rstmizname"
             android:layout_width="200dp"
@@ -25,8 +25,9 @@
             android:layout_gravity="center"
             android:text="ترقی"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold">
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="?attr/colorOnBackground"
+            >
 
 
         </TextView>
@@ -39,7 +40,9 @@
             android:textSize="24sp"
             android:text="اسپرسو"
 
-            android:textStyle="bold">
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="?attr/colorOnBackground"
+            >
 
 
         </TextView>
@@ -65,7 +68,8 @@
                     android:layout_weight="0.8"
                     android:gravity="center"
                     android:text="@string/goodorder_amount"
-                    android:textStyle="bold" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground" />
 
                 <EditText
                     android:id="@+id/orderboxgood_amount"
@@ -74,13 +78,14 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.4"
                     android:autofillHints=""
-                    android:background="@drawable/bg_round_selected"
+                    android:background="@drawable/bg_editbox"
                     android:focusable="true"
                     android:gravity="center"
                     android:hint="@string/goodorder_amount"
                     android:inputType="number"
                     android:maxLength="4"
-                    android:textStyle="bold" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -101,7 +106,7 @@
                 android:layout_weight="0.95"
                 android:gravity="center"
                 android:text="@string/goodorder_explain"
-                android:textStyle="bold" />
+                android:textColor="?attr/colorOnBackground" />
 
             <Spinner
                 android:id="@+id/orderboxgood_spinnerexplain"
@@ -109,6 +114,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.05"
+                android:background="@drawable/bg_editbox"
+                android:textColor="?attr/colorOnBackground"
                 android:gravity="center" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -136,32 +143,27 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.05"
                 android:autofillHints=""
-                android:background="@drawable/bg_round_selected"
                 android:gravity="center"
+                android:background="@drawable/bg_editbox"
+
                 android:hint="@string/goodorder_explain"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="TextFields" />
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <Button
             android:id="@+id/orderboxgood_btn"
-            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:gravity="center"
             android:text="@string/goodorder_addcard"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:backgroundTint="#e2c846"
-            app:icon="@drawable/ic_add_shopping_black"
-            app:iconTint="@color/black"
-            app:strokeColor="#e2c846"
-            app:strokeWidth="1dp" />
+            style="@style/Widget.MaterialComponents.Button"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_margin="3dp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orderboxgood_rc"

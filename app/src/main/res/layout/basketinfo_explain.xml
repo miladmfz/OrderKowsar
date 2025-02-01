@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg_round_selected"
+    android:background="@drawable/bg_overlay"
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
@@ -16,6 +16,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
+        android:background="@drawable/bg_card"
         android:orientation="horizontal">
 
         <TextView
@@ -24,7 +25,7 @@
             android:layout_weight="0.7"
             android:gravity="center"
             android:text="@string/goodorder_explain"
-            android:textStyle="bold" />
+            android:textColor="?attr/colorOnBackground"  />
 
         <Spinner
             android:id="@+id/basketinfo_spinnerexplain"
@@ -32,7 +33,10 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_weight="0.3"
-            android:gravity="center" />
+            android:gravity="center"
+
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="?attr/colorOnBackground" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -43,7 +47,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:autofillHints=""
-        android:background="@drawable/bg_round_selected"
+        android:background="@drawable/bg_editbox"
         android:focusable="true"
         android:gravity="center"
         android:hint="@string/basketinfo_edexplain"
@@ -56,16 +60,15 @@
 
     <Button
         android:id="@+id/basketinfo_explain_btn"
-        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center"
         android:text="@string/basketinfo_setexplain"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:backgroundTint="#e2c846"
-        app:strokeColor="#e2c846" />
+        style="@style/Widget.MaterialComponents.Button"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary"
+        />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

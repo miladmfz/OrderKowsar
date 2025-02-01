@@ -57,65 +57,57 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // Theme names
     private static final String[] themeNames = {
-            "Default", "Blue", "Red", "Green", "Gray", "Yellow", "Pink", "Purple",
-            "BlueOcean", "SunsetOrange", "ForestGreen", "RoyalPurple", "SweetPink",
-            "GoldenYellow", "EarthyBrown", "SkyBlue", "FieryRed", "CalmGray",
-            "VibrantCyan", "TropicalTeal", "CoralPeach", "LemonLime", "BoldIndigo",
-            "RichAmber", "MidnightBlue", "SoftLavender", "WarmBeige", "NeonGreen"
+            "پیش‌فرض",
+            "آبی هماهنگ",
+            "سبز نعناعی",
+            "درخشش غروب",
+            "بنفش سایبری",
+            "طلای شیک",
+            "نسیم دریا",
+            "آینده نئون",
+            "جذابیت چوب رز",
+            "حالت تاریک برتر",
+            "لذت لیمویی",
+            "اسطوخودوسی نرم",
+            "سبز نئون"
     };
+
 
     // Theme colors (primary, secondary, surface)
     private static final int[][] themeColors = {
+            // DefaultTheme
             {Color.parseColor("#FFFFFF"), Color.parseColor("#E0E0E0"), Color.parseColor("#F5F5F5")}, // Default
-            {Color.parseColor("#1976D2"), Color.parseColor("#BBDEFB"), Color.parseColor("#E3F2FD")}, // Blue
-            {Color.parseColor("#D32F2F"), Color.parseColor("#FFCDD2"), Color.parseColor("#FFEBEE")}, // Red
-            {Color.parseColor("#388E3C"), Color.parseColor("#C8E6C9"), Color.parseColor("#E8F5E9")}, // Green
-            {Color.parseColor("#9E9E9E"), Color.parseColor("#E0E0E0"), Color.parseColor("#F5F5F5")}, // Gray
-            {Color.parseColor("#FFC107"), Color.parseColor("#FFECB3"), Color.parseColor("#FFF8E1")}, // Yellow
-            {Color.parseColor("#E91E63"), Color.parseColor("#F8BBD0"), Color.parseColor("#FCE4EC")}, // Pink
-            {Color.parseColor("#673AB7"), Color.parseColor("#D1C4E9"), Color.parseColor("#EDE7F6")}, // Purple
-            {Color.parseColor("#1976D2"), Color.parseColor("#BBDEFB"), Color.parseColor("#E3F2FD")}, // BlueOcean
-            {Color.parseColor("#FF5722"), Color.parseColor("#FFCCBC"), Color.parseColor("#FBE9E7")}, // SunsetOrange
-            {Color.parseColor("#388E3C"), Color.parseColor("#C8E6C9"), Color.parseColor("#E8F5E9")}, // ForestGreen
-            {Color.parseColor("#673AB7"), Color.parseColor("#D1C4E9"), Color.parseColor("#EDE7F6")}, // RoyalPurple
-            {Color.parseColor("#E91E63"), Color.parseColor("#F8BBD0"), Color.parseColor("#FCE4EC")}, // SweetPink
-            {Color.parseColor("#FFC107"), Color.parseColor("#FFECB3"), Color.parseColor("#FFF8E1")}, // GoldenYellow
-            {Color.parseColor("#795548"), Color.parseColor("#D7CCC8"), Color.parseColor("#EFEBE9")}, // EarthyBrown
-            {Color.parseColor("#03A9F4"), Color.parseColor("#B3E5FC"), Color.parseColor("#E1F5FE")}, // SkyBlue
-            {Color.parseColor("#D32F2F"), Color.parseColor("#FFCDD2"), Color.parseColor("#FFEBEE")}, // FieryRed
-            {Color.parseColor("#9E9E9E"), Color.parseColor("#E0E0E0"), Color.parseColor("#F5F5F5")}, // CalmGray
-            {Color.parseColor("#00BCD4"), Color.parseColor("#B2EBF2"), Color.parseColor("#E0F7FA")}, // VibrantCyan
-            {Color.parseColor("#00796B"), Color.parseColor("#B2DFDB"), Color.parseColor("#E0F2F1")}, // TropicalTeal
-            {Color.parseColor("#FF7043"), Color.parseColor("#FFAB91"), Color.parseColor("#FBE9E7")}, // CoralPeach
-            {Color.parseColor("#CDDC39"), Color.parseColor("#F0F4C3"), Color.parseColor("#F9FBE7")}, // LemonLime
-            {Color.parseColor("#3F51B5"), Color.parseColor("#C5CAE9"), Color.parseColor("#E8EAF6")}, // BoldIndigo
-            {Color.parseColor("#FFC107"), Color.parseColor("#FFD740"), Color.parseColor("#FFF8E1")}, // RichAmber
-            {Color.parseColor("#303F9F"), Color.parseColor("#7986CB"), Color.parseColor("#E8EAF6")}, // MidnightBlue
-            {Color.parseColor("#CE93D8"), Color.parseColor("#E1BEE7"), Color.parseColor("#F3E5F5")}, // SoftLavender
-            {Color.parseColor("#A1887F"), Color.parseColor("#D7CCC8"), Color.parseColor("#EFEBE9")}, // WarmBeige
-            {Color.parseColor("#00C853"), Color.parseColor("#69F0AE"), Color.parseColor("#E8F5E9")}  // NeonGreen
+            {Color.parseColor("#1E3A8A"), Color.parseColor("#3B82F6"), Color.parseColor("#E0F2FE")}, // BlueHarmonyTheme
+            {Color.parseColor("#2DD4BF"), Color.parseColor("#99F6E4"), Color.parseColor("#F0FDFA")}, // MintGreenTheme
+            {Color.parseColor("#F97316"), Color.parseColor("#FB923C"), Color.parseColor("#FFF7ED")}, // SunsetGlowTheme
+            {Color.parseColor("#8B5CF6"), Color.parseColor("#C084FC"), Color.parseColor("#FAF5FF")}, // CyberPurpleTheme
+            {Color.parseColor("#B8860B"), Color.parseColor("#FFD700"), Color.parseColor("#1C1C1C")}, // ElegantGoldTheme
+            {Color.parseColor("#0E7490"), Color.parseColor("#38BDF8"), Color.parseColor("#ECFEFF")}, // OceanBreezeTheme
+            {Color.parseColor("#1E40AF"), Color.parseColor("#E11D48"), Color.parseColor("#111827")}, // NeonFutureTheme
+            {Color.parseColor("#881337"), Color.parseColor("#FBCFE8"), Color.parseColor("#FDF2F8")}, // RosewoodEleganceTheme
+            {Color.parseColor("#0F172A"), Color.parseColor("#64748B"), Color.parseColor("#020617")}, // DarkModeEliteTheme
+            {Color.parseColor("#FACC15"), Color.parseColor("#16A34A"), Color.parseColor("#FEFCE8")}, // LemonFreshTheme
+            {Color.parseColor("#CE93D8"), Color.parseColor("#E1BEE7"), Color.parseColor("#F3E5F5")}, // SoftLavenderTheme
+            {Color.parseColor("#00C853"), Color.parseColor("#69F0AE"), Color.parseColor("#E8F5E9")}, // NeonGreenTheme
     };
+
 
     // Theme styles
     private static final int[] themeArray = {
-            R.style.DefaultTheme, R.style.BlueTheme, R.style.RedTheme, R.style.GreenTheme, R.style.GrayTheme,
-            R.style.YellowTheme, R.style.PinkTheme, R.style.PurpleTheme, R.style.BlueOceanTheme,
-            R.style.SunsetOrangeTheme, R.style.ForestGreenTheme, R.style.RoyalPurpleTheme, R.style.SweetPinkTheme,
-            R.style.GoldenYellowTheme, R.style.EarthyBrownTheme, R.style.SkyBlueTheme, R.style.FieryRedTheme,
-            R.style.CalmGrayTheme, R.style.VibrantCyanTheme, R.style.TropicalTealTheme, R.style.CoralPeachTheme,
-            R.style.LemonLimeTheme, R.style.BoldIndigoTheme, R.style.RichAmberTheme, R.style.MidnightBlueTheme,
-            R.style.SoftLavenderTheme, R.style.WarmBeigeTheme, R.style.NeonGreenTheme
+            R.style.DefaultTheme,
+            R.style.BlueHarmonyTheme,
+            R.style.MintGreenTheme,
+            R.style.SunsetGlowTheme,
+            R.style.CyberPurpleTheme,
+            R.style.ElegantGoldTheme,
+            R.style.OceanBreezeTheme,
+            R.style.NeonFutureTheme,
+            R.style.RosewoodEleganceTheme,
+            R.style.DarkModeEliteTheme,
+            R.style.LemonFreshTheme,
+            R.style.SoftLavenderTheme,
+            R.style.NeonGreenTheme
     };
-
-
-
-
-
-
-
-
-
-
 
 
 

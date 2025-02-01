@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    tools:context=".activity.BasketActivity">
+    tools:context=".activity.BasketActivity"
+    android:background="?attr/colorSurface">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -29,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
-
                 android:background="?attr/colorPrimary"
 
                 >
@@ -42,14 +42,15 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"
-                android:background="@drawable/bg_round_selected"
+                android:background="@drawable/bg_card"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -65,8 +66,9 @@
                         android:layout_weight="0.3"
                         android:gravity="center"
                         android:text="@string/buyactivity_rowcount"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?attr/colorOnBackground" />
 
 
                     <TextView
@@ -75,8 +77,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?attr/colorOnBackground" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -95,8 +98,9 @@
                         android:layout_weight="0.3"
                         android:gravity="center"
                         android:text="@string/buyactivity_totalamount"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?attr/colorOnBackground" />
 
 
                     <TextView
@@ -105,8 +109,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:gravity="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?attr/colorOnBackground" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -136,13 +141,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:paddingBottom="10dp" />
+
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/BuyActivity_R1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
+
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground"
                 android:paddingBottom="70dp"
 
                 />
@@ -173,8 +183,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="#B86634"
-                android:textSize="40sp" />
+
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground"
+                />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -196,7 +208,7 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:title="@string/buyactivity_titlename"
-            app:titleTextColor="@color/white">
+            app:titleTextColor="?attr/colorOnPrimary">
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -220,13 +232,13 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="@string/buyactivity_finalstep"
-            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:backgroundTint="#e2c846"
-            app:strokeColor="#e2c846"
-            app:strokeWidth="1dp"
+
+            style="@style/Widget.MaterialComponents.Button"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:layout_weight="1"
             />
 
@@ -237,14 +249,13 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="پرداخت"
-            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:backgroundTint="#4CAF50"
-            app:strokeColor="#009688"
-            app:strokeWidth="1dp"
             android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.Button"
+            android:backgroundTint="?attr/colorSecondary"
+            android:textColor="?attr/colorOnSecondary"
             />
 
 

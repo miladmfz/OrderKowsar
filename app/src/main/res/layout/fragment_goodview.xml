@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
+    android:background="?attr/colorSurface"
     tools:context=".Fragment.SearchViewFragment">
 
     <LinearLayout
@@ -35,7 +36,6 @@
 
             <Button
                 android:id="@+id/fragment_good_to_order"
-                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -44,9 +44,9 @@
                 android:text="@string/fragment_good_to_order"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="#e2c846"
-                app:strokeColor="#e2c846"
-                app:strokeWidth="1dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary"
 
                 />
 
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
-                android:background="@drawable/bg_round_selected"
+                android:background="@drawable/bg_editbox"
                 android:padding="5sp"
                 android:textSize="30sp"
                 tools:ignore="Autofill,LabelFor,TextFields" />
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="#BD622B"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="40sp"
 
                 />

@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    tools:context=".activity.TableActivity">
+    android:background="?attr/colorSurface"
+    >
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -30,7 +31,7 @@
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 app:title="@string/tableactivity_titlename"
-                app:titleTextColor="@color/white">
+                app:titleTextColor="?attr/colorOnPrimary">
 
 
             </androidx.appcompat.widget.Toolbar>
@@ -89,7 +90,9 @@
                             android:layout_weight="0.5"
                             android:gravity="center"
                             android:text="@string/tableactivity_tabletype"
-                            android:textSize="22sp" />
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground"
+                            />
 
                         <Spinner
                             android:id="@+id/tableactivity_spinner"
@@ -97,7 +100,9 @@
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
                             android:gravity="center"
-                            android:scrollbarSize="20sp" />
+                            android:scrollbarSize="20sp"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
 
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -137,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#03a9f4"
+                        android:textColor="?attr/colorOnBackground"
                         android:textSize="40sp"
 
                         />

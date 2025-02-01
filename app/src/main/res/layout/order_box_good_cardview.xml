@@ -8,10 +8,9 @@
     android:layout_margin="3dp"
     android:layoutDirection="rtl"
     android:orientation="vertical"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/grey_1000"
-    app:strokeWidth="1dp">
+
+
+    >
 
 
     <LinearLayout
@@ -20,7 +19,7 @@
         android:layout_margin="2dp"
         android:orientation="horizontal"
         android:weightSum="1"
-        tools:ignore="DisableBaselineAlignment">
+        android:background="@drawable/bg_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,8 +43,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+
+                    android:layout_margin="3dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground"/>
 
                 <TextView
                     android:id="@+id/good_box_item_amount"
@@ -54,8 +55,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.4"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+
+                    android:layout_margin="3dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground"/>
 
             </LinearLayout>
 
@@ -65,7 +68,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="31dp"
                 android:gravity="center"
-                android:textSize="18sp" />
+                android:layout_margin="3dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground"/>
 
         </LinearLayout>
 

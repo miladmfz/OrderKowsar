@@ -7,7 +7,7 @@
     android:layoutDirection="rtl"
     android:orientation="vertical"
     tools:viewBindingIgnore="true"
-
+    android:background="?attr/colorSurface"
     >
 
     <com.google.android.material.appbar.AppBarLayout

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
     android:orientation="vertical"
+    android:background="?attr/colorSurface"
     tools:context=".activity.AboutUsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,7 +31,7 @@
                 android:layout_weight="1"
                 android:background="?attr/colorPrimary"
                 app:title="@string/aboutus_title"
-                app:titleTextColor="@color/white">
+                app:titleTextColor="?attr/colorOnPrimary">
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -63,7 +64,8 @@
                 android:layout_marginTop="20sp"
                 android:gravity="center"
                 android:text="@string/aboutus_address"
-                android:textSize="20sp" />
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground" />
 
             <TextView
                 android:id="@+id/tv2"
@@ -72,8 +74,8 @@
                 android:layout_marginTop="20sp"
                 android:gravity="center"
                 android:text="@string/aboutus_number"
-                android:textSize="20sp"
-
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground"
                 />
 
             <TextView
@@ -83,7 +85,8 @@
                 android:layout_marginTop="20sp"
                 android:gravity="center"
                 android:text="@string/aboutus_email"
-                android:textSize="20sp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorOnBackground"
 
                 />
 

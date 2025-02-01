@@ -23,7 +23,6 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-
             app:title="@string/registeractivity_titlename"
             app:titleTextColor="?attr/colorOnPrimary">
 

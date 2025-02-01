@@ -12,14 +12,15 @@
     app:cardCornerRadius="2dp"
     app:cardElevation="6dp"
     app:strokeWidth="1dp"
-    android:backgroundTint="@color/blue_100">
+    android:backgroundTint="?attr/colorSecondary">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
 
         <LinearLayout
@@ -43,9 +44,9 @@
                     android:layout_weight="0.7"
                     android:gravity="center"
                     android:text="@string/tableemptyitem_name"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:ignore="NestedWeights" />
+                    android:layout_margin="3dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground" />
 
                 <TextView
                     android:id="@+id/table_item_name"
@@ -54,8 +55,9 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:gravity="center"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:layout_margin="3dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?attr/colorOnBackground" />
 
 
             </LinearLayout>
@@ -71,7 +73,6 @@
 
             <Button
                 android:id="@+id/table_item_select"
-                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -79,11 +80,9 @@
                 android:layout_weight="0.25"
                 android:gravity="center"
                 android:text="@string/tableemptyitem_selecttable"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:backgroundTint="#e2c846"
-                app:strokeColor="#e2c846"
-                app:strokeWidth="1dp" />
+                style="@style/Widget.MaterialComponents.Button"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -102,7 +101,7 @@
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@color/red_900" />
+            android:background="?attr/colorPrimaryVariant" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

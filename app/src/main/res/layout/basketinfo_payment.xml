@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg_round_selected"
+    android:background="@drawable/bg_overlay"
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
@@ -17,9 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/bg_card"
         android:padding="4dp"
         android:layout_margin="4dp"
-        android:background="@drawable/bg_card"
         android:elevation="4dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -75,8 +75,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="جمع فاکتور"
-                android:textColor="@color/black"
+
                 android:textSize="12sp"
+                android:textColor="?attr/colorOnBackground"
                 android:paddingStart="8dp"
                 android:layout_weight="1"
                 />
@@ -86,10 +87,10 @@
                 android:id="@+id/payment_sumprice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnBackground"
                 android:gravity="center"
                 android:layout_weight="2"
                 />
@@ -110,8 +111,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="ارزش افزوده"
-                android:textColor="@color/black"
                 android:textSize="12sp"
+                android:textColor="?attr/colorOnBackground"
                 android:paddingStart="8dp"
                 android:layout_weight="1"
                 />
@@ -121,9 +122,9 @@
                 android:id="@+id/payment_sumtaxmayor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_weight="2"
@@ -145,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="مبلغ کل "
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="12sp"
                 android:paddingStart="8dp"
                 android:layout_weight="1"
@@ -156,9 +157,9 @@
                 android:id="@+id/payment_totalprice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_weight="2"
@@ -186,7 +187,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text="دریافت شده"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="12sp"
                 android:paddingStart="4dp" />
 
@@ -196,9 +197,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:gravity="center" />
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -218,7 +219,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text="تخفیف"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="12sp"
                 android:paddingStart="8dp" />
 
@@ -228,10 +229,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
 
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:gravity="center" />
 
@@ -255,7 +256,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text="مانده"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:paddingStart="8dp" />
 
@@ -265,10 +266,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
 
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="24sp"
                 android:gravity="center" />
 
@@ -292,7 +293,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text="درصد تخفیف"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="10sp"
                 android:paddingStart="8dp" />
 
@@ -303,7 +304,7 @@
                 android:layout_weight="2"
                 android:gravity="center_vertical|start"
                 android:text="مبلغ"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="10sp"
                 android:paddingStart="8dp" />
 
@@ -327,10 +328,10 @@
                 android:layout_weight="1"
                 android:layout_margin="2dp"
 
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="4dp"
                 android:inputType="numberDecimal"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="20sp"
                 android:gravity="center" />
 
@@ -342,10 +343,10 @@
                 android:layout_margin="2dp"
 
                 android:layout_weight="2"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="4dp"
                 android:inputType="numberDecimal"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="20sp"
 
 
@@ -371,7 +372,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text="دریافت نقد"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="16sp"
                 android:paddingStart="8dp" />
 
@@ -382,9 +383,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:inputType="numberDecimal"
-                android:background="@drawable/bg_round"
+                android:background="@drawable/bg_editbox"
                 android:padding="3dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnBackground"
                 android:textSize="24sp"
                 android:gravity="center" />
 
@@ -397,16 +398,15 @@
 
         <Button
         android:id="@+id/payment_btn_final"
-        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center"
         android:text="دریافت"
-        android:textColor="@color/white"
         android:textSize="20sp"
-        app:backgroundTint="#4CAF50"
-        app:strokeColor="#009688" />
+        style="@style/Widget.MaterialComponents.Button"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnPrimary" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
