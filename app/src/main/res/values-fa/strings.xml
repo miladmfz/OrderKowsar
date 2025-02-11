@@ -290,6 +290,7 @@
     <string name="good_buy_delete">حذف از سبد</string>
     <string name="Customer_new"> مشتری جدید</string>
     <string name="UnitRadio">درصد تخفیف</string>
+    <string name="max_selloff">حداکثر تخفیف</string>
 
     <string-array name="themes_array">
         <item>Default</item>

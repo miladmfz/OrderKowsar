@@ -156,6 +156,8 @@ public class SplashActivity extends AppCompatActivity {
             callMethod.EditString("LANG", "fa");
 
             callMethod.EditString("AppBasketInfoCode", "0");
+            callMethod.EditString("MaxSellOff", "100");
+
 
             callMethod.EditString("PosName", "");
             callMethod.EditString("PosCode", "0");

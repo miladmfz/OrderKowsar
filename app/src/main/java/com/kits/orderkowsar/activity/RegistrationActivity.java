@@ -282,6 +282,7 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.ordRegistrADelay.setText(callMethod.NumberRegion(callMethod.ReadString("Delay")));
         binding.ordRegistrADbname.setText(callMethod.NumberRegion(callMethod.ReadString("PersianCompanyNameUse")));
         binding.ordRegistrATitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
+        binding.ordRegistrAMaxselloff.setText(callMethod.NumberRegion(callMethod.ReadString("MaxSellOff")));
 
         binding.ordRegistrAPozcode.setText(callMethod.NumberRegion(callMethod.ReadString("PosCode")));
         binding.ordRegistrAPozname.setText(callMethod.NumberRegion(callMethod.ReadString("PosName")));
@@ -344,7 +345,7 @@ public class RegistrationActivity extends AppCompatActivity {
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
-                pos_list.add("بدون پرینتر");
+                pos_list.add("بدون پوز");
 
                 if(response.isSuccessful()) {
                     assert response.body() != null;
@@ -378,14 +379,20 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                for ( PosDriver posDriver: posDrivers) {
-                    if(posDriver.getPosName().equals(pos_list.get(position))){
-                        callMethod.EditString("PosName",posDriver.getPosName());
-                        callMethod.EditString("PosCode",posDriver.getPosDriverCode());
-                        binding.ordRegistrAPozcode.setText(callMethod.ReadString("PosName"));
-                        binding.ordRegistrAPozname.setText(callMethod.ReadString("PosCode"));
+                if (position == 0){
+                    callMethod.EditString("PosName", "");
+                    callMethod.EditString("PosCode", "0");
+                }else{
+                    for ( PosDriver posDriver: posDrivers) {
+                        if(posDriver.getPosName().equals(pos_list.get(position))){
+                            callMethod.EditString("PosName",posDriver.getPosName());
+                            callMethod.EditString("PosCode",posDriver.getPosDriverCode());
+                                                    }
                     }
                 }
+                binding.ordRegistrAPozcode.setText(callMethod.ReadString("PosName"));
+                binding.ordRegistrAPozname.setText(callMethod.ReadString("PosCode"));
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -473,8 +480,25 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Log.e("kowsar",response.body().getText());
                                         callMethod.EditBoolan("CanFreeTable", !response.body().getText().equals("0"));
                                         binding.ordRegistrACanfreetable.setChecked(callMethod.ReadBoolan("CanFreeTable"));
-                                        callMethod.showToast(getString(R.string.textvalue_resived));
-                                        dialogProg.dismiss();
+
+                                            Call<RetrofitResponse> call2 = apiInterface.kowsar_info("kowsar_info", "MaxShopCashDiscount");
+                                            call2.enqueue(new Callback<RetrofitResponse>() {
+                                                @Override
+                                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                                    if (response.isSuccessful()) {
+                                                        assert response.body() != null;
+                                                        Log.e("kowsar",response.body().getText());
+                                                        callMethod.EditString("MaxSellOff", response.body().getText());
+                                                        binding.ordRegistrAMaxselloff.setText(callMethod.ReadString("MaxSellOff"));
+                                                        callMethod.showToast(getString(R.string.textvalue_resived));
+                                                        dialogProg.dismiss();
+                                                    }
+                                                }
+                                                @Override
+                                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+                                                }
+                                            });
+
                                     }
                                 }
 

@@ -49,7 +49,7 @@ public class BasketActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     APIInterface apiInterface;
     CallMethod callMethod;
-    TextView Buy_row, Buy_amount;
+    TextView Buy_row, Buy_amount,tv_totalprice,tv_notresive,tv_resive;
     Intent intent;
     GoodBasketAdapter adapter;
     Action action;
@@ -143,6 +143,9 @@ public class BasketActivity extends AppCompatActivity {
 
         Buy_row = findViewById(R.id.BuyActivity_total_row_buy);
         Buy_amount = findViewById(R.id.BuyActivity_total_amount_buy);
+        tv_totalprice = findViewById(R.id.BuyActivity_total_price);
+        tv_notresive = findViewById(R.id.BuyActivity_total_notresive);
+        tv_resive = findViewById(R.id.BuyActivity_total_resive);
         total_delete = findViewById(R.id.BuyActivity_total_delete);
         btn_ordertofactor  = findViewById(R.id.BuyActivity_ordertofactor);
         btn_peyment  = findViewById(R.id.BuyActivity_payment);
@@ -248,6 +251,11 @@ public class BasketActivity extends AppCompatActivity {
         State = basketInfo.getInfoState();
         Buy_row.setText(callMethod.NumberRegion(basketInfo.getCountGood()));
         Buy_amount.setText(callMethod.NumberRegion(basketInfo.getSumFacAmount()));
+
+
+        tv_totalprice.setText(callMethod.NumberRegion(String.valueOf(Integer.parseInt(basketInfo.getSumPrice())+Integer.parseInt(basketInfo.getSumTaxAndMayor()))));
+        tv_notresive.setText(callMethod.NumberRegion(basketInfo.getNotReceived()));
+        tv_resive.setText(callMethod.NumberRegion(basketInfo.getReceived()));
 
         if (Integer.parseInt(basketInfo.getFactorCode())>0){
             if (Integer.parseInt(basketInfo.getNotReceived())>0){

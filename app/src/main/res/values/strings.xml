@@ -279,6 +279,7 @@
     <string name="textvalue_allert">توجه</string>
     <string name="textvalue_yes">بله</string>
     <string name="textvalue_no">خیر</string>
+    <string name="max_selloff">Max Selloff</string>
 
     <string-array name="themes_array">
         <item>پیش‌فرض</item>

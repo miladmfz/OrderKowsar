@@ -151,31 +151,31 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
         EditText ed_password = dialog.findViewById(R.id.d_loginconfig_ed);
         MaterialButton btn_login = dialog.findViewById(R.id.d_loginconfig_btn);
 
-        ed_password.addTextChangedListener(
-                new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(final Editable editable) {
-
-                        if(NumberFunctions.EnglishNumber(ed_password.getText().toString()).length()>5) {
-                            if (NumberFunctions.EnglishNumber(ed_password.getText().toString()).equals(callMethod.ReadString("ActivationCode"))) {
-
-                                Intent intent = new Intent(mContext, RegistrationActivity.class);
-                                startActivity(intent);
-                            } else {
-                                callMethod.showToast("رمز عبور صیحیح نیست");
-                            }
-
-                        }
-                    }
-                });
+//        ed_password.addTextChangedListener(
+//                new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(final Editable editable) {
+//
+//                        if(NumberFunctions.EnglishNumber(ed_password.getText().toString()).length()>5) {
+//                            if (NumberFunctions.EnglishNumber(ed_password.getText().toString()).equals(callMethod.ReadString("ActivationCode"))) {
+//
+//                                Intent intent = new Intent(mContext, RegistrationActivity.class);
+//                                startActivity(intent);
+//                            } else {
+//                                callMethod.showToast("رمز عبور صیحیح نیست");
+//                            }
+//
+//                        }
+//                    }
+//                });
 
 
 
@@ -920,8 +920,9 @@ public class Action extends Activity implements DatePickerDialog.OnDateSetListen
                         selloff = Integer.parseInt(NumberFunctions.EnglishNumber(ed_payment_selloff.getText().toString()));
 
 
-                        if (selloff > 100) {
-                            selloff = 100;
+
+                        if (selloff > Integer.parseInt(callMethod.ReadString("MaxSellOff"))) {
+                            selloff = Integer.parseInt(callMethod.ReadString("MaxSellOff"));
                             ed_payment_selloff.setText(NumberFunctions.PerisanNumber(String.valueOf(selloff)));
                             ed_payment_selloff.setError("حداکثر تخفیف");
                         }

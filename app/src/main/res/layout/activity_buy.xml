@@ -45,41 +45,111 @@
             android:orientation="vertical"
             >
 
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_margin="3dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg_card"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_margin="4dp"
+                >
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:orientation="vertical">
+                    android:layout_height="45dp"
+                    android:orientation="horizontal">
 
-
-                    <TextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="center"
-                        android:text="@string/buyactivity_rowcount"
-
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="?attr/colorOnBackground" />
+                        android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/BuyActivity_total_row_buy"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text="مبلغ کل"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                        <TextView
+                            android:id="@+id/BuyActivity_total_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="?attr/colorOnBackground" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text=" مبلغ دریافتی"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                        <TextView
+                            android:id="@+id/BuyActivity_total_resive"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text=" مبلغ مانده"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                        <TextView
+                            android:id="@+id/BuyActivity_total_notresive"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -87,51 +157,91 @@
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:orientation="vertical">
+                    android:layout_height="45dp"
+                    android:orientation="horizontal">
 
 
-                    <TextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="center"
-                        android:text="@string/buyactivity_totalamount"
-
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="?attr/colorOnBackground" />
+                        android:orientation="vertical">
 
 
-                    <TextView
-                        android:id="@+id/BuyActivity_total_amount_buy"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text="@string/buyactivity_rowcount"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                        <TextView
+                            android:id="@+id/BuyActivity_total_row_buy"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="?attr/colorOnBackground" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text="@string/buyactivity_totalamount"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                        <TextView
+                            android:id="@+id/BuyActivity_total_amount_buy"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/BuyActivity_total_delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.3"
+                        android:text="@string/buyactivity_delete"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/red_800"
+                        app:strokeColor="@color/grey_1000"
+                        app:strokeWidth="1dp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/BuyActivity_total_delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="3dp"
-                    android:layout_weight="0.3"
-                    android:text="@string/buyactivity_delete"
-                    android:textColor="#ffffff"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:backgroundTint="@color/red_800"
-                    app:strokeColor="@color/grey_1000"
-                    app:strokeWidth="1dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

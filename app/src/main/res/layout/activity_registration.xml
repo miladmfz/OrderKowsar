@@ -238,7 +238,38 @@
                             android:padding="8dp"
                             />
                     </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
+                        <!-- Label -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/max_selloff"
+                            android:layout_margin="3dp"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="?attr/colorOnBackground"
+                            android:textSize="16sp"
+                            android:paddingStart="8dp" />
+
+                        <TextView
+                            android:id="@+id/ord_registr_a_maxselloff"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:inputType="numberDecimal"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_editbox"
+                            android:textColor="?attr/colorOnBackground"
+                            android:padding="8dp"
+                            />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -472,6 +503,7 @@
                             android:padding="8dp"
                             android:autofillHints="" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -508,6 +540,8 @@
                         <!-- Label: Body Size -->
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
