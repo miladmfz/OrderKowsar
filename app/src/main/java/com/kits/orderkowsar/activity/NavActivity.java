@@ -29,6 +29,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.kits.orderkowsar.BuildConfig;
 import com.kits.orderkowsar.R;
 import com.kits.orderkowsar.application.Action;
 import com.kits.orderkowsar.application.CallMethod;

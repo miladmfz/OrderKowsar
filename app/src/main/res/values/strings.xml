@@ -281,20 +281,5 @@
     <string name="textvalue_no">خیر</string>
     <string name="max_selloff">Max Selloff</string>
 
-    <string-array name="themes_array">
-        <item>پیش‌فرض</item>
-        <item>آبی هماهنگ</item>
-        <item>سبز نعناعی</item>
-        <item>درخشش غروب</item>
-        <item>بنفش سایبری</item>
-        <item>طلای شیک</item>
-        <item>نسیم دریا</item>
-        <item>آینده نئون</item>
-        <item>جذابیت چوب رز</item>
-        <item>حالت تاریک برتر</item>
-        <item>لذت لیمویی</item>
-        <item>اسطوخودوسی نرم</item>
-        <item>سبز نئون</item>
-    </string-array>
 
 </resources>

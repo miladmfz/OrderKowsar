@@ -284,13 +284,31 @@ public class RegistrationActivity extends AppCompatActivity {
         binding.ordRegistrATitlesize.setText(callMethod.NumberRegion(callMethod.ReadString("TitleSize")));
         binding.ordRegistrAMaxselloff.setText(callMethod.NumberRegion(callMethod.ReadString("MaxSellOff")));
 
-        binding.ordRegistrAPozcode.setText(callMethod.NumberRegion(callMethod.ReadString("PosCode")));
-        binding.ordRegistrAPozname.setText(callMethod.NumberRegion(callMethod.ReadString("PosName")));
 
 
         binding.ordRegistrAActivereserv.setChecked(callMethod.ReadBoolan("ReserveActive"));
         binding.ordRegistrACanfreetable.setChecked(callMethod.ReadBoolan("CanFreeTable"));
+
+
+        binding.ordRegistrAPozcode.setText(callMethod.NumberRegion(callMethod.ReadString("PosCode")));
+        binding.ordRegistrAPozname.setText(callMethod.NumberRegion(callMethod.ReadString("PosName")));
         binding.ordRegistrAPospayment.setChecked(callMethod.ReadBoolan("PosPayment"));
+        binding.ordRegistrAPaymentwithdevice.setChecked(callMethod.ReadBoolan("PaymentWithDevice"));
+
+
+
+        binding.ordRegistrAPaymentwithdevice.setOnCheckedChangeListener((compoundButton, b) -> {
+
+            if (callMethod.ReadBoolan("PaymentWithDevice")) {
+
+                callMethod.EditBoolan("PaymentWithDevice", false);
+                callMethod.showToast("خیر");
+
+            } else {
+                callMethod.EditBoolan("PaymentWithDevice", true);
+                callMethod.showToast("بله");
+            }
+        });
 
 
         binding.ordRegistrAPospayment.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -308,13 +326,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     callMethod.EditBoolan("PosPayment", true);
                     callMethod.showToast("بله");
-
                 }
             }
-
         });
-
-
         binding.ordRegistrACanfreetable.setOnCheckedChangeListener((compoundButton, b) -> {
             if (callMethod.ReadBoolan("CanFreeTable")) {
                 callMethod.EditBoolan("CanFreeTable", false);
@@ -324,7 +338,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 callMethod.showToast("بله");
             }
         });
-
         binding.ordRegistrAActivereserv.setOnCheckedChangeListener((compoundButton, b) -> {
             if (callMethod.ReadBoolan("ReserveActive")) {
                 callMethod.EditBoolan("ReserveActive", false);
@@ -335,13 +348,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Call<RetrofitResponse> call1;
         call1=apiInterface.OrderGetPosDriver("OrderGetPosDriver");
-
-
         call1.enqueue(new Callback<RetrofitResponse>() {
             @Override
             public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
@@ -365,9 +373,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                     }
                     binding.ordRegistrASpinnerpoz.setSelection(targetIndex); // Set selection baraye item ke matnash "همه" ast
-
                 }
-
             }
             @Override
             public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {

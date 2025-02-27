@@ -171,6 +171,7 @@ public class SplashActivity extends AppCompatActivity {
 
             callMethod.EditBoolan("ReserveActive", false);
             callMethod.EditBoolan("CanFreeTable", false);
+            callMethod.EditBoolan("PaymentWithDevice", false);
 
 
 

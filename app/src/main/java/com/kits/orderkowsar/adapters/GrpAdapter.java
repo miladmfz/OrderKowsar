@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,21 +117,40 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
             });
         }
 
+        holder.grpname.setOnClickListener(v -> {
+            SearchViewFragment searchViewFragment = new SearchViewFragment();
+            searchViewFragment.setParent_GourpCode(Parent_GourpCode);
+            searchViewFragment.setGood_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
+            fragmentTransaction.replace(R.id.searchactivity_framelayout, searchViewFragment);
+            fragmentTransaction.commit();
+
+
+        });
         holder.rltv.setOnClickListener(v -> {
             SearchViewFragment searchViewFragment = new SearchViewFragment();
             searchViewFragment.setParent_GourpCode(Parent_GourpCode);
             searchViewFragment.setGood_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
             fragmentTransaction.replace(R.id.searchactivity_framelayout, searchViewFragment);
             fragmentTransaction.commit();
+
+
         });
+
 
         holder.extraimg.setOnClickListener(v -> {
             SearchViewFragment searchViewFragment = new SearchViewFragment();
-            searchViewFragment.setParent_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
+            searchViewFragment.setParent_GourpCode(Parent_GourpCode);
             searchViewFragment.setGood_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
             fragmentTransaction.replace(R.id.searchactivity_framelayout, searchViewFragment);
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
+
+//            SearchViewFragment searchViewFragment = new SearchViewFragment();
+//            searchViewFragment.setParent_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
+//            searchViewFragment.setGood_GourpCode(GoodGroups.get(position).getGoodGroupFieldValue("GroupCode"));
+//            fragmentTransaction.replace(R.id.searchactivity_framelayout, searchViewFragment);
+//            fragmentTransaction.addToBackStack(null);
+//            fragmentTransaction.commit();
         });
 
 
@@ -151,7 +171,7 @@ public class GrpAdapter extends RecyclerView.Adapter<GrpAdapter.GoodGroupViewHol
         ImageView img;
         ImageView extraimg;
         TextView grpname;
-        LinearLayout rltv;
+        LinearLayoutCompat rltv;
 
         GoodGroupViewHolder(View itemView) {
             super(itemView);

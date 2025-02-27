@@ -252,14 +252,17 @@ public class BasketActivity extends AppCompatActivity {
         Buy_row.setText(callMethod.NumberRegion(basketInfo.getCountGood()));
         Buy_amount.setText(callMethod.NumberRegion(basketInfo.getSumFacAmount()));
 
-
         tv_totalprice.setText(callMethod.NumberRegion(String.valueOf(Integer.parseInt(basketInfo.getSumPrice())+Integer.parseInt(basketInfo.getSumTaxAndMayor()))));
         tv_notresive.setText(callMethod.NumberRegion(basketInfo.getNotReceived()));
         tv_resive.setText(callMethod.NumberRegion(basketInfo.getReceived()));
 
         if (Integer.parseInt(basketInfo.getFactorCode())>0){
             if (Integer.parseInt(basketInfo.getNotReceived())>0){
-                btn_peyment.setVisibility(View.VISIBLE);
+                if (callMethod.ReadBoolan("PaymentWithDevice")) {
+                    btn_peyment.setVisibility(View.VISIBLE);
+                }else{
+                    btn_peyment.setVisibility(View.GONE);
+                }
             }else{
                 btn_peyment.setVisibility(View.GONE);
             }

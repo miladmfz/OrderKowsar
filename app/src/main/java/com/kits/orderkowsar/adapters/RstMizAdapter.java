@@ -310,74 +310,172 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
 
             holder.btn_cleartable.setOnClickListener(v -> {
 
+                switch (basketInfos.get(position).getInfoState()) {
+
+                    case "1":
+                        Call<RetrofitResponse> call1;
+                        if (basketInfos.get(position).getIsReserved().equals("1")) {
+                            call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), date, "3", basketInfos.get(position).getReserve_AppBasketInfoCode());
+                        } else {
+                            call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), "3", basketInfos.get(position).getAppBasketInfoCode());
+                        }
 
 
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                        builder.setTitle(R.string.textvalue_allert);
+                        builder.setMessage(R.string.textvalue_freetable);
 
-                Call<RetrofitResponse> call2 = apiInterface.OrderGetSummmary("OrderGetSummmary", callMethod.ReadString("AppBasketInfoCode"));
-                call2.enqueue(new Callback<RetrofitResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
-                        if (response.isSuccessful()) {
-                            assert response.body() != null;
-                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getNotReceived())>0){
+                        builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
 
-                                action.BasketInfopayment(response.body().getBasketInfos().get(0));
-                            }else{
 
-                                Call<RetrofitResponse> call1;
-                                if (basketInfos.get(position).getIsReserved().equals("1")) {
-                                    call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), date, "3", basketInfos.get(position).getReserve_AppBasketInfoCode());
-                                } else {
-                                    call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), "3", basketInfos.get(position).getAppBasketInfoCode());
+                            call1.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                                    assert response.body() != null;
+                                    if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                        callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                    } else {
+                                        TableActivity activity = (TableActivity) mContext;
+                                        activity.CallSpinner();
+                                        callMethod.showToast(activity.getString(R.string.textvalue_recorded));
+                                    }
+
                                 }
 
+                                @Override
+                                public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                                }
+                            });
+                        });
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
-                                builder.setTitle(R.string.textvalue_allert);
-                                builder.setMessage(R.string.textvalue_freetable);
+                        builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                            // code to handle negative button click
+                        });
 
-                                builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
+                        break;
+                    case "2":
 
-                                    call1.enqueue(new Callback<RetrofitResponse>() {
-                                        @Override
-                                        public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
-                                            assert response.body() != null;
-                                            if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
-                                                callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                        if (callMethod.ReadBoolan("PaymentWithDevice")){
+                            Call<RetrofitResponse> call2 = apiInterface.OrderGetSummmary("OrderGetSummmary", basketInfos.get(position).getAppBasketInfoCode());
+                            call2.enqueue(new Callback<RetrofitResponse>() {
+                                @Override
+                                public void onResponse(@NotNull Call<RetrofitResponse> call, @NotNull Response<RetrofitResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        assert response.body() != null;
+                                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getNotReceived())>0){
+
+                                            action.BasketInfopayment(response.body().getBasketInfos().get(0));
+                                        }else{
+
+                                            Call<RetrofitResponse> call1;
+                                            if (basketInfos.get(position).getIsReserved().equals("1")) {
+                                                call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), date, "3", basketInfos.get(position).getReserve_AppBasketInfoCode());
                                             } else {
-                                                TableActivity activity = (TableActivity) mContext;
-                                                activity.CallSpinner();
-                                                callMethod.showToast(activity.getString(R.string.textvalue_recorded));
+                                                call1 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), "3", basketInfos.get(position).getAppBasketInfoCode());
                                             }
 
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                                            builder.setTitle(R.string.textvalue_allert);
+                                            builder.setMessage(R.string.textvalue_freetable);
+
+                                            builder.setPositiveButton(R.string.textvalue_yes, (dialog, which) -> {
+
+
+                                                call1.enqueue(new Callback<RetrofitResponse>() {
+                                                    @Override
+                                                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                                                        assert response.body() != null;
+                                                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                                            callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                                        } else {
+                                                            TableActivity activity = (TableActivity) mContext;
+                                                            activity.CallSpinner();
+                                                            callMethod.showToast(activity.getString(R.string.textvalue_recorded));
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                                                    }
+                                                });
+                                            });
+
+                                            builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
+                                                // code to handle negative button click
+                                            });
+
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+
                                         }
 
-                                        @Override
-                                        public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
-                                        }
-                                    });
-                                });
 
-                                builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
-                                    // code to handle negative button click
-                                });
 
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                    }
+                                }
 
+                                @Override
+                                public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
+
+                                }
+                            });
+
+                        }else{
+                            Call<RetrofitResponse> call2;
+                            if (basketInfos.get(position).getIsReserved().equals("1")) {
+                                call2 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), date, "3", basketInfos.get(position).getReserve_AppBasketInfoCode());
+                            } else {
+                                call2 = apiInterface.OrderInfoInsert("OrderInfoInsert", dbh.ReadConfig("BrokerCode"), basketInfos.get(position).getRstmizCode(), basketInfos.get(position).getPersonName(), basketInfos.get(position).getMobileNo(), basketInfos.get(position).getExplain(), "0", basketInfos.get(position).getReserveStart(), basketInfos.get(position).getReserveEnd(), basketInfos.get(position).getToday(), "3", basketInfos.get(position).getAppBasketInfoCode());
                             }
 
 
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(mContext, R.style.AlertDialogCustom);
+                            builder2.setTitle(R.string.textvalue_allert);
+                            builder2.setMessage(R.string.textvalue_freetable);
 
+                            builder2.setPositiveButton(R.string.textvalue_yes, (dialog2, which) -> {
+
+
+                                call2.enqueue(new Callback<RetrofitResponse>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<RetrofitResponse> call, @NonNull Response<RetrofitResponse> response) {
+                                        assert response.body() != null;
+                                        if (Integer.parseInt(response.body().getBasketInfos().get(0).getErrCode()) > 0) {
+                                            callMethod.showToast(response.body().getBasketInfos().get(0).getErrDesc());
+                                        } else {
+                                            TableActivity activity = (TableActivity) mContext;
+                                            activity.CallSpinner();
+                                            callMethod.showToast(activity.getString(R.string.textvalue_recorded));
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<RetrofitResponse> call, @NonNull Throwable t) {
+                                    }
+                                });
+                            });
+
+                            builder2.setNegativeButton(R.string.textvalue_no, (dialog2, which) -> {
+                                // code to handle negative button click
+                            });
+
+                            AlertDialog dialog2 = builder2.create();
+                            dialog2.show();
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<RetrofitResponse> call, @NotNull Throwable t) {
 
-                    }
-                });
+
+                        break;
+                    default:
+                        break;
+                }
+
 
 
             });
@@ -421,7 +519,7 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
                     });
 
                     builder.setNegativeButton(R.string.textvalue_no, (dialog, which) -> {
-                        // code to handle negative button click
+
                     });
 
                     AlertDialog dialog = builder.create();
@@ -478,7 +576,8 @@ public class RstMizAdapter extends RecyclerView.Adapter<RstMizViewHolder> {
             });
 
             holder.btn_explainedit.setOnClickListener(v -> action.EditBasketInfoExplain(basketInfos.get(position)));
-        } else {
+        }
+        else {
             holder.tv_name.setTextColor(R.color.black);
 
             holder.btn_select.setOnClickListener(v -> {
